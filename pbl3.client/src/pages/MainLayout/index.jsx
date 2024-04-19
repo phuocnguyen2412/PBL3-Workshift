@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Layout, Button, theme } from "antd";
 import AdminDashboard from "../../components/Dashboard/AdminDashboard";
 import { Outlet } from "react-router-dom";
-
+import { AccountContext } from "../../Context/AccountContext";
+import { Navigate } from "react-router-dom";
 const { Header, Content } = Layout;
 function MainLayout() {
     const [collapsed, setCollapsed] = useState(false);
+    const account = useContext(AccountContext);
+    console.log(account);
+    if (Object.keys(account.account).length === 0)
+        return <Navigate to="/login" />;
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();

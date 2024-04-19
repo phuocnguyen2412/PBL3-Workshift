@@ -1,22 +1,19 @@
 import { Button, Checkbox, Col, Form, Input, Row, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import "./Login.css";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AccountContext } from "../../Context/AccountContext";
-const onFinish = (values) => {
-    console.log("Success:", values);
-};
-const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-};
+import { Navigate } from "react-router-dom";
+
 function Login() {
     const account = useContext(AccountContext);
-    console.log(account);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    function handleSubmit() {
-        console.log(username, password);
-    }
+
+    const onFinish = (values) => {
+        console.log("Success:", values);
+        account.onChange(values);
+        return <Navigate to="/home" />;
+    };
+
     return (
         <Row
             style={{
@@ -70,12 +67,10 @@ function Login() {
                         ]}
                     >
                         <Input
-                            value={username}
                             prefix={
                                 <UserOutlined className="site-form-item-icon" />
                             }
                             placeholder="Username"
-                            onChange={(e) => setUsername(e.target.value)}
                         />
                     </Form.Item>
                     <Form.Item
@@ -88,8 +83,6 @@ function Login() {
                         ]}
                     >
                         <Input
-                            onChange={(e) => setPassword(e.target.value)}
-                            value={password}
                             prefix={
                                 <LockOutlined className="site-form-item-icon" />
                             }
@@ -118,7 +111,6 @@ function Login() {
                             type="primary"
                             htmlType="submit"
                             className="login-form-button"
-                            onClick={handleSubmit}
                         >
                             Log in
                         </Button>
