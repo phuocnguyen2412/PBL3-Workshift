@@ -1,0 +1,16 @@
+.LoginForm {
+    width: 80%;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+img {
+    margin: 0 auto;
+}
+button {
+    width: 100%;
+}
+input {
+    padding: 20 px !important;
+}

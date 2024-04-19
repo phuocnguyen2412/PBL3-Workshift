@@ -1,0 +1,8 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:5173",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\Hi\\source\\repos\\PBL3\\PBL3.Server\\..\\pbl3.client",
+"MaxTimeoutInSeconds": "120"
+}
+}
