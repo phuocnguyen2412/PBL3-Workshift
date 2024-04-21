@@ -1,17 +1,19 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { AccountContext } from "../../Context/AccountContext";
 import { Button, Checkbox, Col, Form, Input, Row, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+
 import "./Login.css";
-import { useContext } from "react";
-import { AccountContext } from "../../Context/AccountContext";
-import { Navigate } from "react-router-dom";
 
 function Login() {
     const account = useContext(AccountContext);
-
+    const navigate = useNavigate();
     const onFinish = (values) => {
         console.log("Success:", values);
         account.onChange(values);
-        return <Navigate to="/home" />;
+        navigate("/");
     };
 
     return (
