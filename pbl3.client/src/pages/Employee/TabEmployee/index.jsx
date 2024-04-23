@@ -5,7 +5,6 @@ import {
     UserAddOutlined,
     UserDeleteOutlined,
 } from "@ant-design/icons";
-const operations = <Button icon=<PlusOutlined />>Thêm nhân viên</Button>;
 
 const items = [
     {
@@ -24,13 +23,19 @@ const items = [
         icon: <UserDeleteOutlined />,
     },
 ];
-const TabEmployee = () => {
+
+const TabEmployee = ({ handleTabCick, handleOpenModal }) => {
+    const button = (
+        <Button icon={<PlusOutlined />} onClick={handleOpenModal}>
+            Thêm nhân viên
+        </Button>
+    );
     return (
         <>
             <Tabs
-                tabBarExtraContent={operations}
+                tabBarExtraContent={button}
                 items={items}
-                onTabClick={(e) => console.log(e)}
+                onTabClick={(e) => handleTabCick(e)}
             />
         </>
     );

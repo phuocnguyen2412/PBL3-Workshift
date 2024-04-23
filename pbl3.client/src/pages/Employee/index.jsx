@@ -6,6 +6,7 @@ const Employee = () => {
     const [employee, setEmployee] = useState([]);
     function handleTabCick(id) {}
     useEffect(() => {});
+    const [open, setOpen] = useState(false);
     return (
         <div>
             <TabEmployee handleTabCick={handleTabCick} />
