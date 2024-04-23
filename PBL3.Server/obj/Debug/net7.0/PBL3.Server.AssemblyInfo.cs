@@ -14,7 +14,11 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PBL3.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+463bd1ca6cd9515f4d49da5f074b80206f50a0ef")]
+>>>>>>> eef002e (fix mac)
 [assembly: System.Reflection.AssemblyProductAttribute("PBL3.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PBL3.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

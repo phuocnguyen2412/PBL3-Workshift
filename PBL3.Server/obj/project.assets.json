@@ -500,11 +500,16 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\USER\\.nuget\\packages\\": {}
+=======
+    "/Users/ttcenter/.nuget/packages/": {}
+>>>>>>> eef002e (fix mac)
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\USER\\Documents\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
       "projectName": "PBL3.Server",
       "projectPath": "C:\\Users\\USER\\Documents\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
@@ -514,12 +519,25 @@
       "configFilePaths": [
         "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+=======
+      "projectUniqueName": "/Users/ttcenter/Documents/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
+      "projectName": "PBL3.Server",
+      "projectPath": "/Users/ttcenter/Documents/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
+      "packagesPath": "/Users/ttcenter/.nuget/packages/",
+      "outputPath": "/Users/ttcenter/Documents/PBL3-Workshift/PBL3.Server/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/ttcenter/.nuget/NuGet/NuGet.Config"
+>>>>>>> eef002e (fix mac)
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+<<<<<<< HEAD
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+=======
+>>>>>>> eef002e (fix mac)
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -568,7 +586,15 @@
             "version": "[7.0.15, 7.0.15]"
           },
           {
+<<<<<<< HEAD
             "name": "Microsoft.WindowsDesktop.App.Ref",
+=======
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "version": "[7.0.15, 7.0.15]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+>>>>>>> eef002e (fix mac)
             "version": "[7.0.15, 7.0.15]"
           }
         ],
@@ -580,7 +606,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.405\\RuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/RuntimeIdentifierGraph.json"
+>>>>>>> eef002e (fix mac)
       }
     }
   }
