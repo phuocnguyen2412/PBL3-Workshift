@@ -4,29 +4,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PBL3.Server.Models
 {
-    [Table("Employee")]
-    public class Employee
+    [Table("Account")]
+    public class Account
     {
         [Key]
         public int Id { get; set; }
         [MaxLength(50)]
         [Required]
-        public string? FullName { get; set; }
+        public string? UserName { get; set; }
         [MaxLength(50)]
         [Required]
-        public string? Email { get; set; }
-        [MaxLength(20)]
-        [Required]
-        public string? PhoneNumber { get; set; }
-        [Required]
-        public bool TypeOfEmployee { get; set; }
-        [Required]
-        public double CoefficientsSalary { get; set; }
+        public string? Password { get; set; }
+        [MaxLength(50)]
         [Required]
         public int DutyId { get; set; }
         [ForeignKey("DutyId")]
         public virtual Duty? Duty { get; set; }
         [Required]
-        public bool Status { get; set; }
+        public int EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
+        public virtual Employee? Employee { get; set; }
     }
 }

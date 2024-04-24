@@ -1,4 +1,5 @@
-﻿using PBL3.Server.Modals;
+﻿
+using PBL3.Server.Models;
 using System.Data.Entity;
 namespace PBL3.Server
 {
@@ -6,9 +7,8 @@ namespace PBL3.Server
     {
         protected override void Seed(MyDbContext context)
         {
-            context.Duties.AddRange(new Duty[] {});
-            context.Employees.AddRange(new Employee[] { });
-
+            context?.Duties?.AddRange(new Duty[] {});
+            context?.Employees?.AddRange(new Employee[] { });
         }
     }
 }
