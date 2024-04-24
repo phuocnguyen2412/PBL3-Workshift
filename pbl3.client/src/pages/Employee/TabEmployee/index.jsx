@@ -24,9 +24,9 @@ const items = [
     },
 ];
 
-const TabEmployee = ({ handleTabCick, handleOpenModal }) => {
+const TabEmployee = ({ handleTabCick, handleOpenDrawer }) => {
     const button = (
-        <Button icon={<PlusOutlined />} onClick={handleOpenModal}>
+        <Button icon={<PlusOutlined />} onClick={handleOpenDrawer}>
             Thêm nhân viên
         </Button>
     );
@@ -35,7 +35,7 @@ const TabEmployee = ({ handleTabCick, handleOpenModal }) => {
             <Tabs
                 tabBarExtraContent={button}
                 items={items}
-                onTabClick={(e) => handleTabCick(e)}
+                onTabClick={handleTabCick}
             />
         </>
     );
