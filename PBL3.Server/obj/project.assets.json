@@ -4057,24 +4057,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/ttcenter/.nuget/packages/": {}
+    "C:\\Users\\ttcenter\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
+      "projectUniqueName": "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\PBL3.Server.csproj",
       "projectName": "PBL3.Server",
-      "projectPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
-      "packagesPath": "/Users/ttcenter/.nuget/packages/",
-      "outputPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/obj/",
+      "projectPath": "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\PBL3.Server.csproj",
+      "packagesPath": "C:\\Users\\ttcenter\\.nuget\\packages\\",
+      "outputPath": "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/ttcenter/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\ttcenter\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4135,20 +4137,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[7.0.15, 7.0.15]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.osx-arm64",
-            "version": "[7.0.15, 7.0.15]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[7.0.15, 7.0.15]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -4157,7 +4145,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   },
