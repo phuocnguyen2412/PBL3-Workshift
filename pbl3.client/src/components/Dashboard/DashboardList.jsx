@@ -8,6 +8,8 @@ import {
     DollarOutlined,
     AccountBookOutlined,
     CheckCircleOutlined,
+    SafetyOutlined,
+    CloseOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
@@ -59,6 +61,16 @@ export const AdminList = [
                 label: <Link to="/salary/salary_history">Salary History</Link>,
             },
         ],
+    },
+    {
+        key: "/change-password",
+        icon: <SafetyOutlined />,
+        label: <Link to="/change-password">Change Password</Link>,
+    },
+    {
+        key: "/login",
+        icon: <CloseOutlined />,
+        label: <Link to="/login">Logout</Link>,
     },
 ];
 // export const Employee = [
