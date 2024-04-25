@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PBL3.Server.Models
+namespace BE.Models
 {
     [Table("ShiftInfo")]
     public class ShiftInfo

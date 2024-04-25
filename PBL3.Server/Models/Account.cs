@@ -1,8 +1,8 @@
-﻿using PBL3.Server.Models;
+﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PBL3.Server.Models
+namespace BE.Models
 {
     [Table("Account")]
     public class Account
@@ -15,7 +15,7 @@ namespace PBL3.Server.Models
         [MaxLength(50)]
         [Required]
         public string? Password { get; set; }
-        [MaxLength(50)]
+       
         [Required]
         public int DutyId { get; set; }
         [ForeignKey("DutyId")]

@@ -6,12 +6,14 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
+PBL3.Server/obj
+PBL3.Server/bin
 node_modules
 dist
 dist-ssr
 *.local
-
+obj
+bin
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

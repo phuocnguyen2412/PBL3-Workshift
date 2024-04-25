@@ -1,8 +1,7 @@
-﻿using PBL3.Server.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PBL3.Server.Models
+namespace BE.Models
 {
     [Table("BonusSalaryHistory")]
     public class BonusSalaryHistory

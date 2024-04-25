@@ -1,9 +1,9 @@
-﻿using PBL3.Server.Models;
+﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PBL3.Server.Models
+namespace BE.Models
 {
     [Table("Duty")]
     public class Duty
