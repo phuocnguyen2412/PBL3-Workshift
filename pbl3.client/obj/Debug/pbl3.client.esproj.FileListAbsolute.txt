@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 C:\Users\Hi\Desktop\PBL3\pbl3.client\obj\Debug\pbl3.client.esproj.CoreCompileInputs.cache
 C:\Users\USER\Documents\PBL3\pbl3.client\obj\Debug\pbl3.client.esproj.CoreCompileInputs.cache
+=======
+C:\Users\Hi\Desktop\PBL3\pbl3.client\obj\Debug\pbl3.client.esproj.CoreCompileInputs.cache
+\\Mac\Home\Desktop\PBL3-Workshift\pbl3.client\obj\Debug\pbl3.client.esproj.CoreCompileInputs.cache
+>>>>>>> 2138153 (1)
