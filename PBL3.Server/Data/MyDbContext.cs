@@ -4,6 +4,11 @@ namespace BE.Models
 {
     public class MyDbContext : DbContext
     {
+        public MyDbContext(DbContextOptions<MyDbContext> option) : base(option)
+        {
+            
+        }
+        #region
         public DbSet<Employee>? Employees { get; set; }
         public DbSet<Duty>? Duties { get; set; }
         public DbSet<Account>? Accounts { get; set; }
@@ -13,10 +18,6 @@ namespace BE.Models
         public DbSet<SalaryHistory>? SalaryHistories { get; set; }
         public DbSet<BonusSalaryHistory>? BonusSalaryHistories { get; set; }
         public DbSet<Violate>? Violates { get; set; }
-
-        public MyDbContext(DbContextOptions<MyDbContext> option) : base(option)
-        {
-            
-        }
+        #endregion
     }
 }
