@@ -1,5 +1,6 @@
 using BE.Models;
 using Microsoft.EntityFrameworkCore;
+using PBL3.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(option => option.AddDefaultPolicy(policy=>policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddDbContext<MyDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("PBL3")));
-
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IAccount, AccountRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
