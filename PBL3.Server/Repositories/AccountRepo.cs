@@ -1,4 +1,4 @@
-﻿using BE.Models;
+﻿using PBL3.Server.Data;
 using PBL3.Server.Models;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
