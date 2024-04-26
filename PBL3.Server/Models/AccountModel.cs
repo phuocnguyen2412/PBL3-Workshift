@@ -1,4 +1,4 @@
-﻿using BE.Models;
+﻿using PBL3.Server.Data;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 

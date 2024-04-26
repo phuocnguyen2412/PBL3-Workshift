@@ -1,8 +1,8 @@
-﻿
+﻿using PBL3.Server.Repositories;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BE.Models
+namespace PBL3.Server.Data
 {
     [Table("Account")]
     public class Account
