@@ -13,8 +13,8 @@ node_modules
 dist
 dist-ssr
 *.local
-obj/*
-bin/*
+obj
+bin
 .vs/*
 .vscode
 .github
