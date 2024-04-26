@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import useFetch from "../../custom hook/useFetch";
 import TabEmployee from "./TabEmployee";
+
 import TableEmployee from "./TableEmployee";
-import { Modal, Form, Button, notification } from "antd";
-import InputEmployeeForm from "../../components/InputEmployee/InputEmployeeForm";
+import { Modal, Form, Button, notification, Spin } from "antd";
+import InputEmployeeForm from "../../components/InputEmployeeForm/InputEmployeeForm";
 import { DeleteColumnOutlined, SettingOutlined } from "@ant-design/icons";
 function handleTabCick(id) {
     console.log(id);
@@ -21,16 +23,7 @@ function handleSubmitForm(e) {
 const Employee = () => {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [employee, setEmployee] = useState(
-        [
-            {
-                FullName: "234",
-                Email: "123123123",
-                PhoneNumber: "123",
-                TypeOfEmployee: "123123",
-                CoeficientsSalary: "123123",
-                Duty: "1231312",
-            },
-        ].map((item) => {
+        [].map((item) => {
             return {
                 ...item,
                 change: (
@@ -43,14 +36,8 @@ const Employee = () => {
     );
     const [api, contextHolder] = notification.useNotification();
 
-    useEffect(() => {});
     return (
         <div>
-            <InputEmployeeForm
-                open={openDrawer}
-                setOpenDrawer={setOpenDrawer}
-            />
-
             <TabEmployee
                 handleTabCick={handleTabCick}
                 handleOpenDrawer={() => {
@@ -58,7 +45,8 @@ const Employee = () => {
                     setOpenDrawer(true);
                 }}
             />
-            <TableEmployee data={employee} />
+            <InputEmployeeForm />
+            {/* <TableEmployee data={employee} setEmployee={setEmployee} /> */}
         </div>
     );
 };

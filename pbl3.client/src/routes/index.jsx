@@ -1,3 +1,4 @@
+import ChangePassword from "../pages/ChangePassword";
 import Employee from "../pages/Employee";
 import Login from "../pages/Login";
 import MainLayout from "../pages/MainLayout";
@@ -49,6 +50,10 @@ const routes = [
                         element: <SalaryHistory />,
                     },
                 ],
+            },
+            {
+                path: "/change-password",
+                element: <ChangePassword />,
             },
         ],
     },
