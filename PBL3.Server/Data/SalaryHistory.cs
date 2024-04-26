@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PBL3.Server.Data

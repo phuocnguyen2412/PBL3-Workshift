@@ -14,7 +14,7 @@ namespace PBL3.Server.Data
         public int EmployeeId { get; set; }
 
         [ForeignKey("EmployeeId")]
-        public virtual Employee Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
