@@ -6,16 +6,13 @@ import TableEmployee from "./TableEmployee";
 import { Form, Button, notification, Drawer } from "antd";
 import InputEmployeeForm from "../../components/InputEmployeeForm/InputEmployeeForm";
 import { DeleteColumnOutlined, SettingOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+const { Search } = Input;
 function handleTabCick(id) {
     console.log(id);
-    api.success({
-        message: "Thành công!",
-        description: "Bạn đã thêm nhân viên thành công",
-    });
-    api.error({
-        message: "Thất bại!",
-        description: "Bạn đã thêm nhân viên thất bại",
-    });
+}
+function handleSearch(value, event) {
+    console.log(value);
 }
 
 const Employee = () => {
@@ -31,7 +28,7 @@ const Employee = () => {
             };
         })
     );
-    const [api, contextHolder] = notification.useNotification();
+
     const [open, setOpen] = useState(false);
     const [reload, setReload] = useState(false);
     const showDrawer = () => {
@@ -48,7 +45,7 @@ const Employee = () => {
                 handleOpenDrawer={showDrawer}
             />
             <Drawer
-                title="Create a new account" 
+                title="Create a new account"
                 width={720}
                 onClose={onClose}
                 open={open}
@@ -62,6 +59,7 @@ const Employee = () => {
             </Drawer>
 
             <TableEmployee
+                setReload={setReload}
                 data={employee}
                 setEmployee={setEmployee}
                 reload={reload}

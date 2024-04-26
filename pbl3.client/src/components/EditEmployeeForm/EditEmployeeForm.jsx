@@ -13,9 +13,9 @@ import {
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 
-export default function InputEmployeeForm({ setReload }) {
-    
+export default function EditEmployeeForm({ employeeIdToEdit, setReload }) {
     const [optionsDuty, setOptionsDuty] = useState([]);
+    const [employee, setEmployee] = useState({});
     const { postApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
     );
@@ -38,7 +38,7 @@ export default function InputEmployeeForm({ setReload }) {
                         "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
                 });
         });
-        setReload([]);
+        setReload(Date.now()); // Cập nhật state reload với một giá trị mới
     };
 
     useEffect(() => {
@@ -52,7 +52,12 @@ export default function InputEmployeeForm({ setReload }) {
                 })
             )
         );
-    }, []);
+
+        getApi(`employee/${employeeIdToEdit}`).then((data) => {
+            console.log(data);
+            setEmployee(data);
+        });
+    }, [employeeIdToEdit]);
 
     return (
         <>
@@ -75,6 +80,7 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Input
+                                value={employee?.FullName} // Sử dụng value
                                 autoFocus
                                 placeholder="Please enter user name"
                             />
@@ -93,7 +99,7 @@ export default function InputEmployeeForm({ setReload }) {
                         >
                             <Flex vertical gap="middle">
                                 <Radio.Group
-                                    defaultValue="a"
+                                    value={employee?.TypeOfEmployee} // Sử dụng value
                                     buttonStyle="solid"
                                 >
                                     <Radio.Button value="FullTime">
@@ -119,7 +125,10 @@ export default function InputEmployeeForm({ setReload }) {
                                 },
                             ]}
                         >
-                            <Input placeholder="Please enter phone number" />
+                            <Input
+                                value={employee?.PhoneNumber} // Sử dụng value
+                                placeholder="Please enter phone number"
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -137,6 +146,7 @@ export default function InputEmployeeForm({ setReload }) {
                                 style={{
                                     width: "100%",
                                 }}
+                                value={employee?.Email} // Sử dụng value
                                 placeholder="Please enter your email!"
                             />
                         </Form.Item>
@@ -155,6 +165,7 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Select
+                                value={employee?.IdDuty} // Sử dụng value
                                 placeholder="Please choose the approver"
                                 options={optionsDuty}
                             />
@@ -173,6 +184,7 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Input
+                                value={employee?.CoefficientsSalary} // Sử dụng value
                                 placeholder="Please enter the CoefficientsSalary"
                                 type="number"
                             />
