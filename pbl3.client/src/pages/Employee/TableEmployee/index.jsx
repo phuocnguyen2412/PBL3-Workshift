@@ -37,7 +37,7 @@ const columns = [
     },
 ];
 
-const TableEmployee = ({ data, setEmployee }) => {
+const TableEmployee = ({ data, setEmployee, reload }) => {
     const { getApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
     );
@@ -61,8 +61,8 @@ const TableEmployee = ({ data, setEmployee }) => {
                 })
             );
         });
-    }, []);
-    console.log(data);
+    }, [reload]);
+
     return (
         <>
             {loading && <Spin size="large" />}
