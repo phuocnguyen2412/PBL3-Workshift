@@ -2,7 +2,7 @@ import { Button, Col, Flex, Form, Input, Radio, Row, Select, Spin } from "antd";
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 
-export default function InputEmployeeForm() {
+export default function InputEmployeeForm({ setReload }) {
     const [optionsDuty, setOptionsDuty] = useState([]);
     const { postApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
@@ -14,6 +14,7 @@ export default function InputEmployeeForm() {
         postApi("employee", e).then((response) => {
             console.log(response);
         });
+        setReload([]);
     };
 
     useEffect(() => {
