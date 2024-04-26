@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BE.Migrations
+namespace PBL3.Server.Migrations
 {
     public partial class DbInit : Migration
     {

@@ -1,5 +1,4 @@
-﻿using BE.Models;
-using PBL3.Server.Models;
+﻿using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
