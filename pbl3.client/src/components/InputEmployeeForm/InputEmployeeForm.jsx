@@ -49,7 +49,10 @@ export default function InputEmployeeForm() {
                                 },
                             ]}
                         >
-                            <Input placeholder="Please enter user name" />
+                            <Input
+                                autoFocus
+                                placeholder="Please enter user name"
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
