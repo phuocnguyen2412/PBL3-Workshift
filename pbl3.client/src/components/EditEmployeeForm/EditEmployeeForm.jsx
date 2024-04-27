@@ -13,9 +13,9 @@ import {
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 
-export default function InputEmployeeForm({ setReload }) {
-    const [form] = Form.useForm();
+export default function EditEmployeeForm({ employeeIdToEdit }) {
     const [optionsDuty, setOptionsDuty] = useState([]);
+    const [employee, setEmployee] = useState(null);
     const { postApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
     );
@@ -25,36 +25,37 @@ export default function InputEmployeeForm({ setReload }) {
     const [api, contextHolder] = notification.useNotification();
     const handleSubmitForm = (e) => {
         postApi("employee", e).then((response) => {
-            // if (!response.ok) {
-            //     api.error({
-            //         message: "Notification Title",
-            //         description:
-            //             "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-            //     });
-            // } else {
-            form.resetFields();
-            api.success({
-                message: "Notification Title",
-                description:
-                    "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-            });
-            // }
+            if (!response.ok) {
+                api.error({
+                    message: "Notification Title",
+                    description:
+                        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+                });
+            } else
+                api.success({
+                    message: "Notification Title",
+                    description:
+                        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+                });
         });
-        setReload([]);
     };
 
     useEffect(() => {
-        getApi("Duty").then((data) =>
+        const fetchData = async () => {
+            const dutyList = await getApi("Duty");
             setOptionsDuty(
-                data.map((item) => {
+                dutyList.map((item) => {
                     return {
                         label: <span>{item.DutyName}</span>,
                         value: item.id,
                     };
                 })
-            )
-        );
-    }, []);
+            );
+            const dataEmployee = await getApi(`employee/${employeeIdToEdit}`);
+            setEmployee(dataEmployee);
+        };
+        fetchData();
+    }, [employeeIdToEdit]);
 
     return (
         <>
@@ -63,7 +64,6 @@ export default function InputEmployeeForm({ setReload }) {
                 layout="vertical"
                 hideRequiredMark
                 onFinish={handleSubmitForm}
-                form={form}
             >
                 <Row gutter={16}>
                     <Col span={12}>
@@ -78,6 +78,7 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Input
+                                value={employee?.FullName} // Sử dụng value
                                 autoFocus
                                 placeholder="Please enter user name"
                             />
@@ -95,14 +96,23 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Flex vertical gap="middle">
-                                <Radio.Group
-                                    defaultValue="a"
-                                    buttonStyle="solid"
-                                >
-                                    <Radio.Button value="FullTime">
+                                <Radio.Group buttonStyle="solid">
+                                    <Radio.Button
+                                        value="FullTime"
+                                        checked={
+                                            employee?.TypeOfEmployee ===
+                                            "FullTime"
+                                        }
+                                    >
                                         Full Time
                                     </Radio.Button>
-                                    <Radio.Button value="PartTime">
+                                    <Radio.Button
+                                        value="PartTime"
+                                        checked={
+                                            employee?.TypeOfEmployee ===
+                                            "PartTime"
+                                        }
+                                    >
                                         Part Time
                                     </Radio.Button>
                                 </Radio.Group>
@@ -122,7 +132,10 @@ export default function InputEmployeeForm({ setReload }) {
                                 },
                             ]}
                         >
-                            <Input placeholder="Please enter phone number" />
+                            <Input
+                                value={employee?.PhoneNumber} // Sử dụng value
+                                placeholder="Please enter phone number"
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -140,6 +153,7 @@ export default function InputEmployeeForm({ setReload }) {
                                 style={{
                                     width: "100%",
                                 }}
+                                value={employee?.Email} // Sử dụng value
                                 placeholder="Please enter your email!"
                             />
                         </Form.Item>
@@ -158,6 +172,8 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Select
+                                value={employee?.DutyName}
+                                showSearch
                                 placeholder="Please choose the approver"
                                 options={optionsDuty}
                             />
@@ -176,6 +192,7 @@ export default function InputEmployeeForm({ setReload }) {
                             ]}
                         >
                             <Input
+                                value={employee?.CoefficientsSalary} // Sử dụng value
                                 placeholder="Please enter the CoefficientsSalary"
                                 type="number"
                             />
@@ -183,7 +200,7 @@ export default function InputEmployeeForm({ setReload }) {
                     </Col>
                 </Row>
                 <Button htmlType="submit" loading={loading}>
-                    Thêm nhân viên
+                    Edit employee
                 </Button>
             </Form>
         </>

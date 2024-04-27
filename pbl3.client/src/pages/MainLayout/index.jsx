@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Button, theme, Avatar, Space } from "antd";
+import { Layout, Button, theme, Avatar, Space, Flex } from "antd";
 import AdminDashboard from "../../components/Dashboard";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AccountContext } from "../../Context/AccountContext";
@@ -32,26 +32,30 @@ function MainLayout() {
             />
             <Layout>
                 <Header style={{ padding: 0, background: colorBgContainer }}>
-                    <Button
-                        type="text"
-                        icon={
-                            collapsed ? (
-                                <MenuUnfoldOutlined />
-                            ) : (
-                                <MenuFoldOutlined />
-                            )
-                        }
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: "16px",
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
-                    <Space>
-                        <div>{account.account.username}</div>
-                        <Avatar size={32} icon={<UserOutlined />} />
-                    </Space>
+                    <Flex justify="space-between" align="center">
+                        <Button
+                            type="text"
+                            icon={
+                                collapsed ? (
+                                    <MenuUnfoldOutlined />
+                                ) : (
+                                    <MenuFoldOutlined />
+                                )
+                            }
+                            onClick={() => setCollapsed(!collapsed)}
+                            style={{
+                                fontSize: "16px",
+                                width: 64,
+                                height: 64,
+                            }}
+                        />
+                        <Button
+                            icon={<UserOutlined />}
+                            style={{ margin: "0 16px" }}
+                        >
+                            {account.account.username}
+                        </Button>
+                    </Flex>
                 </Header>
                 <Content
                     style={{

@@ -7,19 +7,19 @@ import {
 } from "@ant-design/icons";
 
 const items = [
-    {
+    {                                          
         label: "Tất cả",
-        key: 0,
+        key: "Tất cả",
         icon: <TeamOutlined />,
     },
     {
         label: "Đang đi làm",
-        key: 1,
+        key: "Đang đi làm",
         icon: <UserAddOutlined />,
     },
     {
         label: "Đã nghỉ làm",
-        key: 2,
+        key: "Đã nghỉ làm",
         icon: <UserDeleteOutlined />,
     },
 ];
