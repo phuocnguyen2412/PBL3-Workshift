@@ -7,14 +7,12 @@ namespace PBL3.Server.Data
     public class BonusSalaryHistory
     {
         [Key]
-        public int BonusSalaryHistoryId { get; set; }
+        public int Id { get; set; }
 
-        [Required]
+       
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
-
-        [Required]
         [Range(0, int.MaxValue)]
         public int? TotalBonus { get; set; }
         

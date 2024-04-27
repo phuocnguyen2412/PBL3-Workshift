@@ -24,40 +24,37 @@ namespace PBL3.Server.Migrations
 
             modelBuilder.Entity("PBL3.Server.Data.Account", b =>
                 {
-                    b.Property<int>("AccountId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountId"), 1L, 1);
-
-                    b.Property<int>("DutyId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("AccountId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Account");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
                 {
-                    b.Property<int>("BonusSalaryHistoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BonusSalaryHistoryId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -66,10 +63,9 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TotalBonus")
-                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.HasKey("BonusSalaryHistoryId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
@@ -78,26 +74,31 @@ namespace PBL3.Server.Migrations
 
             modelBuilder.Entity("PBL3.Server.Data.Duty", b =>
                 {
-                    b.Property<int>("DutyId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<double>("BasicSalary")
                         .HasColumnType("float");
 
                     b.Property<string>("DutyName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("DutyId");
+                    b.HasKey("Id");
 
                     b.ToTable("Duty");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<double>("CoefficientsSalary")
                         .HasColumnType("float");
@@ -106,17 +107,14 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -126,7 +124,7 @@ namespace PBL3.Server.Migrations
                     b.Property<bool>("TypeOfEmployee")
                         .HasColumnType("bit");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("DutyId");
 
@@ -135,11 +133,11 @@ namespace PBL3.Server.Migrations
 
             modelBuilder.Entity("PBL3.Server.Data.HourHistory", b =>
                 {
-                    b.Property<int>("HourHistoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HourHistoryId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateAt")
                         .HasColumnType("datetime2");
@@ -148,10 +146,9 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("HoursPerDay")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("HourHistoryId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
@@ -160,11 +157,11 @@ namespace PBL3.Server.Migrations
 
             modelBuilder.Entity("PBL3.Server.Data.SalaryHistory", b =>
                 {
-                    b.Property<int>("SalaryHistoryId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalaryHistoryId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -190,7 +187,7 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("TotalViolate")
                         .HasColumnType("int");
 
-                    b.HasKey("SalaryHistoryId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
@@ -199,11 +196,11 @@ namespace PBL3.Server.Migrations
 
             modelBuilder.Entity("PBL3.Server.Data.Shift", b =>
                 {
-                    b.Property<int>("ShiftId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShiftId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CheckInTime")
                         .HasColumnType("datetime2");
@@ -214,7 +211,7 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.HasKey("ShiftId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
@@ -223,11 +220,11 @@ namespace PBL3.Server.Migrations
 
             modelBuilder.Entity("PBL3.Server.Data.ShiftInfo", b =>
                 {
-                    b.Property<int>("ShiftInfoId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShiftInfoId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("Checked")
                         .HasColumnType("bit");
@@ -242,25 +239,24 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShiftName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.HasKey("ShiftInfoId");
+                    b.HasKey("Id");
 
                     b.ToTable("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
                 {
-                    b.Property<int>("ViolateId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ViolateId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<bool>("Checked")
                         .HasColumnType("bit");
@@ -269,19 +265,29 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Handle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ShiftInfoId")
                         .HasColumnType("int");
 
-                    b.HasKey("ViolateId");
+                    b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
 
                     b.HasIndex("ShiftInfoId");
 
                     b.ToTable("Violate");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Account", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
@@ -295,26 +301,11 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("PBL3.Server.Data.Duty", b =>
-                {
-                    b.HasOne("PBL3.Server.Data.Account", null)
-                        .WithMany("Duty")
-                        .HasForeignKey("DutyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
                 {
                     b.HasOne("PBL3.Server.Data.Duty", "Duty")
-                        .WithMany()
+                        .WithMany("Employees")
                         .HasForeignKey("DutyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PBL3.Server.Data.Account", null)
-                        .WithMany("Employee")
-                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -373,11 +364,9 @@ namespace PBL3.Server.Migrations
                     b.Navigation("ShiftInfo");
                 });
 
-            modelBuilder.Entity("PBL3.Server.Data.Account", b =>
+            modelBuilder.Entity("PBL3.Server.Data.Duty", b =>
                 {
-                    b.Navigation("Duty");
-
-                    b.Navigation("Employee");
+                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

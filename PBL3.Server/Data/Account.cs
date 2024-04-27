@@ -7,25 +7,20 @@ namespace PBL3.Server.Data
     [Table("Account")]
     public class Account
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int AccountId { get; set; }
+        public int Id { get; set; }
 
         [MaxLength(50)]
-        [Required]
+    
         public string? UserName { get; set; }
 
         [MaxLength(50)]
-        [Required]
+    
         public string? Password { get; set; }
-       
-        [Required]
-        public int DutyId { get; set; }
-        [ForeignKey("DutyId")]
-        public virtual ICollection<Duty>? Duty { get; set; }
-
-        [Required]
+        
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
-        public virtual ICollection<Employee>? Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
     }
 }

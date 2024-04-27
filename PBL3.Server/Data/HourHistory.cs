@@ -8,17 +8,17 @@ namespace PBL3.Server.Data
     public class HourHistory
     {
         [Key]
-        public int HourHistoryId { get; set; }
+        public int Id { get; set; }
 
-        [Required]
+      
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
 
-        [Required]
+        
         public string? HoursPerDay { get; set; }
 
-        [Required]
+        
         public DateTime DateAt { get; set; }
     }
 }

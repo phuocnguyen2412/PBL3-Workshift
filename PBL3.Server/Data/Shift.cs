@@ -8,17 +8,13 @@ namespace PBL3.Server.Data
     public class Shift
     {
         [Key]
-        public int ShiftId { get; set; }
+        public int Id { get; set; }
         
-        [Required]
+    
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
-
-        [Required]
         public DateTime CheckInTime { get; set; }
-
-        [Required]
         public DateTime CheckOutTime { get; set; }
     }
 }
