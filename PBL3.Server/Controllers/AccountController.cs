@@ -33,6 +33,6 @@ namespace PBL3.Server.Controllers
             var account = await _accountRepo.GetAccountAsync(id);
             return account == null ? NotFound() : Ok(account);
         }
-        
+
     }
 }

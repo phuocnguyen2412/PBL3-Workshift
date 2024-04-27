@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBL3.Server.Data;
 
@@ -11,9 +12,10 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240427172750_tôm")]
+    partial class tôm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,8 +218,6 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("ShiftId");
 
-                    b.HasIndex("EmployeeId");
-
                     b.ToTable("Shift");
                 });
 
@@ -277,8 +277,6 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("ViolateId");
 
-                    b.HasIndex("EmployeeId");
-
                     b.HasIndex("ShiftInfoId");
 
                     b.ToTable("Violate");
@@ -318,6 +316,18 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.Shift", null)
+                        .WithMany("Employee")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PBL3.Server.Data.Violate", null)
+                        .WithMany("Employee")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Duty");
                 });
 
@@ -343,32 +353,13 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("PBL3.Server.Data.Shift", b =>
-                {
-                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
                 {
-                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
                         .WithMany()
                         .HasForeignKey("ShiftInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
 
                     b.Navigation("ShiftInfo");
                 });
@@ -377,6 +368,16 @@ namespace PBL3.Server.Migrations
                 {
                     b.Navigation("Duty");
 
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Shift", b =>
+                {
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
+                {
                     b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618

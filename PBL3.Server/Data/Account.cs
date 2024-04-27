@@ -8,10 +8,12 @@ namespace PBL3.Server.Data
     public class Account
     {
         [Key]
-        public int Id { get; set; }
+        public int AccountId { get; set; }
+
         [MaxLength(50)]
         [Required]
         public string? UserName { get; set; }
+
         [MaxLength(50)]
         [Required]
         public string? Password { get; set; }
@@ -19,10 +21,11 @@ namespace PBL3.Server.Data
         [Required]
         public int DutyId { get; set; }
         [ForeignKey("DutyId")]
-        public virtual Duty? Duty { get; set; }
+        public virtual ICollection<Duty>? Duty { get; set; }
+
         [Required]
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
-        public virtual Employee? Employee { get; set; }
+        public virtual ICollection<Employee>? Employee { get; set; }
     }
 }
