@@ -11,6 +11,7 @@ namespace PBL3.Server.Helpers
         public ApplicationMapper() 
         {
             CreateMap<Account, AccountModel>().ReverseMap();
+            CreateMap<Employee, EmloyeeModel>().ReverseMap();
         }
     }
 }

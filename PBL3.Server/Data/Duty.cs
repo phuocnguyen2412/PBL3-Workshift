@@ -9,18 +9,13 @@ namespace PBL3.Server.Data
     public class Duty
     {
         [Key]
-        public int Id { get; set; }
-        [MaxLength(50)]
+        public int DutyId { get; set; }
+
         [Required]
         [StringLength(50)]
         public string? DutyName { get; set; }
+
         [Required]
         public double BasicSalary { get; set; }
-        public ICollection<Employee> Employees { get; set; }
-        public Duty()
-        {
-            Employees = new HashSet<Employee>();
-            DutyName = null;
-        }
     }
 }

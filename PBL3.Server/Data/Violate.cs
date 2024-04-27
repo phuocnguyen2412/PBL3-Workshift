@@ -8,17 +8,21 @@ namespace PBL3.Server.Data
     public class Violate
     {
         [Key]
-        public int Id { get; set; }
+        public int ViolateId { get; set; }
+
         [Required]
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
+
         [Required]
         public int ShiftInfoId { get; set; }
         [ForeignKey("ShiftInfoId")]
         public virtual ShiftInfo? ShiftInfo { get; set; }
+
         [Required]
         public string? Handle { get; set; }
+
         [Required]
         public bool Checked { get; set; }
     }
