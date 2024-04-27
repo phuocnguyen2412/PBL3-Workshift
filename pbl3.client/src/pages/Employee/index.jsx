@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
-import useFetch from "../../custom hook/useFetch";
-import TabEmployee from "./TabEmployee";
+import { useState } from "react";
 
-import TableEmployee from "./TableEmployee";
-import { Form, Button, notification, Drawer } from "antd";
-import InputEmployeeForm from "../../components/InputEmployeeForm/InputEmployeeForm";
+import { Button, Drawer } from "antd";
 import { DeleteColumnOutlined, SettingOutlined } from "@ant-design/icons";
-import { Input } from "antd";
-const { Search } = Input;
-function handleTabCick(id) {
-    console.log(id);
-}
-function handleSearch(value, event) {
-    console.log(value);
-}
+
+import TabEmployee from "./TabEmployee";
+import InputEmployeeForm from "../../components/InputEmployeeForm/InputEmployeeForm";
+import TableEmployee from "./TableEmployee";
 
 const Employee = () => {
     const [employee, setEmployee] = useState(
@@ -28,9 +20,17 @@ const Employee = () => {
             };
         })
     );
+    function handleTabCick(id) {
+        console.log(id);
+        if (id === "Tất cả") setEmployee();
+        if (id === "Đang đi làm")
+            setEmployee(employee.filter((item) => item.Status === true));
+        if (id === "Đã nghỉ làm")
+            setEmployee(employee.filter((item) => item.Status === false));
+    }
 
     const [open, setOpen] = useState(false);
-    const [reload, setReload] = useState(false);
+
     const showDrawer = () => {
         setOpen(true);
     };
@@ -55,15 +55,10 @@ const Employee = () => {
                     },
                 }}
             >
-                <InputEmployeeForm onClose={onClose} setReload={setReload} />
+                <InputEmployeeForm onClose={onClose} />
             </Drawer>
 
-            <TableEmployee
-                setReload={setReload}
-                data={employee}
-                setEmployee={setEmployee}
-                reload={reload}
-            />
+            <TableEmployee data={employee} setEmployee={setEmployee} />
         </div>
     );
 };

@@ -13,9 +13,9 @@ import {
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 
-export default function EditEmployeeForm({ employeeIdToEdit, setReload }) {
+export default function EditEmployeeForm({ employeeIdToEdit }) {
     const [optionsDuty, setOptionsDuty] = useState([]);
-    const [employee, setEmployee] = useState({});
+    const [employee, setEmployee] = useState(null);
     const { postApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
     );
@@ -38,25 +38,23 @@ export default function EditEmployeeForm({ employeeIdToEdit, setReload }) {
                         "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
                 });
         });
-        setReload(Date.now()); // Cập nhật state reload với một giá trị mới
     };
 
     useEffect(() => {
-        getApi("Duty").then((data) =>
+        const fetchData = async () => {
+            const dutyList = await getApi("Duty");
             setOptionsDuty(
-                data.map((item) => {
+                dutyList.map((item) => {
                     return {
                         label: <span>{item.DutyName}</span>,
                         value: item.id,
                     };
                 })
-            )
-        );
-
-        getApi(`employee/${employeeIdToEdit}`).then((data) => {
-            console.log(data);
-            setEmployee(data);
-        });
+            );
+            const dataEmployee = await getApi(`employee/${employeeIdToEdit}`);
+            setEmployee(dataEmployee);
+        };
+        fetchData();
     }, [employeeIdToEdit]);
 
     return (
@@ -98,14 +96,23 @@ export default function EditEmployeeForm({ employeeIdToEdit, setReload }) {
                             ]}
                         >
                             <Flex vertical gap="middle">
-                                <Radio.Group
-                                    value={employee?.TypeOfEmployee} // Sử dụng value
-                                    buttonStyle="solid"
-                                >
-                                    <Radio.Button value="FullTime">
+                                <Radio.Group buttonStyle="solid">
+                                    <Radio.Button
+                                        value="FullTime"
+                                        checked={
+                                            employee?.TypeOfEmployee ===
+                                            "FullTime"
+                                        }
+                                    >
                                         Full Time
                                     </Radio.Button>
-                                    <Radio.Button value="PartTime">
+                                    <Radio.Button
+                                        value="PartTime"
+                                        checked={
+                                            employee?.TypeOfEmployee ===
+                                            "PartTime"
+                                        }
+                                    >
                                         Part Time
                                     </Radio.Button>
                                 </Radio.Group>
@@ -165,7 +172,8 @@ export default function EditEmployeeForm({ employeeIdToEdit, setReload }) {
                             ]}
                         >
                             <Select
-                                value={employee?.IdDuty} // Sử dụng value
+                                value={employee?.DutyName}
+                                showSearch
                                 placeholder="Please choose the approver"
                                 options={optionsDuty}
                             />
@@ -192,7 +200,7 @@ export default function EditEmployeeForm({ employeeIdToEdit, setReload }) {
                     </Col>
                 </Row>
                 <Button htmlType="submit" loading={loading}>
-                    Thêm nhân viên
+                    Edit employee
                 </Button>
             </Form>
         </>

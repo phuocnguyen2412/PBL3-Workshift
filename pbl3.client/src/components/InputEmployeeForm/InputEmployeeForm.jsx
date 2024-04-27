@@ -14,7 +14,7 @@ import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 
 export default function InputEmployeeForm({ setReload }) {
-    
+    const [form] = Form.useForm();
     const [optionsDuty, setOptionsDuty] = useState([]);
     const { postApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
@@ -25,18 +25,20 @@ export default function InputEmployeeForm({ setReload }) {
     const [api, contextHolder] = notification.useNotification();
     const handleSubmitForm = (e) => {
         postApi("employee", e).then((response) => {
-            if (!response.ok) {
-                api.error({
-                    message: "Notification Title",
-                    description:
-                        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-                });
-            } else
-                api.success({
-                    message: "Notification Title",
-                    description:
-                        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-                });
+            // if (!response.ok) {
+            //     api.error({
+            //         message: "Notification Title",
+            //         description:
+            //             "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+            //     });
+            // } else {
+            form.resetFields();
+            api.success({
+                message: "Notification Title",
+                description:
+                    "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+            });
+            // }
         });
         setReload([]);
     };
@@ -61,6 +63,7 @@ export default function InputEmployeeForm({ setReload }) {
                 layout="vertical"
                 hideRequiredMark
                 onFinish={handleSubmitForm}
+                form={form}
             >
                 <Row gutter={16}>
                     <Col span={12}>
