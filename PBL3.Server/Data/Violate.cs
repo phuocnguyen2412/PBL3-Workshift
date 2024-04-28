@@ -13,7 +13,7 @@ namespace PBL3.Server.Data
         [Required]
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
-        public virtual Employee? Employee { get; set; }
+        public virtual ICollection<Employee>? Employee { get; set; }
 
         [Required]
         public int ShiftInfoId { get; set; }
