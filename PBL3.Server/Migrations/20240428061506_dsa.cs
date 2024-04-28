@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PBL3.Server.Migrations
 {
-    public partial class tom : Migration
+    public partial class dsa : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,8 +15,8 @@ namespace PBL3.Server.Migrations
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     DutyId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -46,7 +46,7 @@ namespace PBL3.Server.Migrations
                 {
                     ShiftInfoId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShiftName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ShiftName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -63,7 +63,7 @@ namespace PBL3.Server.Migrations
                 columns: table => new
                 {
                     DutyId = table.Column<int>(type: "int", nullable: false),
-                    DutyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DutyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     BasicSalary = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -85,7 +85,7 @@ namespace PBL3.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     ShiftInfoId = table.Column<int>(type: "int", nullable: false),
-                    Handle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Handle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Checked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -104,9 +104,9 @@ namespace PBL3.Server.Migrations
                 columns: table => new
                 {
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     TypeOfEmployee = table.Column<bool>(type: "bit", nullable: false),
                     CoefficientsSalary = table.Column<double>(type: "float", nullable: false),
                     DutyId = table.Column<int>(type: "int", nullable: false),
@@ -148,7 +148,7 @@ namespace PBL3.Server.Migrations
                     BonusSalaryHistoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    TotalBonus = table.Column<int>(type: "int", nullable: false),
+                    TotalBonus = table.Column<int>(type: "int", nullable: true),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -169,7 +169,7 @@ namespace PBL3.Server.Migrations
                     HourHistoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    HoursPerDay = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HoursPerDay = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>

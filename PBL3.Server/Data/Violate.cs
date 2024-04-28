@@ -10,20 +10,20 @@ namespace PBL3.Server.Data
         [Key]
         public int ViolateId { get; set; }
 
-        [Required]
+ 
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual ICollection<Employee>? Employee { get; set; }
 
-        [Required]
+
         public int ShiftInfoId { get; set; }
         [ForeignKey("ShiftInfoId")]
         public virtual ShiftInfo? ShiftInfo { get; set; }
 
-        [Required]
+      
         public string? Handle { get; set; }
 
-        [Required]
+      
         public bool Checked { get; set; }
     }
 }

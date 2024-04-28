@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240427172300_tom")]
-    partial class tom
+    [Migration("20240428061506_dsa")]
+    partial class dsa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,12 +39,10 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -68,7 +66,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TotalBonus")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("BonusSalaryHistoryId");
@@ -87,7 +84,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("DutyName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -108,17 +104,14 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -150,7 +143,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("HoursPerDay")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HourHistoryId");
@@ -242,7 +234,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShiftName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -269,7 +260,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Handle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ShiftInfoId")

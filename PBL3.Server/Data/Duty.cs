@@ -11,11 +11,11 @@ namespace PBL3.Server.Data
         [Key]
         public int DutyId { get; set; }
 
-        [Required]
+       
         [StringLength(50)]
         public string? DutyName { get; set; }
 
-        [Required]
+ 
         public double BasicSalary { get; set; }
     }
 }

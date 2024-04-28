@@ -37,12 +37,10 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Password")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -66,7 +64,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TotalBonus")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.HasKey("BonusSalaryHistoryId");
@@ -85,7 +82,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("DutyName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -106,17 +102,14 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -148,7 +141,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("HoursPerDay")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("HourHistoryId");
@@ -216,8 +208,6 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("ShiftId");
 
-                    b.HasIndex("EmployeeId");
-
                     b.ToTable("Shift");
                 });
 
@@ -242,7 +232,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ShiftName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -269,15 +258,12 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Handle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ShiftInfoId")
                         .HasColumnType("int");
 
                     b.HasKey("ViolateId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("ShiftInfoId");
 
@@ -318,6 +304,18 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.Shift", null)
+                        .WithMany("Employee")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PBL3.Server.Data.Violate", null)
+                        .WithMany("Employee")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Duty");
                 });
 
@@ -343,32 +341,13 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("PBL3.Server.Data.Shift", b =>
-                {
-                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
                 {
-                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
                         .WithMany()
                         .HasForeignKey("ShiftInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Employee");
 
                     b.Navigation("ShiftInfo");
                 });
@@ -377,6 +356,16 @@ namespace PBL3.Server.Migrations
                 {
                     b.Navigation("Duty");
 
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Shift", b =>
+                {
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
+                {
                     b.Navigation("Employee");
                 });
 #pragma warning restore 612, 618
