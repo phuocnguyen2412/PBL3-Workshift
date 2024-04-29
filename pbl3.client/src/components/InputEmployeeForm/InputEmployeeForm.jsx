@@ -13,7 +13,7 @@ import {
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 
-export default function InputEmployeeForm({ setReload }) {
+export default function InputEmployeeForm({ setEmployee }) {
     const [form] = Form.useForm();
     const [optionsDuty, setOptionsDuty] = useState([]);
     const { postApi, loading } = useFetch(
@@ -22,25 +22,27 @@ export default function InputEmployeeForm({ setReload }) {
     const { getApi, loadingForm } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
     );
-    const [api, contextHolder] = notification.useNotification();
-    const handleSubmitForm = (e) => {
-        postApi("employee", e).then((response) => {
-            // if (!response.ok) {
-            //     api.error({
-            //         message: "Notification Title",
-            //         description:
-            //             "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-            //     });
-            // } else {
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
+    const handleSubmitForm = async (e) => {
+        console.log(e);
+        try {
+            await postApi("employee", { ...e, status: true });
             form.resetFields();
-            api.success({
-                message: "Notification Title",
-                description:
-                    "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+            apiNotification.success({
+                message: "Thành công!",
+                description: `Bạn đã thêm thành công nhân viên ${e.fullName}`,
+                placement: "bottomRight",
             });
-            // }
-        });
-        setReload([]);
+            setEmployee(await getApi("/employee"));
+        } catch (err) {
+            console.log(err);
+            apiNotification.error({
+                message: "Thất bại!",
+                description: `Bạn đã thêm thất bại nhân viên ${e.fullName}`,
+                placement: "bottomRight",
+            });
+        }
     };
 
     useEffect(() => {
@@ -58,6 +60,7 @@ export default function InputEmployeeForm({ setReload }) {
 
     return (
         <>
+            {contextHolderNotification}
             {loadingForm && <Spin size="large" />}
             <Form
                 layout="vertical"
@@ -68,8 +71,8 @@ export default function InputEmployeeForm({ setReload }) {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="FullName"
-                            label="FullName"
+                            name="fullName"
+                            label="Full Name"
                             rules={[
                                 {
                                     required: true,
@@ -85,7 +88,7 @@ export default function InputEmployeeForm({ setReload }) {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="TypeOfEmployee"
+                            name="typeOfEmployee"
                             label="Type Of Employee"
                             rules={[
                                 {
@@ -99,10 +102,10 @@ export default function InputEmployeeForm({ setReload }) {
                                     defaultValue="a"
                                     buttonStyle="solid"
                                 >
-                                    <Radio.Button value="FullTime">
+                                    <Radio.Button value={true}>
                                         Full Time
                                     </Radio.Button>
-                                    <Radio.Button value="PartTime">
+                                    <Radio.Button value={false}>
                                         Part Time
                                     </Radio.Button>
                                 </Radio.Group>
@@ -113,7 +116,7 @@ export default function InputEmployeeForm({ setReload }) {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="PhoneNumber"
+                            name="phoneNumber"
                             label="Phone Number"
                             rules={[
                                 {
@@ -127,7 +130,7 @@ export default function InputEmployeeForm({ setReload }) {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="Email"
+                            name="email"
                             label="Email Address"
                             rules={[
                                 {
@@ -148,7 +151,7 @@ export default function InputEmployeeForm({ setReload }) {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="IdDuty"
+                            name="idDuty"
                             label="Duty Name"
                             rules={[
                                 {
@@ -165,8 +168,8 @@ export default function InputEmployeeForm({ setReload }) {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="CoefficientsSalary"
-                            label="CoefficientsSalary"
+                            name="coefficientsSalary"
+                            label="Coefficient Salary"
                             rules={[
                                 {
                                     required: true,

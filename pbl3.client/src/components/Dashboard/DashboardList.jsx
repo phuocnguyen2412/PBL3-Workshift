@@ -10,10 +10,16 @@ import {
     CheckCircleOutlined,
     SafetyOutlined,
     CloseOutlined,
+    HomeOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 export const AdminList = [
+    {
+        key: "/home",
+        icon: <HomeOutlined />,
+        label: <Link to="/home">Home</Link>,
+    },
     {
         key: "/employee",
         icon: <UserOutlined />,

@@ -1,16 +1,18 @@
+import { Button, Result } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
 
 const page404 = () => (
-    <div className="not-found">
-        <img
-            src="https://www.pngitem.com/pimgs/m/561-5616833_image-not-found-png-not-found-404-png.png"
-            alt="not-found"
-        />
-        <Link to="/" className="link-home">
-            Go Home
-        </Link>
-    </div>
+    <Result
+        status="404"
+        title="404"
+        subTitle="Sorry, the page you visited does not exist."
+        extra={
+            <Button type="primary">
+                <Link to={"/home"}>Back home</Link>
+            </Button>
+        }
+    />
 );
 
 export default page404;

@@ -15,6 +15,7 @@ builder.Services.AddCors(option => option.AddDefaultPolicy(policy=>policy.AllowA
 builder.Services.AddDbContext<MyDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("PBL3")));
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IEmployee, EmployeeRepo>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,5 +30,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();

@@ -1,10 +1,11 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Button, theme, Avatar, Space, Flex } from "antd";
+import { Layout, Button, theme, Flex } from "antd";
 import AdminDashboard from "../../components/Dashboard";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { AccountContext } from "../../Context/AccountContext";
 import { UserOutlined } from "@ant-design/icons";
+import EmployeeProfie from "../EmployeeProfie";
 const { Header, Content } = Layout;
 function MainLayout() {
     const [collapsed, setCollapsed] = useState(false);
@@ -53,7 +54,12 @@ function MainLayout() {
                             icon={<UserOutlined />}
                             style={{ margin: "0 16px" }}
                         >
-                            {account.account.username}
+                            <Link
+                                to={`/employee/${account.account.id}`}
+                                element=<EmployeeProfie />
+                            >
+                                {account.account.fullName}
+                            </Link>
                         </Button>
                     </Flex>
                 </Header>

@@ -7,37 +7,42 @@ import {
     Radio,
     Row,
     Select,
-    Spin,
+    Switch,
     notification,
 } from "antd";
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 
-export default function EditEmployeeForm({ employeeIdToEdit }) {
+export default function EditEmployeeForm({
+    employeeToEdit,
+    form,
+    setEmployee,
+    setOpenEdit,
+}) {
     const [optionsDuty, setOptionsDuty] = useState([]);
-    const [employee, setEmployee] = useState(null);
-    const { postApi, loading } = useFetch(
+    const { getApi, updateApi, loading } = useFetch(
         "https://662a140667df268010a2887f.mockapi.io/PBL3/"
     );
-    const { getApi, loadingForm } = useFetch(
-        "https://662a140667df268010a2887f.mockapi.io/PBL3/"
-    );
+
     const [api, contextHolder] = notification.useNotification();
-    const handleSubmitForm = (e) => {
-        postApi("employee", e).then((response) => {
-            if (!response.ok) {
-                api.error({
-                    message: "Notification Title",
-                    description:
-                        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-                });
-            } else
-                api.success({
-                    message: "Notification Title",
-                    description:
-                        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
-                });
-        });
+    const handleSubmitForm = async (e) => {
+        try {
+            const response = await updateApi("employee", e, employeeToEdit.id);
+
+            api.success({
+                message: "Thành công!",
+                description: `Đã edit thành công nhân viên ${e.fullName}`,
+            });
+            setOpenEdit(false);
+        } catch (err) {
+            console.log(err);
+            api.error({
+                message: "Thất bại",
+                description: `Edit thất bại nhân viên ${e.fullName}`,
+            });
+        }
+        setEmployee(await getApi("/employee"));
     };
 
     useEffect(() => {
@@ -47,29 +52,30 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                 dutyList.map((item) => {
                     return {
                         label: <span>{item.DutyName}</span>,
-                        value: item.id,
+                        defaultValue: item.id,
                     };
                 })
             );
-            const dataEmployee = await getApi(`employee/${employeeIdToEdit}`);
-            setEmployee(dataEmployee);
         };
         fetchData();
-    }, [employeeIdToEdit]);
+    }, []);
 
     return (
         <>
-            {loadingForm && <Spin size="large" />}
+            {contextHolder}
             <Form
+                form={form}
                 layout="vertical"
                 hideRequiredMark
                 onFinish={handleSubmitForm}
+                initialValues={employeeToEdit}
             >
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="FullName"
-                            label="FullName"
+                            autoFocus
+                            name="fullName"
+                            label="Full Name"
                             rules={[
                                 {
                                     required: true,
@@ -77,16 +83,12 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                                 },
                             ]}
                         >
-                            <Input
-                                value={employee?.FullName} // Sử dụng value
-                                autoFocus
-                                placeholder="Please enter user name"
-                            />
+                            <Input placeholder="Please enter user name" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="TypeOfEmployee"
+                            name="typeOfEmployee"
                             label="Type Of Employee"
                             rules={[
                                 {
@@ -97,22 +99,10 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                         >
                             <Flex vertical gap="middle">
                                 <Radio.Group buttonStyle="solid">
-                                    <Radio.Button
-                                        value="FullTime"
-                                        checked={
-                                            employee?.TypeOfEmployee ===
-                                            "FullTime"
-                                        }
-                                    >
+                                    <Radio.Button value={true}>
                                         Full Time
                                     </Radio.Button>
-                                    <Radio.Button
-                                        value="PartTime"
-                                        checked={
-                                            employee?.TypeOfEmployee ===
-                                            "PartTime"
-                                        }
-                                    >
+                                    <Radio.Button value={false}>
                                         Part Time
                                     </Radio.Button>
                                 </Radio.Group>
@@ -123,7 +113,7 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="PhoneNumber"
+                            name="phoneNumber"
                             label="Phone Number"
                             rules={[
                                 {
@@ -132,15 +122,12 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                                 },
                             ]}
                         >
-                            <Input
-                                value={employee?.PhoneNumber} // Sử dụng value
-                                placeholder="Please enter phone number"
-                            />
+                            <Input placeholder="Please enter phone number" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="Email"
+                            name="email"
                             label="Email Address"
                             rules={[
                                 {
@@ -153,7 +140,6 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                                 style={{
                                     width: "100%",
                                 }}
-                                value={employee?.Email} // Sử dụng value
                                 placeholder="Please enter your email!"
                             />
                         </Form.Item>
@@ -162,17 +148,16 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="IdDuty"
+                            name="idDuty"
                             label="Duty Name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please choose the approver",
-                                },
-                            ]}
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //         message: "Please choose the approver",
+                            //     },
+                            // ]}
                         >
                             <Select
-                                value={employee?.DutyName}
                                 showSearch
                                 placeholder="Please choose the approver"
                                 options={optionsDuty}
@@ -181,8 +166,8 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="CoefficientsSalary"
-                            label="CoefficientsSalary"
+                            name="coefficientsSalary"
+                            label="Coefficient Salary"
                             rules={[
                                 {
                                     required: true,
@@ -192,9 +177,33 @@ export default function EditEmployeeForm({ employeeIdToEdit }) {
                             ]}
                         >
                             <Input
-                                value={employee?.CoefficientsSalary} // Sử dụng value
                                 placeholder="Please enter the CoefficientsSalary"
                                 type="number"
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <Form.Item
+                            name="status"
+                            label="Status"
+                            rules={[
+                                {
+                                    required: true,
+                                    message:
+                                        "Please enter the CoefficientsSalary",
+                                },
+                            ]}
+                        >
+                            <Switch
+                                checkedChildren=<span>
+                                    Đang đi làm
+                                    <CheckOutlined />
+                                </span>
+                                unCheckedChildren=<span>
+                                    Nghỉ làm <CloseOutlined />
+                                </span>
                             />
                         </Form.Item>
                     </Col>
