@@ -19,29 +19,47 @@ namespace PBL3.Server.Repositories
             _mapper = mapper;
         }
 
-        public async Task<List<EmloyeeModel>> GetEmployee()
+        public async Task<List<EmloyeeModel>> GetAllEmployeesAsync()
         {
             var employees = await _context.Employees!.ToListAsync();
             return _mapper.Map<List<EmloyeeModel>>(employees);
         }
 
-        public async Task<EmloyeeModel> GetEmployeeById(int id)
+        public async Task<EmloyeeModel> GetEmployeeByIdAsync(int id)
         {
             var employee = await _context.Employees!.FindAsync(id);
             return _mapper.Map<EmloyeeModel>(employee);
         }
 
-        public async Task<int> AddEmployee(EmloyeeModel employeeModel)
+        public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
+        {
+            var employees = await _context.Employees!
+                .Include(e => e.Duty) // Join with Duty table
+                .Where(e => e.Status == status)
+                .Select(e => new EmployeeSummaryModel
+                {
+                    Id = e.Id,
+                    FullName = e.FullName,
+                    TypeOfEmployee = e.TypeOfEmployee,
+                    Status = e.Status,
+                    DutyName = e.Duty.DutyName
+                })
+                .ToListAsync();
+
+            return employees;
+        }
+
+
+
+        public async Task<int> AddEmployeeAsync(EmloyeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
             _context.Employees!.Add(employee);
             await _context.SaveChangesAsync();
-            return 0;
-
-
+            return employee.Id;
         }
 
-        public async Task<EmloyeeModel> UpdateEmployee(EmloyeeModel employeeModel)
+        public async Task<EmloyeeModel> UpdateEmployeeAsync(EmloyeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
             _context.Entry(employee).State = EntityState.Modified;
@@ -49,7 +67,7 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<EmloyeeModel>(employee);
         }
 
-        public async Task<bool> DeleteEmployee(int id)
+        public async Task<bool> DeleteEmployeeAsync(int id)
         {
             var employee = await _context.Employees!.FindAsync(id);
             if (employee == null)
