@@ -48,10 +48,10 @@ export default function useFetch(baseUrl) {
                 });
         });
     }
-    function updateApi(url, body, id) {
+    function updateApi(url, body) {
         setLoading(true);
         return new Promise((resolve, reject) => {
-            fetch(baseUrl + url + `/${id}`, {
+            fetch(baseUrl + url, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

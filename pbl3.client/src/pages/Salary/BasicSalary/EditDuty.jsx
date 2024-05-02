@@ -1,9 +1,10 @@
 import { Button, Form, Modal } from "antd";
-import { useState } from "react";
-import EditEmployeeForm from "../../components/EditEmployeeForm/EditEmployeeForm";
-import { SettingOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-const EditEmployee = ({ record, setEmployee }) => {
+import { useState } from "react";
+
+import { SettingOutlined } from "@ant-design/icons";
+import EditDutyForm from "./EditDutyForm";
+export default function EditDuty({ record, setDutyList }) {
     const [openEdit, setOpenEdit] = useState(false);
 
     const [form] = Form.useForm();
@@ -27,10 +28,10 @@ const EditEmployee = ({ record, setEmployee }) => {
                 onCancel={cancelEdit}
                 width={"800px"}
             >
-                <EditEmployeeForm
+                <EditDutyForm
                     record={record}
                     form={form}
-                    setEmployee={setEmployee}
+                    setDutyList={setDutyList}
                     setOpenEdit={setOpenEdit}
                 />
             </Modal>
@@ -42,9 +43,8 @@ const EditEmployee = ({ record, setEmployee }) => {
             />
         </>
     );
-};
-EditEmployee.propTypes = {
+}
+EditDuty.propTypes = {
     record: PropTypes.object.isRequired,
-    setEmployee: PropTypes.func.isRequired,
+    setDutyList: PropTypes.func.isRequired,
 };
-export default EditEmployee;
