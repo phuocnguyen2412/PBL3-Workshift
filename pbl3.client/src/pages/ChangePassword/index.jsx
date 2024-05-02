@@ -1,12 +1,14 @@
-import React from "react";
-
+import useFetch from "./../../custom hook/useFetch.js";
+import { Form, Row, Col, Input, Button } from "antd";
 export default function ChangePassword() {
-    const handleSubmitForm = (e)=>{
+    const { postApi, loading } = useFetch("");
+    const handleSubmitForm = (e) => {
         console.log(e);
-    }
+    };
     return (
         <div>
             <Form
+                autoFocus
                 layout="vertical"
                 hideRequiredMark
                 onFinish={handleSubmitForm}
@@ -14,76 +16,36 @@ export default function ChangePassword() {
                 <Row gutter={12}>
                     <Col span={24}>
                         <Form.Item
-                            name="FullName"
-                            label="FullName"
+                            name="Password"
+                            label="Current Password"
                             rules={[
                                 {
                                     required: true,
-                                    message: "Please enter user name",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Please enter user name" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Item
-                            name="TypeOfEmployee"
-                            label="Type Of Employee"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please choose the type",
-                                },
-                            ]}
-                        >
-                            <Flex vertical gap="middle">
-                                <Radio.Group
-                                    defaultValue="a"
-                                    buttonStyle="solid"
-                                >
-                                    <Radio.Button value="FullTime">
-                                        Full Time
-                                    </Radio.Button>
-                                    <Radio.Button value="PartTime">
-                                        Part Time
-                                    </Radio.Button>
-                                </Radio.Group>
-                            </Flex>
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={24}>
-                        <Form.Item
-                            name="PhoneNumber"
-                            label="Phone Number"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter Phone Number",
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Please enter phone number" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Item
-                            name="Email"
-                            label="Email Address"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter url",
+                                    message: "Please enter Current Password",
                                 },
                             ]}
                         >
                             <Input
-                                style={{
-                                    width: "100%",
-                                }}
-                                placeholder="Please enter your email!"
+                                type="password"
+                                autoFocus
+                                placeholder="Please enter Current Password"
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Item
+                            name="NewPassword"
+                            label="New Password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter New Password",
+                                },
+                            ]}
+                        >
+                            <Input
+                                type="password"
+                                placeholder="Please enter New Password"
                             />
                         </Form.Item>
                     </Col>
@@ -91,42 +53,25 @@ export default function ChangePassword() {
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
-                            name="IdDuty"
-                            label="Duty Name"
+                            name="ComfirmPassword"
+                            label="Comfirm your password"
                             rules={[
                                 {
                                     required: true,
-                                    message: "Please choose the approver",
-                                },
-                            ]}
-                        >
-                            <Select
-                                placeholder="Please choose the approver"
-                                options={optionsDuty}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name="CoefficientsSalary"
-                            label="CoefficientsSalary"
-                            rules={[
-                                {
-                                    required: true,
-                                    message:
-                                        "Please enter the CoefficientsSalary",
+                                    message: "Please enter your new password",
                                 },
                             ]}
                         >
                             <Input
-                                placeholder="Please enter the CoefficientsSalary"
-                                type="number"
+                                type="password"
+                                placeholder="Please enter your new password"
                             />
                         </Form.Item>
                     </Col>
                 </Row>
-                <Button htmlType="submit" loading={loading}>
-                    Thêm nhân viên
+
+                <Button htmlType="submit" loading={loading} type="primary">
+                    Chỉnh sửa tài khoản
                 </Button>
             </Form>
         </div>

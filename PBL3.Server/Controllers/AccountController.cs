@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Models;
 using PBL3.Server.Repositories;
+using System.Threading.Tasks;
 
 namespace PBL3.Server.Controllers
 {
@@ -8,31 +9,34 @@ namespace PBL3.Server.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private IAccount _accountRepo;
+        private readonly IAccount _accountRepo;
 
-        public AccountController(IAccount repo) 
+        public AccountController(IAccount accountRepo)
         {
-            _accountRepo = repo;
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetAllAccounts()
-        {
-            try
-            {
-                return Ok(await _accountRepo.GetAllAccountsAsync());
-            }
-            catch 
-            {
-                return BadRequest();
-            }
+            _accountRepo = accountRepo;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAccountById(int id) 
+       
+        [HttpPost("Login")]
+        public async Task<ActionResult<AccountModel>> Login(AccountModel loginModel)
         {
-            var account = await _accountRepo.GetAccountAsync(id);
-            return account == null ? NotFound() : Ok(account);
+            if (loginModel.UserName == null) 
+            {
+                return BadRequest("Username cannot be null!");
+            }
+            if (loginModel.Password == null) 
+            {
+                return BadRequest("Password cannot be null!");
+            }
+
+            var account = await _accountRepo.GetAccountByUserNameAndPassword(loginModel.UserName, loginModel.Password);
+
+            if (account == null)
+            {
+                return NotFound("Invalid username or password");
+            }
+
+            return Ok(account);
         }
-        
     }
 }

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BE.Migrations
+namespace PBL3.Server.Migrations
 {
-    public partial class DbInit : Migration
+    public partial class ALO : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DutyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DutyName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     BasicSalary = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -29,7 +29,7 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShiftName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ShiftName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -47,9 +47,9 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     TypeOfEmployee = table.Column<bool>(type: "bit", nullable: false),
                     CoefficientsSalary = table.Column<double>(type: "float", nullable: false),
                     DutyId = table.Column<int>(type: "int", nullable: false),
@@ -72,26 +72,19 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DutyId = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     EmployeeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Account", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Account_Duty_DutyId",
-                        column: x => x.DutyId,
-                        principalTable: "Duty",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
                         name: "FK_Account_Employee_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employee",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -100,9 +93,9 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    TotalBonus = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    TotalBonus = table.Column<int>(type: "int", nullable: true),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,8 +114,8 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
-                    HoursPerDay = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    HoursPerDay = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -168,7 +161,7 @@ namespace BE.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", maxLength: 50, nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
                     CheckInTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CheckOutTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -191,7 +184,7 @@ namespace BE.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     ShiftInfoId = table.Column<int>(type: "int", nullable: false),
-                    Handle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Handle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Checked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -210,11 +203,6 @@ namespace BE.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Account_DutyId",
-                table: "Account",
-                column: "DutyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Account_EmployeeId",

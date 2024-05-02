@@ -28,3 +28,5 @@ bin
 *.njsproj
 *.sln
 *.sw?
+appsettings.json
+.fake
