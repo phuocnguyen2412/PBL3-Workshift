@@ -85,6 +85,7 @@ namespace PBL3.Server.Controllers
         {
             try
             {
+                
                 return Ok(await _employeeRepo.DeleteEmployeeAsync(id));
             }
             catch (Exception e)

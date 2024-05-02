@@ -2,7 +2,7 @@ import { Button, Form, Modal } from "antd";
 import { useState } from "react";
 import EditEmployeeForm from "../../components/EditEmployeeForm/EditEmployeeForm";
 import { SettingOutlined } from "@ant-design/icons";
-
+import PropTypes from "prop-types";
 const EditEmployee = ({ record, setEmployee }) => {
     const [openEdit, setOpenEdit] = useState(false);
 
@@ -43,5 +43,8 @@ const EditEmployee = ({ record, setEmployee }) => {
         </>
     );
 };
-
+EditEmployee.propTypes = {
+    record: PropTypes.object.isRequired,
+    setEmployee: PropTypes.func.isRequired,
+};
 export default EditEmployee;

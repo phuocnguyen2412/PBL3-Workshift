@@ -5,21 +5,21 @@ import {
     UserAddOutlined,
     UserDeleteOutlined,
 } from "@ant-design/icons";
-
+import PropTypes from "prop-types";
 const items = [
-    {                                          
+    {
         label: "Tất cả",
         key: "Tất cả",
         icon: <TeamOutlined />,
     },
     {
         label: "Đang đi làm",
-        key: "Đang đi làm",
+        key: "true",
         icon: <UserAddOutlined />,
     },
     {
         label: "Đã nghỉ làm",
-        key: "Đã nghỉ làm",
+        key: "false",
         icon: <UserDeleteOutlined />,
     },
 ];
@@ -39,6 +39,10 @@ const TabEmployee = ({ handleTabCick, handleOpenDrawer }) => {
             />
         </>
     );
+};
+TabEmployee.propTypes = {
+    handleTabCick: PropTypes.func.isRequired,
+    handleOpenDrawer: PropTypes.func.isRequired,
 };
 
 export default TabEmployee;

@@ -8,6 +8,6 @@ public class EmployeeSummaryModel
     public string? FullName { get; set; }
     public bool? TypeOfEmployee { get; set; }
     public bool? Status { get; set; }
-    public string DutyName { get; set; }
+    public string? DutyName { get; set; }
 }
 

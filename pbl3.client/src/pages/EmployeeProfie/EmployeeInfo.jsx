@@ -1,6 +1,20 @@
-import { Badge, Col, Descriptions, Image, Row, Tag } from "antd";
-
-const EmployeeInfo = ({ employee }) => {
+import { Badge, Col, Descriptions, Image, Row, Spin, Tag } from "antd";
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import useFetch from "../../custom hook/useFetch";
+import localhost from "../../Services/localhost";
+const EmployeeInfo = () => {
+    const { getApi, loading } = useFetch(localhost);
+    const params = useParams();
+    const [employee, setEmployee] = useState({});
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getApi(`/Employee/${params.id}`);
+            setEmployee(data);
+        };
+        fetchData();
+    }, []);
     const items = [
         {
             key: "1",
@@ -79,23 +93,27 @@ const EmployeeInfo = ({ employee }) => {
         },
     ];
     return (
-        <Row gutter={24} align="middle">
-            <Col span={8}>
-                <Image
-                    width="100%"
-                    src="https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
-                />
-            </Col>
-            <Col span={16}>
-                <Descriptions
-                    layout="vertical"
-                    title={`Employee Information`}
-                    bordered
-                    items={items}
-                />
-            </Col>
-        </Row>
+        <Spin spinning={loading}>
+            <Row gutter={24} align="middle">
+                <Col span={8}>
+                    <Image
+                        width="100%"
+                        src="https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
+                    />
+                </Col>
+                <Col span={16}>
+                    <Descriptions
+                        layout="vertical"
+                        title={`Employee Information`}
+                        bordered
+                        items={items}
+                    />
+                </Col>
+            </Row>
+        </Spin>
     );
 };
-
+EmployeeInfo.propTypes = {
+    employee: PropTypes.object.isRequired,
+};
 export default EmployeeInfo;

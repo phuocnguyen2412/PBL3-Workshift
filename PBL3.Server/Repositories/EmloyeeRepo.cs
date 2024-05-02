@@ -70,10 +70,7 @@ namespace PBL3.Server.Repositories
         public async Task<bool> DeleteEmployeeAsync(int id)
         {
             var employee = await _context.Employees!.FindAsync(id);
-            if (employee == null)
-            {
-                return false;
-            }
+            if (employee == null) throw new Exception("Không tồn tại bản ghi");
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();

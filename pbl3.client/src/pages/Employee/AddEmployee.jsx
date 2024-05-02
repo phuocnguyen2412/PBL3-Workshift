@@ -1,6 +1,6 @@
 import { Drawer } from "antd";
 import InputEmployeeForm from "../../components/InputEmployeeForm/InputEmployeeForm";
-
+import PropsType from "prop-types";
 const AddEmployee = ({ setEmployee, onClose, open }) => {
     return (
         <>
@@ -23,5 +23,9 @@ const AddEmployee = ({ setEmployee, onClose, open }) => {
         </>
     );
 };
-
+AddEmployee.propTypes = {
+    setEmployee: PropsType.func.isRequired,
+    onClose: PropsType.func.isRequired,
+    open: PropsType.bool.isRequired,
+};
 export default AddEmployee;

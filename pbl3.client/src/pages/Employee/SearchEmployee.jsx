@@ -1,7 +1,7 @@
 import Search from "antd/es/transfer/search";
 import useFetch from "../../custom hook/useFetch";
 import { notification } from "antd";
-
+import PropTypes from "prop-types";
 const SearchEmployee = ({ setEmployee }) => {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
@@ -38,5 +38,7 @@ const SearchEmployee = ({ setEmployee }) => {
         </>
     );
 };
-
+SearchEmployee.propTypes = {
+    setEmployee: PropTypes.func.isRequired,
+};
 export default SearchEmployee;

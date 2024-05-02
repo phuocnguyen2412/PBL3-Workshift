@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import useFetch from "../../custom hook/useFetch";
-import { Spin, Tabs } from "antd";
+import { Tabs } from "antd";
 import EmployeeInfo from "./EmployeeInfo";
 import {
     DollarOutlined,
@@ -10,25 +7,13 @@ import {
     UserOutlined,
 } from "@ant-design/icons";
 import EmployeeSalaryHistory from "./EmployeeSalaryHistory";
+
 const EmployeeProfie = () => {
-    const { getApi, loading } = useFetch(
-        "https://662a140667df268010a2887f.mockapi.io/PBL3"
-    );
-    const params = useParams();
-    const [employee, setEmployee] = useState({});
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await getApi(`/employee/${params.id}`);
-            setEmployee(data);
-        };
-        fetchData();
-    }, []);
-    console.log(employee);
     const items = [
         {
             key: "1",
             label: `Information`,
-            children: <EmployeeInfo employee={employee} />,
+            children: <EmployeeInfo />,
             icon: <UserOutlined />,
         },
         {
@@ -57,11 +42,7 @@ const EmployeeProfie = () => {
             icon: <SmileOutlined />,
         },
     ];
-    return (
-        <Spin spinning={loading}>
-            <Tabs defaultActiveKey="1" items={items} />
-        </Spin>
-    );
+    return <Tabs defaultActiveKey="1" items={items} />;
 };
 
 export default EmployeeProfie;

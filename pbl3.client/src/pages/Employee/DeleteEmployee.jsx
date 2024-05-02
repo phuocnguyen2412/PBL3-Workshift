@@ -1,24 +1,25 @@
+/* eslint-disable react/prop-types */
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Flex, Modal, notification } from "antd";
 import useFetch from "../../custom hook/useFetch";
 import { useState } from "react";
+import localhost from "../../Services/localhost";
 
 const DeleteEmployee = ({ record, setEmployee }) => {
     const [openDelete, setOpenDelete] = useState(false);
 
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const { getApi, deleteApi, loading } = useFetch(
-        "https://662a140667df268010a2887f.mockapi.io/PBL3"
-    );
+    const { getApi, deleteApi, loading } = useFetch(localhost);
     const confirmDelete = async () => {
         try {
-            await deleteApi(`/employee`, record.id);
+            await deleteApi(`/Employee`, record.id);
             apiNotification.success({
                 message: "Thành công!",
                 description: `Bạn đã xóa thành công nhân viên`,
                 placement: "topRight",
             });
+            console.log(1);
             setEmployee(await getApi("/employee"));
         } catch (err) {
             apiNotification.error({

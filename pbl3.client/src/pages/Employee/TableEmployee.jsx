@@ -9,11 +9,10 @@ import SearchEmployee from "./SearchEmployee";
 import EditEmployee from "./EditEmployee";
 import { Link } from "react-router-dom";
 import EmployeeProfie from "../EmployeeProfie";
-
+import localhost from "../../Services/localhost";
+import PropTypes from "prop-types";
 const TableEmployee = ({ data, setEmployee }) => {
-    const { getApi, loading } = useFetch(
-        "https://662a140667df268010a2887f.mockapi.io/PBL3"
-    );
+    const { getApi, loading } = useFetch(localhost);
 
     const columns = [
         {
@@ -23,7 +22,7 @@ const TableEmployee = ({ data, setEmployee }) => {
                 return (
                     <>
                         <Link
-                            to={`/employee/${record.id}`}
+                            to={`/Employee/${record.id}`}
                             element=<EmployeeProfie />
                         >
                             {record.fullName}
@@ -103,12 +102,12 @@ const TableEmployee = ({ data, setEmployee }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getApi("/employee");
+            const data = await getApi("/Employee");
             setEmployee(data);
         };
 
         fetchData();
-    }, []);
+    }, [setEmployee]);
 
     return (
         <>
@@ -130,5 +129,8 @@ const TableEmployee = ({ data, setEmployee }) => {
         </>
     );
 };
-
+TableEmployee.propTypes = {
+    data: PropTypes.array.isRequired,
+    setEmployee: PropTypes.func.isRequired,
+};
 export default TableEmployee;

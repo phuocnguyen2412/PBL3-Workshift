@@ -10,9 +10,11 @@ import {
     Switch,
     notification,
 } from "antd";
+import PropType from "prop-types";
 import useFetch from "../../custom hook/useFetch";
 import { useEffect, useState } from "react";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import localhost from "../../Services/localhost";
 
 export default function EditEmployeeForm({
     employeeToEdit,
@@ -21,14 +23,12 @@ export default function EditEmployeeForm({
     setOpenEdit,
 }) {
     const [optionsDuty, setOptionsDuty] = useState([]);
-    const { getApi, updateApi, loading } = useFetch(
-        "https://662a140667df268010a2887f.mockapi.io/PBL3/"
-    );
+    const { getApi, updateApi, loading } = useFetch(localhost);
 
     const [api, contextHolder] = notification.useNotification();
     const handleSubmitForm = async (e) => {
         try {
-            const response = await updateApi("employee", e, employeeToEdit.id);
+            await updateApi("/Employee", e, employeeToEdit.id);
 
             api.success({
                 message: "Thành công!",
@@ -58,7 +58,7 @@ export default function EditEmployeeForm({
             );
         };
         fetchData();
-    }, []);
+    }, [getApi]);
 
     return (
         <>
@@ -215,3 +215,9 @@ export default function EditEmployeeForm({
         </>
     );
 }
+EditEmployeeForm.propTypes = {
+    employeeToEdit: PropType.object.isRequired,
+    form: PropType.object.isRequired,
+    setEmployee: PropType.func.isRequired,
+    setOpenEdit: PropType.func.isRequired,
+};
