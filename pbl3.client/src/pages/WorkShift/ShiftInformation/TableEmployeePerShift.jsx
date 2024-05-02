@@ -36,7 +36,7 @@ const TableEmployeePerShift = () => {
         },
     ];
     return (
-        <Table dataSource={data}>
+        <Table rowKey="id" dataSource={data}>
             <Column title="Full name" dataIndex="fullName" key="fullName" />
             <Column
                 title="Duty"
