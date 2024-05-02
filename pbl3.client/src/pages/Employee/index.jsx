@@ -1,34 +1,30 @@
 import { useState } from "react";
 
-import { Button, Drawer } from "antd";
-import { DeleteColumnOutlined, SettingOutlined } from "@ant-design/icons";
-
+import AddEmployee from "./AddEmployee";
 import TabEmployee from "./TabEmployee";
-import InputEmployeeForm from "../../components/InputEmployeeForm/InputEmployeeForm";
 import TableEmployee from "./TableEmployee";
+import useFetch from "../../custom hook/useFetch";
+import localhost from "../../Services/localhost";
+import { Spin } from "antd";
 
 const Employee = () => {
-    const [employee, setEmployee] = useState(
-        [].map((item) => {
-            return {
-                ...item,
-                change: (
-                    <Button shape="circle" icon={<DeleteColumnOutlined />} />
-                ),
+    const { getApi, loading } = useFetch(localhost);
 
-                delete: <Button shape="circle" icon={<SettingOutlined />} />,
-            };
-        })
-    );
-    function handleTabCick(id) {
-        console.log(id);
-        if (id === "Tất cả") setEmployee();
-        if (id === "Đang đi làm")
-            setEmployee(employee.filter((item) => item.Status === true));
-        if (id === "Đã nghỉ làm")
-            setEmployee(employee.filter((item) => item.Status === false));
+    const [employee, setEmployee] = useState([]);
+    async function handleTabCick(id) {
+        try {
+            let result;
+            if (id === "Tất cả") {
+                result = await getApi("/Employee");
+            } else {
+                result = await getApi(`/Employee/status/${id}`);
+            }
+
+            setEmployee(result);
+        } catch (e) {
+            console.log(e);
+        }
     }
-
     const [open, setOpen] = useState(false);
 
     const showDrawer = () => {
@@ -39,27 +35,25 @@ const Employee = () => {
         setOpen(false);
     };
     return (
-        <div>
-            <TabEmployee
-                handleTabCick={handleTabCick}
-                handleOpenDrawer={showDrawer}
-            />
-            <Drawer
-                title="Create a new account"
-                width={720}
-                onClose={onClose}
-                open={open}
-                styles={{
-                    body: {
-                        paddingBottom: 80,
-                    },
-                }}
-            >
-                <InputEmployeeForm onClose={onClose} />
-            </Drawer>
+        <Spin spinning={loading}>
+            <div>
+                <TabEmployee
+                    handleTabCick={handleTabCick}
+                    handleOpenDrawer={showDrawer}
+                />
+                <AddEmployee
+                    open={open}
+                    onClose={onClose}
+                    setEmployee={setEmployee}
+                />
 
-            <TableEmployee data={employee} setEmployee={setEmployee} />
-        </div>
+                <TableEmployee
+                    data={employee}
+                    setEmployee={setEmployee}
+                    handleOpenDrawer={showDrawer}
+                />
+            </div>
+        </Spin>
     );
 };
 

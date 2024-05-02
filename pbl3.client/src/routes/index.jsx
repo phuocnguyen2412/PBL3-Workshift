@@ -1,5 +1,7 @@
 import ChangePassword from "../pages/ChangePassword";
 import Employee from "../pages/Employee";
+import EmployeeProfie from "../pages/EmployeeProfie";
+import Home from "../pages/Home";
 import Login from "../pages/Login";
 import MainLayout from "../pages/MainLayout";
 import BasicSalary from "../pages/Salary/BasicSalary";
@@ -15,6 +17,14 @@ const routes = [
         path: "/",
         element: <MainLayout />,
         children: [
+            {
+                path: "/home",
+                element: <Home />,
+            },
+            {
+                path: "/employee/:id",
+                element: <EmployeeProfie />,
+            },
             {
                 path: "/employee",
                 element: <Employee />,

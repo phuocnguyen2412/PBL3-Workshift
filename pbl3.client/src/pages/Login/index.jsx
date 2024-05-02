@@ -49,9 +49,6 @@ function Login() {
                 <Form
                     name="normal_login"
                     className="login-form LoginForm"
-                    initialValues={{
-                        remember: true,
-                    }}
                     onFinish={onFinish}
                 >
                     <Typography
