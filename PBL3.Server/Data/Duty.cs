@@ -15,6 +15,6 @@ namespace PBL3.Server.Data
         public string? DutyName { get; set; }
 
         public double BasicSalary { get; set; }
-        public ICollection<Employee>? Employees { get; set; }
+        //public ICollection<Employee>? Employees { get; set; }
     }
 }
