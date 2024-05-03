@@ -70,7 +70,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest("Add Employee fail!");
             }
         }
 
