@@ -33,7 +33,7 @@ namespace PBL3.Server.Controllers
 
             if (account == null)
             {
-                return NotFound("Invalid username or password");
+                return NotFound("Tai khoan hoac mat khau khong dung!");
             }
 
             return Ok(account);

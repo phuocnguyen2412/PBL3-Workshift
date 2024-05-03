@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using PBL3.Server.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
-using PBL3.Server.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.AccessControl;
 
 namespace PBL3.Server.Repositories
 {
@@ -19,16 +21,24 @@ namespace PBL3.Server.Repositories
             _mapper = mapper;
         }
 
-        public async Task<AccountModel> GetAccountByUserNameAndPassword(string userName, string password)
+        public async Task AddAccountAsync(AccountModel accountModel)
+        {
+            var account = _mapper.Map<Account>(accountModel);
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<AccountModel> GetAccountByUserNameAndPassword(string username, string password)
         {
             var hashedPassword = HashPassword(password);
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserName == userName && a.Password == hashedPassword); 
+            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserName == username && a.Password == hashedPassword);
 
             return _mapper.Map<AccountModel>(account);
         }
 
-        private string HashPassword(string password)
+
+        public string HashPassword(string password)
         {
             using var sha256 = System.Security.Cryptography.SHA256.Create();
             var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));

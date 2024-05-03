@@ -12,7 +12,7 @@ namespace PBL3.Server.Data
         public string? ShiftName { get; set; }
         public DateTime Date { get; set; }
         public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }   
         public bool Checked { get; set; }
         public int ManagerId { get; set; }
     }
