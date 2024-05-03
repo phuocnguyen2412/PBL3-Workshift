@@ -28,13 +28,23 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AccountModel> GetAccountByUserNameAndPassword(string username, string password)
+        public async Task<object> GetAccountByUserNameAndPassword(string username, string password)
         {
             var hashedPassword = HashPassword(password);
 
-            var account = await _context.Accounts.FirstOrDefaultAsync(a => a.UserName == username && a.Password == hashedPassword);
+            var result = from account in _context.Accounts
+                         join employee in _context.Employees on account.EmployeeId equals employee.Id
+                         join duty in _context.Duties on employee.DutyId equals duty.Id
+                         where account.UserName == employee.Email && account.Password == hashedPassword
+                         select new
+                         {
+                             EmployeeId = employee.Id,
+                             dutyName = duty.DutyName
+                         };
 
-            return _mapper.Map<AccountModel>(account);
+
+
+            return result.FirstOrDefault();;
         }
 
 
