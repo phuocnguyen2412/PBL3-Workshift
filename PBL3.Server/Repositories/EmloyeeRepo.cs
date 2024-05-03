@@ -43,6 +43,7 @@ namespace PBL3.Server.Repositories
             var result =
                 from employee in _context.Employees
                 join duty in _context.Duties on employee.DutyId equals duty.Id
+                where employee.Id == id
                 select new
                 {
                     Id = employee.Id,
@@ -56,7 +57,7 @@ namespace PBL3.Server.Repositories
                     BasicSalary = duty.BasicSalary,
                 };
 
-            return result;
+            return result.FirstOrDefault();;
         }
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
@@ -107,7 +108,7 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<EmloyeeModel>(employee);
         }
 
-        public async Task<bool> DeleteEmployeeAsync(int id)
+        public async Task<Employee> DeleteEmployeeAsync(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
@@ -115,7 +116,7 @@ namespace PBL3.Server.Repositories
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
-            return true;
+            return employee;
         }
     }
 }

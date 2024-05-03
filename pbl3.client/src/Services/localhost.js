@@ -1,2 +1,2 @@
-const localhost = "https://localhost:59631/api";
+const localhost = "http://localhost:7120/api";
 export default localhost;

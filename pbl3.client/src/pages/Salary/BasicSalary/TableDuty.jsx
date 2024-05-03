@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import PropTypes from "prop-types";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
-import DeleteDuty from "./DeleteDuty";
+
 import EditDuty from "./EditDuty";
 
 export default function TableDuty({ dutyList, setDutyList }) {
@@ -50,14 +50,6 @@ export default function TableDuty({ dutyList, setDutyList }) {
             key: "change",
             render: (_, record) => (
                 <EditDuty record={record} setDutyList={setDutyList} />
-            ),
-        },
-        {
-            title: "Delete",
-            dataIndex: "Delete",
-            key: "delete",
-            render: (_, record) => (
-                <DeleteDuty record={record} setDutyList={setDutyList} />
             ),
         },
     ];

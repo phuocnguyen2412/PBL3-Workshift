@@ -33,18 +33,19 @@ namespace PBL3.Server.Repositories
             var hashedPassword = HashPassword(password);
 
             var result = from account in _context.Accounts
-                         join employee in _context.Employees on account.EmployeeId equals employee.Id
-                         join duty in _context.Duties on employee.DutyId equals duty.Id
-                         where account.UserName == employee.Email && account.Password == hashedPassword
-                         select new
-                         {
-                             EmployeeId = employee.Id,
-                             dutyName = duty.DutyName
-                         };
+                            join employee in _context.Employees on account.EmployeeId equals employee.Id
+                            join duty in _context.Duties on employee.DutyId equals duty.Id
+                            where account.UserName == employee.Email && account.Password == hashedPassword
+                            select new
+                            {
+                                EmployeeId = employee.Id,
+                                dutyName = duty.DutyName,
+                                FullName = employee.FullName
+                            };
 
 
 
-            return result.FirstOrDefault();;
+            return result.FirstOrDefault(); ;
         }
 
 

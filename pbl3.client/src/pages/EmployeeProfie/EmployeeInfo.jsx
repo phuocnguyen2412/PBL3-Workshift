@@ -1,5 +1,5 @@
 import { Badge, Col, Descriptions, Image, Row, Spin, Tag } from "antd";
-import PropTypes from "prop-types";
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useFetch from "../../custom hook/useFetch";
@@ -11,6 +11,7 @@ const EmployeeInfo = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getApi(`/Employee/${params.id}`);
+            console.log(data);
             setEmployee(data);
         };
         fetchData();
@@ -113,7 +114,5 @@ const EmployeeInfo = () => {
         </Spin>
     );
 };
-EmployeeInfo.propTypes = {
-    employee: PropTypes.object.isRequired,
-};
+
 export default EmployeeInfo;

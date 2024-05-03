@@ -95,13 +95,16 @@ namespace PBL3.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-
-            var success = await _employeeRepo.DeleteEmployeeAsync(id);
-            if (!success)
+            try
             {
-                return NotFound();
+                var success = await _employeeRepo.DeleteEmployeeAsync(id);
+                return Ok(success);
             }
-            return NoContent();
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
         }
-    } 
+    }
 }
