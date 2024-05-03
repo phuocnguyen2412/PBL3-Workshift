@@ -54,10 +54,7 @@ function MainLayout() {
                             icon={<UserOutlined />}
                             style={{ margin: "0 16px" }}
                         >
-                            <Link
-                                to={`/employee/${account.account.id}`}
-                                element=<EmployeeProfie />
-                            >
+                            <Link to={`/employee/${account.account.id}`}>
                                 {account.account.fullName}
                             </Link>
                         </Button>
@@ -70,6 +67,7 @@ function MainLayout() {
                         heigt: "100%",
                         background: colorBgContainer,
                         borderRadius: borderRadiusLG,
+                        overflow: "hidden",
                     }}
                 >
                     <Outlet />

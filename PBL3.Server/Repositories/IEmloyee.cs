@@ -6,7 +6,8 @@ namespace PBL3.Server.Repositories
 {
     public interface IEmployee
     {
-        public Task<List<EmloyeeModel>> GetAllEmployeesAsync();
+        public Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync();
+
         public Task<EmloyeeModel> GetEmployeeByIdAsync(int id);
         public Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status);
         public Task<int> AddEmployeeAsync(EmloyeeModel employee);

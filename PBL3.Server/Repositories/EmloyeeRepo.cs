@@ -22,10 +22,25 @@ namespace PBL3.Server.Repositories
             _accountRepo = accountRepo;
         }
 
-        public async Task<List<EmloyeeModel>> GetAllEmployeesAsync()
+        public async Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync()
         {
+<<<<<<< HEAD
             var employees = await _context.Employees.ToListAsync();
             return _mapper.Map<List<EmloyeeModel>>(employees);
+=======
+              var employees = await _context.Employees!
+                .Include(e => e.Duty) // Join with Duty table
+                .Select(e => new EmployeeSummaryModel
+                {
+                    Id = e.Id,
+                    FullName = e.FullName,
+                    TypeOfEmployee = e.TypeOfEmployee,
+                    Status = e.Status,
+                    DutyName = e.Duty.DutyName
+                })
+                .ToListAsync();
+            return employees;
+>>>>>>> 634defdf9c6e2690b2c98df7ec03bd4b37b9219e
         }
 
         public async Task<EmloyeeModel> GetEmployeeByIdAsync(int id)

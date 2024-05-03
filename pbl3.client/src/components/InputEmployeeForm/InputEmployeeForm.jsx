@@ -18,22 +18,29 @@ import PropTypes from "prop-types";
 export default function InputEmployeeForm({ setEmployee }) {
     const [form] = Form.useForm();
     const [optionsDuty, setOptionsDuty] = useState([]);
-    //const { postApi, loading, getApi } = useFetch(localhost);
-    const { getApi, loading, postApi } = useFetch(
-        "https://662a140667df268010a2887f.mockapi.io/PBL3"
-    );
+    const { postApi, loading, getApi } = useFetch(localhost);
+
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const handleSubmitForm = async (e) => {
         try {
-            await postApi("/employee", { ...e, status: true });
+            console.log({
+                ...e,
+                status: true,
+                typeOfEmployee: Boolean(e.typeOfEmployee),
+            });
+            await postApi("/Employee", {
+                ...e,
+                status: true,
+                typeOfEmployee: e.typeOfEmployee === "true",
+            });
             form.resetFields();
             apiNotification.success({
                 message: "Thành công!",
                 description: `Bạn đã thêm thành công nhân viên ${e.fullName}`,
                 placement: "bottomRight",
             });
-            setEmployee(await getApi("/employee"));
+            setEmployee(await getApi("/Employee"));
         } catch (err) {
             console.log(err);
             apiNotification.error({
@@ -148,7 +155,7 @@ export default function InputEmployeeForm({ setEmployee }) {
                     <Row gutter={16}>
                         <Col span={12}>
                             <Form.Item
-                                name="idDuty"
+                                name="dutyId"
                                 label="Duty Name"
                                 rules={[
                                     {
