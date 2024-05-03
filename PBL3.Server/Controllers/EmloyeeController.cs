@@ -12,9 +12,11 @@ namespace PBL3.Server.Controllers
     {
         private readonly IEmployee _employeeRepo;
         public EmployeeController(IEmployee employeeRepo)
+
         {
             _employeeRepo = employeeRepo;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllEmployee()
         {
@@ -27,6 +29,7 @@ namespace PBL3.Server.Controllers
                 return BadRequest(e.Message);
             }
         }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
@@ -59,8 +62,11 @@ namespace PBL3.Server.Controllers
         {
             try
             {
+
                 var newEmployeeId = await _employeeRepo.AddEmployeeAsync(employee);
-                return CreatedAtAction(nameof(GetEmployeeById), new { id = newEmployeeId }, employee);
+                var Employee = await _employeeRepo.GetEmployeeByIdAsync(newEmployeeId);
+                return Employee == null ? NotFound() : Ok(Employee);
+
             }
             catch (Exception e)
             {
@@ -69,30 +75,33 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmployee(EmloyeeModel employee)
+        public async Task<IActionResult> UpdateEmloyee(int id, EmloyeeModel employee)
         {
-            try
+            if (id != employee.Id)
             {
-                return Ok(await _employeeRepo.UpdateEmployeeAsync(employee));
+                return BadRequest();
             }
-            catch (Exception e)
+
+            var existingEmployee = await _employeeRepo.GetEmployeeByIdAsync(id);
+            if (existingEmployee == null)
             {
-                return BadRequest(e.Message);
+                return NotFound();
             }
+
+            var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
+            return Ok(updatedEmployee);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            try
-            {
-                
-                return Ok(await _employeeRepo.DeleteEmployeeAsync(id));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-    }
 
+            var success = await _employeeRepo.DeleteEmployeeAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+    } 
 }

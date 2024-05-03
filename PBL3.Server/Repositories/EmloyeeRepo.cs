@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace PBL3.Server.Repositories
 {
@@ -12,15 +13,21 @@ namespace PBL3.Server.Repositories
     {
         private readonly MyDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IAccount _accountRepo;
 
-        public EmployeeRepo(MyDbContext context, IMapper mapper)
+        public EmployeeRepo(MyDbContext context, IMapper mapper, IAccount accountRepo)
         {
             _context = context;
             _mapper = mapper;
+            _accountRepo = accountRepo;
         }
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync()
         {
+<<<<<<< HEAD
+            var employees = await _context.Employees.ToListAsync();
+            return _mapper.Map<List<EmloyeeModel>>(employees);
+=======
               var employees = await _context.Employees!
                 .Include(e => e.Duty) // Join with Duty table
                 .Select(e => new EmployeeSummaryModel
@@ -33,18 +40,19 @@ namespace PBL3.Server.Repositories
                 })
                 .ToListAsync();
             return employees;
+>>>>>>> 634defdf9c6e2690b2c98df7ec03bd4b37b9219e
         }
 
         public async Task<EmloyeeModel> GetEmployeeByIdAsync(int id)
         {
-            var employee = await _context.Employees!.FindAsync(id);
+            var employee = await _context.Employees.FindAsync(id);
             return _mapper.Map<EmloyeeModel>(employee);
         }
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
         {
-            var employees = await _context.Employees!
-                .Include(e => e.Duty) // Join with Duty table
+            var employees = await _context.Employees
+                .Include(e => e.Duty)
                 .Where(e => e.Status == status)
                 .Select(e => new EmployeeSummaryModel
                 {
@@ -52,22 +60,35 @@ namespace PBL3.Server.Repositories
                     FullName = e.FullName,
                     TypeOfEmployee = e.TypeOfEmployee,
                     Status = e.Status,
-                    DutyName = e.Duty.DutyName
+                    DutyName = e.Duty != null ? e.Duty.DutyName : "N/A"
                 })
                 .ToListAsync();
 
             return employees;
         }
 
-
-
         public async Task<int> AddEmployeeAsync(EmloyeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
-            _context.Employees!.Add(employee);
+
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
+
+            var username = employeeModel.Email;
+            var hashedPassword = _accountRepo.HashPassword(employeeModel.Email);
+
+            var account = new Account
+            {
+                UserName = username,
+                Password = hashedPassword,
+                EmployeeId = employee.Id
+            };
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+
             return employee.Id;
         }
+
 
         public async Task<EmloyeeModel> UpdateEmployeeAsync(EmloyeeModel employeeModel)
         {
@@ -79,8 +100,9 @@ namespace PBL3.Server.Repositories
 
         public async Task<bool> DeleteEmployeeAsync(int id)
         {
-            var employee = await _context.Employees!.FindAsync(id);
-            if (employee == null) throw new Exception("Không tồn tại bản ghi");
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
+                throw new InvalidOperationException("Không tồn tại bản ghi");
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();

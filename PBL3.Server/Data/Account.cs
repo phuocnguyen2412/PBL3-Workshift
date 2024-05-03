@@ -10,17 +10,15 @@ namespace PBL3.Server.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
-
+        [Required]
         [MaxLength(50)]
-    
-        public string? UserName { get; set; }
-
+        public string UserName { get; set; }
+        [Required]
         [MaxLength(50)]
-    
-        public string? Password { get; set; }
-        
+        public string Password { get; set; }
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
+        
     }
 }

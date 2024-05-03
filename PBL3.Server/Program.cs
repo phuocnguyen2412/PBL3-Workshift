@@ -17,6 +17,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IEmployee, EmployeeRepo>();
 builder.Services.AddScoped<IShiftInfo, ShiftInfoRepo>();
 builder.Services.AddScoped<IDuty, DutyRepo>();
+builder.Services.AddScoped<IAccount, AccountRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors();
 
 app.UseHttpsRedirection();
 

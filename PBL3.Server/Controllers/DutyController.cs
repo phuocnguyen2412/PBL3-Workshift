@@ -13,9 +13,9 @@ namespace PBL3.Server.Controllers
     {
         private readonly IDuty _dutyRepository;
 
-        public DutyController(IDuty dutyRepository)
+        public DutyController(IDuty dutyRepo)
         {
-            _dutyRepository = dutyRepository;
+            _dutyRepository = dutyRepo;
         }
 
         [HttpGet]

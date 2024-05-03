@@ -10,11 +10,9 @@ namespace PBL3.Server.Data
     {
         [Key]
         public int Id { get; set; }
-
         [StringLength(50)]
         public string? DutyName { get; set; }
-
         public double BasicSalary { get; set; }
-        //public ICollection<Employee>? Employees { get; set; }
+        public ICollection<Employee>? Employees { get; set; }
     }
 }
