@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -30,17 +29,3 @@
     }
   }
 }
-=======
-{
-  "profiles": {
-    "PBL3.Server": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:59631;http://localhost:59632"
-    }
-  }
-}
->>>>>>> 634defdf9c6e2690b2c98df7ec03bd4b37b9219e

@@ -1,6 +1,6 @@
 import { Card, Col, Row, Spin, Statistic } from "antd";
 import { useEffect, useState } from "react";
-import CountUp from "react-countup";
+//import CountUp from "react-count-up";
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
 import { UserOutlined } from "@ant-design/icons";
@@ -31,7 +31,7 @@ const Home = () => {
                                 title="Total employee"
                                 value={employee.length}
                                 formatter={formatter}
-                                prefix=<UserOutlined />
+                                prefix={<UserOutlined />}
                             />
                         </Card>
                     </Col>
@@ -42,7 +42,7 @@ const Home = () => {
                                 value={admin.length}
                                 precision={2}
                                 formatter={formatter}
-                                prefix=<UserOutlined />
+                                prefix={<UserOutlined />}
                             />
                         </Card>
                     </Col>
@@ -53,7 +53,7 @@ const Home = () => {
                                 value={manager.length}
                                 precision={2}
                                 formatter={formatter}
-                                prefix=<UserOutlined />
+                                prefix={<UserOutlined />}
                             />
                         </Card>
                     </Col>
@@ -65,7 +65,7 @@ const Home = () => {
                                 value={others.length}
                                 precision={2}
                                 formatter={formatter}
-                                prefix=<UserOutlined />
+                                prefix={<UserOutlined />}
                             />
                         </Card>{" "}
                     </Col>

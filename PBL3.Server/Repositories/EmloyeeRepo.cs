@@ -1,11 +1,11 @@
-﻿using PBL3.Server.Models;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
-using Microsoft.AspNetCore.Mvc;
-using System;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -24,12 +24,8 @@ namespace PBL3.Server.Repositories
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync()
         {
-<<<<<<< HEAD
-            var employees = await _context.Employees.ToListAsync();
-            return _mapper.Map<List<EmloyeeModel>>(employees);
-=======
-              var employees = await _context.Employees!
-                .Include(e => e.Duty) // Join with Duty table
+            var employees = await _context
+                .Employees!.Include(e => e.Duty)
                 .Select(e => new EmployeeSummaryModel
                 {
                     Id = e.Id,
@@ -40,19 +36,33 @@ namespace PBL3.Server.Repositories
                 })
                 .ToListAsync();
             return employees;
->>>>>>> 634defdf9c6e2690b2c98df7ec03bd4b37b9219e
         }
 
-        public async Task<EmloyeeModel> GetEmployeeByIdAsync(int id)
+        public async Task<object> GetEmployeeByIdAsync(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
-            return _mapper.Map<EmloyeeModel>(employee);
+            var result =
+                from employee in _context.Employees
+                join duty in _context.Duties on employee.DutyId equals duty.Id
+                select new
+                {
+                    Id = employee.Id,
+                    FullName = employee.FullName,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    TypeOfEmployee = employee.TypeOfEmployee,
+                    Status = employee.Status,
+                    CoefficientsSalary = employee.CoefficientsSalary,
+                    DutyName = duty.DutyName,
+                    BasicSalary = duty.BasicSalary,
+                };
+
+            return result;
         }
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
         {
-            var employees = await _context.Employees
-                .Include(e => e.Duty)
+            var employees = await _context
+                .Employees.Include(e => e.Duty)
                 .Where(e => e.Status == status)
                 .Select(e => new EmployeeSummaryModel
                 {
@@ -88,7 +98,6 @@ namespace PBL3.Server.Repositories
 
             return employee.Id;
         }
-
 
         public async Task<EmloyeeModel> UpdateEmployeeAsync(EmloyeeModel employeeModel)
         {
