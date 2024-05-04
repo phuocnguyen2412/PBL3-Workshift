@@ -26,11 +26,11 @@ namespace PBL3.Server.Repositories
         {
             var employee = _mapper.Map<Employee>(employeeModel);
 
-            _context.Employees.Add(employee);
+            _context.Employees!.Add(employee);
             await _context.SaveChangesAsync();
 
             var username = employeeModel.Email;
-            var hashedPassword = _accountRepo.HashPassword(employeeModel.Email);
+            var hashedPassword = _accountRepo.HashPassword(employeeModel.Email!);
 
             var account = new Account
             {
@@ -46,33 +46,33 @@ namespace PBL3.Server.Repositories
 
         public async Task<List<EmployeeModel>> GetAllEmployeesAsync()
         {
-            var employees = await _context.Employees.ToListAsync();
+            var employees = await _context.Employees!.ToListAsync();
             return _mapper.Map<List<EmployeeModel>>(employees);
         }
 
         public async Task<List<EmployeeModel>> GetAllEmployeesByStatusAsync(bool status)
         {
-            var employees = await _context.Employees.Where(e => e.Status == status).ToListAsync();
+            var employees = await _context.Employees!.Where(e => e.Status == status).ToListAsync();
             return _mapper.Map<List<EmployeeModel>>(employees);
         }
 
         public async Task<EmployeeModel> GetEmployeeByIdAsync(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _context.Employees!.FindAsync(id);
             return _mapper.Map<EmployeeModel>(employee);
         }
 
         public async Task<EmployeeModel> UpdateEmployeeAsync(EmployeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
-            _context.Employees.Update(employee);
+            _context.Employees!.Update(employee);
             await _context.SaveChangesAsync();
             return employeeModel;
         }
 
         public async Task<bool> DeleteEmployeeAsync(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employee = await _context.Employees!.FindAsync(id);
             if (employee == null)
             {
                 return false;

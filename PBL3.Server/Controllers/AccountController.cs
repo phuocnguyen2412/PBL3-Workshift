@@ -16,15 +16,15 @@ namespace PBL3.Server.Controllers
             _accountRepo = accountRepo;
         }
 
-       
+
         [HttpPost("Login")]
         public async Task<ActionResult<AccountModel>> Login(AccountModel loginModel)
         {
-            if (loginModel.UserName == null) 
+            if (loginModel.UserName == null)
             {
                 return BadRequest("Username cannot be null!");
             }
-            if (loginModel.Password == null) 
+            if (loginModel.Password == null)
             {
                 return BadRequest("Password cannot be null!");
             }
