@@ -34,8 +34,15 @@ namespace PBL3.Server.Controllers
         [HttpGet("status/{status}")]
         public async Task<IActionResult> GetAllEmployeesByStatus(bool status)
         {
-            var employees = await _employeeRepo.GetAllEmployeesByStatusAsync(status);
-            return Ok(employees);
+            try
+            {
+                var employees = await _employeeRepo.GetAllEmployeesByStatusAsync(status);
+                return Ok(employees);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpPost]
@@ -43,11 +50,8 @@ namespace PBL3.Server.Controllers
         {
             try
             {
-
-                var newEmployeeId = await _employeeRepo.AddEmployeeAsync(employee);
-                var Employee = await _employeeRepo.GetEmployeeByIdAsync(newEmployeeId);
-                return Employee == null ? NotFound() : Ok(Employee);
-
+                var result = await _employeeRepo.AddEmployeeAsync(employee);
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -58,8 +62,15 @@ namespace PBL3.Server.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateEmployee(EmployeeModel employee)
         {
-            var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
-            return Ok(updatedEmployee);
+            try
+            {
+                var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
+                return Ok(updatedEmployee);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpDelete("{id}")]
