@@ -24,10 +24,6 @@ namespace PBL3.Server.Repositories
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync()
         {
-<<<<<<< HEAD
-            var employees = await _context.Employees.ToListAsync();
-            return _mapper.Map<List<EmloyeeModel>>(employees);
-=======
               var employees = await _context.Employees!
                 .Include(e => e.Duty) // Join with Duty table
                 .Select(e => new EmployeeSummaryModel
@@ -40,7 +36,7 @@ namespace PBL3.Server.Repositories
                 })
                 .ToListAsync();
             return employees;
->>>>>>> 634defdf9c6e2690b2c98df7ec03bd4b37b9219e
+
         }
 
         public async Task<EmloyeeModel> GetEmployeeByIdAsync(int id)
@@ -49,21 +45,9 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<EmloyeeModel>(employee);
         }
 
-        public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
+        public async Task<List<object>> GetAllEmployeesByStatusAsync(bool status)
         {
-            var employees = await _context.Employees
-                .Include(e => e.Duty)
-                .Where(e => e.Status == status)
-                .Select(e => new EmployeeSummaryModel
-                {
-                    Id = e.Id,
-                    FullName = e.FullName,
-                    TypeOfEmployee = e.TypeOfEmployee,
-                    Status = e.Status,
-                    DutyName = e.Duty != null ? e.Duty.DutyName : "N/A"
-                })
-                .ToListAsync();
-
+            var result = employee
             return employees;
         }
 

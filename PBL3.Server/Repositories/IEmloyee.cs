@@ -6,12 +6,12 @@ namespace PBL3.Server.Repositories
 {
     public interface IEmployee
     {
-        public Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync();
+        public Task<List<EmployeeModel>> GetAllEmployeesAsync();
 
-        public Task<EmloyeeModel> GetEmployeeByIdAsync(int id);
-        public Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status);
-        public Task<int> AddEmployeeAsync(EmloyeeModel employee);
-        public Task<EmloyeeModel> UpdateEmployeeAsync(EmloyeeModel employee);
+        public Task<EmployeeModel> GetEmployeeByIdAsync(int id);
+        public Task<List<EmployeeModel>> GetAllEmployeesByStatusAsync(bool status);
+        public Task<int> AddEmployeeAsync(EmployeeModel employee);
+        public Task<EmployeeModel> UpdateEmployeeAsync(EmployeeModel employee);
         public Task<bool> DeleteEmployeeAsync(int id);
     }
 }

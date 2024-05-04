@@ -9,11 +9,11 @@ namespace PBL3.Server.Models
         public int Id { get; set; }
         public string? ShiftName { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
-        public TimeSpan StartTime { get; set; }
+        public TimeOnly StartTime { get; set; }
 
-        public TimeSpan EndTime { get; set; }
+        public TimeOnly EndTime { get; set; }
 
         public bool Checked { get; set; }
 

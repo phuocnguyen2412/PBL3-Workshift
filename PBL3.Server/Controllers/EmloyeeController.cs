@@ -58,7 +58,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(EmloyeeModel employee)
+        public async Task<IActionResult> AddEmployee(EmployeeModel employee)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmloyee(int id, EmloyeeModel employee)
+        public async Task<IActionResult> UpdateEmloyee(int id, EmployeeModel employee)
         {
             if (id != employee.Id)
             {

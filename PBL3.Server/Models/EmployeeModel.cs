@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PBL3.Server.Models
 {
-    public class EmloyeeModel
+    public class EmployeeModel
     {
         public int Id { get; set; }
         public string? FullName { get; set; }
