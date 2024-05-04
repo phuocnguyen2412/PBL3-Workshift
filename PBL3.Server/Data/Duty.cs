@@ -1,4 +1,5 @@
 ﻿
+using PBL3.Server.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +14,5 @@ namespace PBL3.Server.Data
         [StringLength(50)]
         public string? DutyName { get; set; }
         public double BasicSalary { get; set; }
-        public ICollection<Employee>? Employees { get; set; }
     }
 }

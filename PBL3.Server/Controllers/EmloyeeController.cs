@@ -11,83 +11,43 @@ namespace PBL3.Server.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepo;
-        public EmployeeController(IEmployee employeeRepo)
 
+        public EmployeeController(IEmployee employeeRepo)
         {
             _employeeRepo = employeeRepo;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployee()
+        public async Task<IActionResult> GetAllEmployees()
         {
-            try
-            {
-                return Ok(await _employeeRepo.GetAllEmployeesAsync());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var employees = await _employeeRepo.GetAllEmployeesAsync();
+            return Ok(employees);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
-            try
-            {
-                return Ok(await _employeeRepo.GetEmployeeByIdAsync(id));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var employee = await _employeeRepo.GetEmployeeByIdAsync(id);
+            return Ok(employee);
         }
 
         [HttpGet("status/{status}")]
-        public async Task<IActionResult> GetAllEmployeeByStatus(bool status)
+        public async Task<IActionResult> GetAllEmployeesByStatus(bool status)
         {
-            try
-            {
-                return Ok(await _employeeRepo.GetAllEmployeesByStatusAsync(status));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var employees = await _employeeRepo.GetAllEmployeesByStatusAsync(status);
+            return Ok(employees);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> AddEmployee(EmployeeModel employee)
         {
-            try
-            {
-
-                var newEmployeeId = await _employeeRepo.AddEmployeeAsync(employee);
-                var Employee = await _employeeRepo.GetEmployeeByIdAsync(newEmployeeId);
-                return Employee == null ? NotFound() : Ok(Employee);
-
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var id = await _employeeRepo.AddEmployeeAsync(employee);
+            return Ok(id);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmloyee(int id, EmployeeModel employee)
+        public async Task<IActionResult> UpdateEmployee(EmployeeModel employee)
         {
-            if (id != employee.Id)
-            {
-                return BadRequest();
-            }
-
-            var existingEmployee = await _employeeRepo.GetEmployeeByIdAsync(id);
-            if (existingEmployee == null)
-            {
-                return NotFound();
-            }
-
             var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
             return Ok(updatedEmployee);
         }
@@ -95,13 +55,8 @@ namespace PBL3.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-
-            var success = await _employeeRepo.DeleteEmployeeAsync(id);
-            if (!success)
-            {
-                return NotFound();
-            }
-            return NoContent();
+            var result = await _employeeRepo.DeleteEmployeeAsync(id);
+            return Ok(result);
         }
     } 
 }

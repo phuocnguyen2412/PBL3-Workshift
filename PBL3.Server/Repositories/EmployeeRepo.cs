@@ -20,38 +20,9 @@ namespace PBL3.Server.Repositories
             _context = context;
             _mapper = mapper;
             _accountRepo = accountRepo;
-        }
+        }       
 
-        public async Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync()
-        {
-              var employees = await _context.Employees!
-                .Include(e => e.Duty) // Join with Duty table
-                .Select(e => new EmployeeSummaryModel
-                {
-                    Id = e.Id,
-                    FullName = e.FullName,
-                    TypeOfEmployee = e.TypeOfEmployee,
-                    Status = e.Status,
-                    DutyName = e.Duty.DutyName
-                })
-                .ToListAsync();
-            return employees;
-
-        }
-
-        public async Task<EmloyeeModel> GetEmployeeByIdAsync(int id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            return _mapper.Map<EmloyeeModel>(employee);
-        }
-
-        public async Task<List<object>> GetAllEmployeesByStatusAsync(bool status)
-        {
-            var result = employee
-            return employees;
-        }
-
-        public async Task<int> AddEmployeeAsync(EmloyeeModel employeeModel)
+        public async Task<int> AddEmployeeAsync(EmployeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
 
@@ -73,20 +44,39 @@ namespace PBL3.Server.Repositories
             return employee.Id;
         }
 
+        public async Task<List<EmployeeModel>> GetAllEmployeesAsync()
+        {
+            var employees = await _context.Employees.ToListAsync();
+            return _mapper.Map<List<EmployeeModel>>(employees);
+        }
 
-        public async Task<EmloyeeModel> UpdateEmployeeAsync(EmloyeeModel employeeModel)
+        public async Task<List<EmployeeModel>> GetAllEmployeesByStatusAsync(bool status)
+        {
+            var employees = await _context.Employees.Where(e => e.Status == status).ToListAsync();
+            return _mapper.Map<List<EmployeeModel>>(employees);
+        }
+
+        public async Task<EmployeeModel> GetEmployeeByIdAsync(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            return _mapper.Map<EmployeeModel>(employee);
+        }
+
+        public async Task<EmployeeModel> UpdateEmployeeAsync(EmployeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
-            _context.Entry(employee).State = EntityState.Modified;
+            _context.Employees.Update(employee);
             await _context.SaveChangesAsync();
-            return _mapper.Map<EmloyeeModel>(employee);
+            return employeeModel;
         }
 
         public async Task<bool> DeleteEmployeeAsync(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
-                throw new InvalidOperationException("Không tồn tại bản ghi");
+            {
+                return false;
+            }
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
