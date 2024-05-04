@@ -1,26 +1,27 @@
-/* eslint-disable react/prop-types */
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Flex, Modal, notification } from "antd";
+import { Button, Modal, Spin, notification } from "antd";
 import useFetch from "../../custom hook/useFetch";
 import { useState } from "react";
 import localhost from "../../Services/localhost";
+import PropsType from "prop-types";
 
 const DeleteEmployee = ({ record, setEmployee }) => {
     const [openDelete, setOpenDelete] = useState(false);
-
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const { getApi, deleteApi, loading } = useFetch(localhost);
+
     const confirmDelete = async () => {
         try {
             await deleteApi(`/Employee`, record.id);
+
             apiNotification.success({
                 message: "Thành công!",
                 description: `Bạn đã xóa thành công nhân viên`,
                 placement: "topRight",
             });
-            console.log(1);
-            setEmployee(await getApi("/employee"));
+
+            setEmployee(await getApi("/Employee"));
         } catch (err) {
             apiNotification.error({
                 message: "Thất bại!",
@@ -29,12 +30,12 @@ const DeleteEmployee = ({ record, setEmployee }) => {
             });
             console.log(err);
         }
-        setOpenDelete(false);
     };
 
     const cancelDelete = () => {
         setOpenDelete(false);
     };
+
     return (
         <>
             {contextHolderNotification}
@@ -46,19 +47,10 @@ const DeleteEmployee = ({ record, setEmployee }) => {
                 cancelText="Cancel"
                 onOk={confirmDelete}
                 okText="Yes"
-                footer={null}
             >
-                <p>Bạn có chắc chắn muốn xóa?</p>
-                <Flex justify="end">
-                    <Button
-                        danger
-                        loading={loading}
-                        onClick={confirmDelete}
-                        icon={<DeleteOutlined />}
-                    >
-                        Xác nhận xóa!
-                    </Button>
-                </Flex>
+                <Spin spinning={loading}>
+                    <p>Bạn có chắc chắn muốn xóa?</p>
+                </Spin>
             </Modal>
             <Button
                 danger
@@ -71,5 +63,8 @@ const DeleteEmployee = ({ record, setEmployee }) => {
         </>
     );
 };
-
+DeleteEmployee.propTypes = {
+    record: PropsType.object.isRequired,
+    setEmployee: PropsType.func.isRequired,
+};
 export default DeleteEmployee;

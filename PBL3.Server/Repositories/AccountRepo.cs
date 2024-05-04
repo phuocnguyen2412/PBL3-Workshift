@@ -33,6 +33,7 @@ namespace PBL3.Server.Repositories
             var hashedPassword = HashPassword(password);
 
             var result = from account in _context.Accounts
+<<<<<<< HEAD
                          join employee in _context.Employees on account.EmployeeId equals employee.Id
                          join duty in _context.Duties on employee.DutyId equals duty.Id
                          where account.UserName == employee.Email && account.Password == hashedPassword
@@ -42,6 +43,17 @@ namespace PBL3.Server.Repositories
                              dutyName = duty.DutyName,
                              FullName = employee.FullName
                          };
+=======
+                            join employee in _context.Employees on account.EmployeeId equals employee.Id
+                            join duty in _context.Duties on employee.DutyId equals duty.Id
+                            where account.UserName == employee.Email && account.Password == hashedPassword
+                            select new
+                            {
+                                EmployeeId = employee.Id,
+                                dutyName = duty.DutyName,
+                                FullName = employee.FullName
+                            };
+>>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
 
 
 

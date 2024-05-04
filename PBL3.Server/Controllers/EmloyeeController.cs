@@ -41,8 +41,23 @@ namespace PBL3.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee(EmployeeModel employee)
         {
+<<<<<<< HEAD
             var id = await _employeeRepo.AddEmployeeAsync(employee);
             return Ok(id);
+=======
+            try
+            {
+
+                var newEmployeeId = await _employeeRepo.AddEmployeeAsync(employee);
+                var Employee = await _employeeRepo.GetEmployeeByIdAsync(newEmployeeId);
+                return Employee == null ? NotFound() : Ok(Employee);
+
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Add Employee fail!");
+            }
+>>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
         }
 
         [HttpPut]
@@ -55,8 +70,21 @@ namespace PBL3.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
+<<<<<<< HEAD
             var result = await _employeeRepo.DeleteEmployeeAsync(id);
             return Ok(result);
+=======
+            try
+            {
+                var success = await _employeeRepo.DeleteEmployeeAsync(id);
+                return Ok(success);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
+>>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
         }
-    } 
+    }
 }

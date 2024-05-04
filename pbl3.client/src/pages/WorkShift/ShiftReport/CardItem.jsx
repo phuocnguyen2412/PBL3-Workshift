@@ -1,5 +1,5 @@
 import { Button, Card, Modal } from "antd";
-import React, { useState } from "react";
+import  { useState } from "react";
 
 export default function CardItem() {
     const [open, setOpen] = useState(false);

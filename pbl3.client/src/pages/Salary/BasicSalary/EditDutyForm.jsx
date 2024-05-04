@@ -1,7 +1,17 @@
-import { Button, Col, Form, Input, Row, Spin, notification } from "antd";
+import {
+    Button,
+    Col,
+    Form,
+    Input,
+    Row,
+    Select,
+    Spin,
+    notification,
+} from "antd";
 import localhost from "../../../Services/localhost";
 import useFetch from "../../../custom hook/useFetch";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 
 export default function EditDutyForm({
     form,
@@ -10,8 +20,23 @@ export default function EditDutyForm({
     setDutyList,
 }) {
     const { getApi, updateApi, loading } = useFetch(localhost);
+    const [optionsDuty, setOptionsDuty] = useState([]);
     const [api, contextHolder] = notification.useNotification();
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getApi("/Duty");
 
+            setOptionsDuty(
+                data.map((item) => {
+                    return {
+                        label: <span>{item.dutyName}</span>,
+                        value: item.id,
+                    };
+                })
+            );
+        };
+        fetchData();
+    }, []);
     const handleSubmitForm = async (e) => {
         try {
             console.log({
@@ -59,10 +84,7 @@ export default function EditDutyForm({
                                     },
                                 ]}
                             >
-                                <Input
-                                    autoFocus
-                                    placeholder="Please enter duty name"
-                                />
+                                <Select disabled options={optionsDuty} />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
