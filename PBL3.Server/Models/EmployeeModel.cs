@@ -13,7 +13,6 @@ namespace PBL3.Server.Models
         public bool? TypeOfEmployee { get; set; }
         public double CoefficientsSalary { get; set; }
         public int DutyId { get; set; }
-        public DutyModel Duty { get; set; }
         public bool? Status { get; set; }
     }
 }

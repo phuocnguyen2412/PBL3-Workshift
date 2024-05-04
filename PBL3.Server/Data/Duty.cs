@@ -15,9 +15,5 @@ namespace PBL3.Server.Data
         [StringLength(50)]
         public string? DutyName { get; set; }
         public double BasicSalary { get; set; }
-<<<<<<< HEAD
-=======
-     
->>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
     }
 }

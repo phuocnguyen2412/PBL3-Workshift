@@ -44,6 +44,20 @@ namespace PBL3.Server.Repositories
             return employee.Id;
         }
 
+        public async Task<Employee> DeleteEmployeeAsync(int id)
+        {
+            var employee = await _context.Employees!.FindAsync(id);
+            if (employee == null)
+            {
+                return null;
+            }
+
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+
+            return employee;
+        }
+
         public async Task<List<EmployeeModel>> GetAllEmployeesAsync()
         {
             var employees = await _context.Employees!.ToListAsync();
@@ -56,31 +70,25 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<List<EmployeeModel>>(employees);
         }
 
-        public async Task<EmployeeModel> GetEmployeeByIdAsync(int id)
+        public async Task<List<EmployeeModel>> GetEmployeeByIdAsync(int id)
         {
             var employee = await _context.Employees!.FindAsync(id);
-            return _mapper.Map<EmployeeModel>(employee);
+            if (employee == null)
+            {
+                return null;
+            }
+
+            return new List<EmployeeModel> { _mapper.Map<EmployeeModel>(employee) };
         }
 
         public async Task<EmployeeModel> UpdateEmployeeAsync(EmployeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
-            _context.Employees!.Update(employee);
+
+            _context.Entry(employee).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
             return employeeModel;
-        }
-
-        public async Task<bool> DeleteEmployeeAsync(int id)
-        {
-            var employee = await _context.Employees!.FindAsync(id);
-            if (employee == null)
-            {
-                return false;
-            }
-
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return true;
         }
     }
 }
