@@ -34,11 +34,9 @@ namespace PBL3.Server.Controllers
                 var newEmployeeId = await _employeeService.AddEmployee(employee);
                 return CreatedAtAction(nameof(GetEmloyee), new { id = newEmployeeId }, employee);
             }
-<<<<<<< Updated upstream
-            catch
-=======
+
             catch 
->>>>>>> Stashed changes
+
             {
                 return BadRequest();
             }

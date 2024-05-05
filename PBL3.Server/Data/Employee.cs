@@ -8,7 +8,7 @@ namespace PBL3.Server.Data
     public class Employee
     {
         [Key]
-        public int EmployeeId { get; set; }
+        public int Id { get; set; }
 
         [MaxLength(50)]
     

@@ -25,12 +25,8 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<List<EmloyeeModel>>(employees);
         }
 
-        public async Task<EmloyeeModel> GetEmployeeById(int id)
+        public async Task<object> GetEmployeeById(int id)
         {
-<<<<<<< Updated upstream
-            var employee = await _context.Employees!.FindAsync(id);
-            return _mapper.Map<EmloyeeModel>(employee);
-=======
             var result = from employee in _context.Employees
                          join duty in _context.Duties on employee.DutyId equals duty.Id
                          select new 
@@ -47,7 +43,6 @@ namespace PBL3.Server.Repositories
                          };
                            
             return await result.FirstOrDefaultAsync();
->>>>>>> Stashed changes
         }
 
         public async Task<int> AddEmployee(EmloyeeModel employeeModel)
@@ -72,13 +67,8 @@ namespace PBL3.Server.Repositories
         {
             var employee = await _context.Employees!.FindAsync(id);
             if (employee == null)
-<<<<<<< Updated upstream
-            {
-                return false;
-            }
-=======
+
             throw new InvalidOperationException("Không tồn tại bản ghi");
->>>>>>> Stashed changes
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Models;
 using PBL3.Server.Repositories;
 
 namespace PBL3.Server.Controllers
@@ -14,28 +15,7 @@ namespace PBL3.Server.Controllers
         {
             _accountRepo = repo;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetAllAccounts()
-        {
-            try
-            {
-                return Ok(await _accountRepo.GetAllAccountsAsync());
-            }
-            catch 
-            {
-                return BadRequest();
-            }
-        }
 
-<<<<<<< Updated upstream
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAccountById(int id) 
-        {
-            var account = await _accountRepo.GetAccountAsync(id);
-            return account == null ? NotFound() : Ok(account);
-        }
-
-=======
         [HttpPost("Login")]
         public async Task<ActionResult<AccountModel>> Login(AccountModel model)
         {
@@ -80,6 +60,5 @@ namespace PBL3.Server.Controllers
                 return NotFound("Employee not found or old password is incorrect!");
             }
         }
->>>>>>> Stashed changes
     }
 }
