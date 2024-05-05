@@ -62,5 +62,6 @@ namespace PBL3.Server.Repositories
             var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
+
     }
 }
