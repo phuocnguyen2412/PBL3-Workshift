@@ -1,5 +1,10 @@
+<<<<<<< Updated upstream
 ﻿{
   "$schema": "https://json.schemastore.org/launchsettings.json",
+=======
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+>>>>>>> Stashed changes
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,

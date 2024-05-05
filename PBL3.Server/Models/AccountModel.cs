@@ -6,6 +6,7 @@ namespace PBL3.Server.Models
 {
     public class AccountModel
     {
+<<<<<<< Updated upstream
         public int Id { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
@@ -13,5 +14,9 @@ namespace PBL3.Server.Models
         public virtual Duty? Duty { get; set; }
         public int EmployeeId { get; set; }
         public virtual Employee? Employee { get; set; }
+=======
+        public string? UserName { get; set; }
+        public string? Password { get; set; }
+>>>>>>> Stashed changes
     }
 }
