@@ -13,5 +13,6 @@ namespace PBL3.Server.Repositories
         public Task<string> AddEmployeeAsync(EmployeeModel employee);
         public Task<object> UpdateEmployeeAsync(EmployeeModel employee);
         public Task<string> DeleteEmployeeAsync(int id);
+        public Task<object> SearchEmployeeByStringAsync(string searchString);
     }
 }

@@ -20,15 +20,29 @@ namespace PBL3.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllEmployees()
         {
-            var employees = await _employeeRepo.GetAllEmployeesAsync();
-            return Ok(employees);
+            try
+            {
+                var employees = await _employeeRepo.GetAllEmployeesAsync();
+                return Ok(employees);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
-            var employee = await _employeeRepo.GetEmployeeByIdAsync(id);
-            return Ok(employee);
+            try
+            {
+                var employee = await _employeeRepo.GetEmployeeByIdAsync(id);
+                return Ok(employee);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpGet("status/{status}")]
@@ -55,7 +69,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Add Employee fail!");
+                return BadRequest(e);
             }
         }
 
@@ -80,6 +94,25 @@ namespace PBL3.Server.Controllers
             {
                 var success = await _employeeRepo.DeleteEmployeeAsync(id);
                 return Ok(success);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchEmployees(string searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return BadRequest("Search string cannot be empty.");
+            }
+
+            try
+            {
+                var employees = await _employeeRepo.SearchEmployeeByStringAsync(searchString);
+                return Ok(employees);
             }
             catch (Exception e)
             {
