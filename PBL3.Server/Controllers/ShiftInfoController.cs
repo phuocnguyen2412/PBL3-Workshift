@@ -53,8 +53,8 @@ namespace PBL3.Server.Controllers
         {
             try
             {
-                var id = await _shiftInfoRepo.AddShiftInfoAsync(shiftInfo);
-                return id;
+                var newShiftInfo = await _shiftInfoRepo.AddShiftInfoAsync(shiftInfo);
+                return newShiftInfo.Id;
             }
             catch (Exception e)
             {
