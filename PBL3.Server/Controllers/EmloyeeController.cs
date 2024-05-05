@@ -68,13 +68,9 @@ namespace PBL3.Server.Controllers
                 return Employee == null ? NotFound() : Ok(Employee);
 
             }
-<<<<<<< HEAD
 
             catch 
 
-=======
-            catch (Exception e)
->>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
             {
                 return BadRequest("Add Employee fail!");
             }

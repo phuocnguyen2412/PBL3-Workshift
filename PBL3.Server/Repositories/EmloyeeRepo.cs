@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -38,26 +39,6 @@ namespace PBL3.Server.Repositories
             return employees;
         }
 
-<<<<<<< HEAD
-        public async Task<object> GetEmployeeById(int id)
-        {
-            var result = from employee in _context.Employees
-                         join duty in _context.Duties on employee.DutyId equals duty.Id
-                         select new 
-                         {
-                             Id = employee.Id,
-                             FullName = employee.FullName,
-                             Email = employee.Email,
-                             PhoneNumber = employee.PhoneNumber,
-                             TypeOfEmployee = employee.TypeOfEmployee,
-                             Status = employee.Status,
-                             CoefficientsSalary = employee.CoefficientsSalary,
-                             DutyName = duty.DutyName,
-                             BasicSalary = duty.BasicSalary,
-                         };
-                           
-            return await result.FirstOrDefaultAsync();
-=======
         public async Task<object> GetEmployeeByIdAsync(int id)
         {
             var result =
@@ -77,8 +58,7 @@ namespace PBL3.Server.Repositories
                     BasicSalary = duty.BasicSalary,
                 };
 
-            return result.FirstOrDefault();;
->>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
+            return result.FirstOrDefault(); ;
         }
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
@@ -133,12 +113,7 @@ namespace PBL3.Server.Repositories
         {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
-<<<<<<< HEAD
-
-            throw new InvalidOperationException("Không tồn tại bản ghi");
-=======
                 throw new InvalidOperationException("Không tồn tại bản ghi");
->>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
