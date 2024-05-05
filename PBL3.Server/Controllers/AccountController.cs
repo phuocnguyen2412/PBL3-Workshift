@@ -18,25 +18,49 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPost("Login")]
-        public async Task<ActionResult<AccountModel>> Login(AccountModel loginModel)
+        public async Task<ActionResult<AccountModel>> Login(AccountModel model)
         {
-            if (loginModel.UserName == null)
+            if (string.IsNullOrEmpty(model.UserName)) 
             {
-                return BadRequest("Username cannot be null!");
-            }
-            if (loginModel.Password == null)
-            {
-                return BadRequest("Password cannot be null!");
+                return BadRequest("Username cannot be empty!");
             }
 
-            var account = await _accountRepo.GetAccountByUserNameAndPassword(loginModel.UserName, loginModel.Password);
+            if (string.IsNullOrEmpty(model.Password)) 
+            {
+                return BadRequest("Password cannot be empty!");
+            }
+
+            var account = await _accountRepo.GetAccountByUserNameAndPassword(model);
 
             if (account == null)
             {
-                return NotFound("Tai khoan hoac mat khau khong dung!");
+                return NotFound("UserName or Password is incorrect, please try again!");
             }
 
             return Ok(account);
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult<bool>> ChangePassword(int Id, string password, string newPassword)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return BadRequest("Password cannot be empty!");
+            }
+            if (string.IsNullOrEmpty(newPassword))
+            {
+                return BadRequest("New Password cannot be empty!");
+            }
+            var success = await _accountRepo.ChangePassword(Id, password, newPassword);
+
+            if (success)
+            {
+                return Ok("Change password successfully!");
+            }
+            else
+            {
+                return NotFound("Employee not found or old password is incorrect!");
+            }
         }
     }
 }

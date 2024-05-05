@@ -6,7 +6,8 @@ namespace PBL3.Server.Repositories
     public interface IAccount
     {
         Task AddAccountAsync(AccountModel account);
-        Task<object> GetAccountByUserNameAndPassword(string userName, string password);
+        Task<object> GetAccountByUserNameAndPassword(AccountModel model);
         string HashPassword(string password);
+        Task<bool> ChangePassword(int Id, string password, string newPassword);
     }
 }
