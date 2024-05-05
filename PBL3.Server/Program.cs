@@ -15,6 +15,9 @@ builder.Services.AddCors(option => option.AddDefaultPolicy(policy=>policy.AllowA
 builder.Services.AddDbContext<MyDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("PBL3")));
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<IEmployee, EmployeeRepo>();
+builder.Services.AddScoped<IShiftInfo, ShiftInfoRepo>();
+builder.Services.AddScoped<IDuty, DutyRepo>();
+builder.Services.AddScoped<IAccount, AccountRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,11 +26,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseCors();
 app.Run();

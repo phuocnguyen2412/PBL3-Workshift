@@ -10,47 +10,107 @@ namespace PBL3.Server.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployee _employeeService;
-        public EmployeeController(IEmployee employeeService)
+        private readonly IEmployee _employeeRepo;
+        public EmployeeController(IEmployee employeeRepo)
+
         {
-            _employeeService = employeeService;
+            _employeeRepo = employeeRepo;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllEmployee()
         {
-            return Ok(await _employeeService.GetEmployee());
+            try
+            {
+                return Ok(await _employeeRepo.GetAllEmployeesAsync());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
+
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmloyee(int id)
+        public async Task<IActionResult> GetEmployeeById(int id)
         {
-            var Employee = await _employeeService.GetEmployeeById(id);
-            return Employee == null? NotFound() : Ok(Employee);
+            try
+            {
+                return Ok(await _employeeRepo.GetEmployeeByIdAsync(id));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
+
+        [HttpGet("status/{status}")]
+        public async Task<IActionResult> GetAllEmployeeByStatus(bool status)
+        {
+            try
+            {
+                return Ok(await _employeeRepo.GetAllEmployeesByStatusAsync(status));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> AddEmployee(EmloyeeModel employee)
         {
             try
             {
-                var newEmployeeId = await _employeeService.AddEmployee(employee);
-                return CreatedAtAction(nameof(GetEmloyee), new { id = newEmployeeId }, employee);
+
+                var newEmployeeId = await _employeeRepo.AddEmployeeAsync(employee);
+                var Employee = await _employeeRepo.GetEmployeeByIdAsync(newEmployeeId);
+                return Employee == null ? NotFound() : Ok(Employee);
+
             }
+<<<<<<< HEAD
 
             catch 
 
+=======
+            catch (Exception e)
+>>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
             {
-                return BadRequest();
+                return BadRequest("Add Employee fail!");
             }
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmloyee(EmloyeeModel employee)
+        public async Task<IActionResult> UpdateEmloyee(int id, EmloyeeModel employee)
         {
-            return Ok(await _employeeService.UpdateEmployee(employee));
+            if (id != employee.Id)
+            {
+                return BadRequest();
+            }
+
+            var existingEmployee = await _employeeRepo.GetEmployeeByIdAsync(id);
+            if (existingEmployee == null)
+            {
+                return NotFound();
+            }
+
+            var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
+            return Ok(updatedEmployee);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
-            return Ok(await _employeeService.DeleteEmployee(id));
+            try
+            {
+                var success = await _employeeRepo.DeleteEmployeeAsync(id);
+                return Ok(success);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+
         }
     }
 }

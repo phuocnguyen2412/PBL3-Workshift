@@ -1,5 +1,17 @@
+import { useState } from "react";
+
+import TableDuty from "./TableDuty";
+
+
+
 const BasicSalary = () => {
-    return <div>BasicSalary</div>;
+    const [dutyList, setDutyList] = useState([]);
+
+    return (
+        <div>
+            <TableDuty dutyList={dutyList} setDutyList={setDutyList} />
+        </div>
+    );
 };
 
 export default BasicSalary;

@@ -1,4 +1,11 @@
+import ChangePassword from "../pages/ChangePassword";
 import Employee from "../pages/Employee";
+import EmployeeProfie from "../pages/EmployeeProfie";
+import EmployeeBonusSalary from "../pages/EmployeeProfie/EmployeeBonusSalary";
+import EmployeeSalaryHistory from "../pages/EmployeeProfie/EmployeeSalaryHistory";
+import EmployeeShiftChecking from "../pages/EmployeeProfie/EmployeeShiftChecking";
+import EmployeeShiftReport from "../pages/EmployeeProfie/EmployeeShiftReport";
+import Home from "../pages/Home";
 import Login from "../pages/Login";
 import MainLayout from "../pages/MainLayout";
 import BasicSalary from "../pages/Salary/BasicSalary";
@@ -14,6 +21,14 @@ const routes = [
         path: "/",
         element: <MainLayout />,
         children: [
+            {
+                path: "/home",
+                element: <Home />,
+            },
+            {
+                path: "/employee/:id",
+                element: <EmployeeProfie />,
+            },
             {
                 path: "/employee",
                 element: <Employee />,
@@ -49,6 +64,26 @@ const routes = [
                         element: <SalaryHistory />,
                     },
                 ],
+            },
+            {
+                path: "/change-password",
+                element: <ChangePassword />,
+            },
+            {
+                path: "/bonus_salary",
+                element: <EmployeeBonusSalary />,
+            },
+            {
+                path: "/salary_history",
+                element: <EmployeeSalaryHistory />,
+            },
+            {
+                path: "/shift_checking",
+                element: <EmployeeShiftChecking />,
+            },
+            {
+                path: "/shift_report",
+                element: <EmployeeShiftReport />,
             },
         ],
     },

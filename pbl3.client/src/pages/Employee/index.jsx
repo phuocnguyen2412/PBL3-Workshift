@@ -1,65 +1,59 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import AddEmployee from "./AddEmployee";
 import TabEmployee from "./TabEmployee";
 import TableEmployee from "./TableEmployee";
-import { Modal, Form, Button, notification } from "antd";
-import InputEmployeeForm from "../../components/InputEmployee/InputEmployeeForm";
-import { DeleteColumnOutlined, SettingOutlined } from "@ant-design/icons";
-function handleTabCick(id) {
-    console.log(id);
-    api.success({
-        message: "Thành công!",
-        description: "Bạn đã thêm nhân viên thành công",
-    });
-    api.error({
-        message: "Thất bại!",
-        description: "Bạn đã thêm nhân viên thất bại",
-    });
-}
-function handleSubmitForm(e) {
-    console.log(e);
-}
+import useFetch from "../../custom hook/useFetch";
+import localhost from "../../Services/localhost";
+import { Spin } from "antd";
+
 const Employee = () => {
-    const [openDrawer, setOpenDrawer] = useState(false);
-    const [employee, setEmployee] = useState(
-        [
-            {
-                FullName: "234",
-                Email: "123123123",
-                PhoneNumber: "123",
-                TypeOfEmployee: "123123",
-                CoeficientsSalary: "123123",
-                Duty: "1231312",
-            },
-        ].map((item) => {
-            return {
-                ...item,
-                change: (
-                    <Button shape="circle" icon={<DeleteColumnOutlined />} />
-                ),
+    const { getApi, loading } = useFetch(localhost);
 
-                delete: <Button shape="circle" icon={<SettingOutlined />} />,
-            };
-        })
-    );
-    const [api, contextHolder] = notification.useNotification();
+    const [employee, setEmployee] = useState([]);
+    async function handleTabCick(id) {
+        try {
+            let result;
+            if (id === "Tất cả") {
+                result = await getApi("/Employee");
+            } else {
+                result = await getApi(`/Employee/status/${id}`);
+            }
 
-    useEffect(() => {});
+            setEmployee(result);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    const [open, setOpen] = useState(false);
+
+    const showDrawer = () => {
+        setOpen(true);
+    };
+
+    const onClose = () => {
+        setOpen(false);
+    };
     return (
-        <div>
-            <InputEmployeeForm
-                open={openDrawer}
-                setOpenDrawer={setOpenDrawer}
-            />
+        <Spin spinning={loading}>
+            <div>
+                <TabEmployee
+                    handleTabCick={handleTabCick}
+                    handleOpenDrawer={showDrawer}
+                />
+                <AddEmployee
+                    open={open}
+                    onClose={onClose}
+                    setEmployee={setEmployee}
+                />
 
-            <TabEmployee
-                handleTabCick={handleTabCick}
-                handleOpenDrawer={() => {
-                    console.log(1);
-                    setOpenDrawer(true);
-                }}
-            />
-            <TableEmployee data={employee} />
-        </div>
+                <TableEmployee
+                    data={employee}
+                    setEmployee={setEmployee}
+                    handleOpenDrawer={showDrawer}
+                />
+            </div>
+        </Spin>
     );
 };
 

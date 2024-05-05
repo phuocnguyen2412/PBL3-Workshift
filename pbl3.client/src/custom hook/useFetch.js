@@ -1,9 +1,10 @@
 import { useState } from "react";
 
 export default function useFetch(baseUrl) {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     function getApi(url) {
+        setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url)
                 .then((response) => response.json())
@@ -23,6 +24,7 @@ export default function useFetch(baseUrl) {
     }
 
     function postApi(url, body) {
+        setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url, {
                 method: "post",
@@ -46,9 +48,10 @@ export default function useFetch(baseUrl) {
                 });
         });
     }
-    function updateApi(url, body, id) {
+    function updateApi(url, body) {
+        setLoading(true);
         return new Promise((resolve, reject) => {
-            fetch(baseUrl + url + `/${id}`, {
+            fetch(baseUrl + url, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -71,6 +74,7 @@ export default function useFetch(baseUrl) {
         });
     }
     function deleteApi(url, id) {
+        setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url + `/${id}`, {
                 method: "delete",

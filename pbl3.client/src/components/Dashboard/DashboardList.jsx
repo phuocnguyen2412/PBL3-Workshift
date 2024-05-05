@@ -8,10 +8,22 @@ import {
     DollarOutlined,
     AccountBookOutlined,
     CheckCircleOutlined,
+    SafetyOutlined,
+    CloseOutlined,
+    HomeOutlined,
+    VideoCameraOutlined,
+    UploadOutlined,
+    SmileOutlined,
+    SolutionOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 export const AdminList = [
+    {
+        key: "/home",
+        icon: <HomeOutlined />,
+        label: <Link to="/home">Home</Link>,
+    },
     {
         key: "/employee",
         icon: <UserOutlined />,
@@ -60,38 +72,56 @@ export const AdminList = [
             },
         ],
     },
+    {
+        key: "/change-password",
+        icon: <SafetyOutlined />,
+        label: <Link to="/change-password">Change Password</Link>,
+    },
+    {
+        key: "/login",
+        icon: <CloseOutlined />,
+        label: <Link to="/login">Logout</Link>,
+    },
 ];
-// export const Employee = [
-//     {
-//         key: "1",
-//         icon: <UserOutlined />,
-//         label: <Link to="./employee">My information</Link>,
-//     },
-//     {
-//         key: "2",
-//         icon: <VideoCameraOutlined />,
-//         label: <Link to="./workshift">Work Shift</Link>,
-//     },
-//     {
-//         key: "3",
-//         icon: <UploadOutlined />,
-//         label: "nav 3",
-//     },
-// ];
-// export const LeadList = [
-//     {
-//         key: "1",
-//         icon: <UserOutlined />,
-//         label: <Link to="./employee">Employee</Link>,
-//     },
-//     {
-//         key: "2",
-//         icon: <VideoCameraOutlined />,
-//         label: <Link to="./workshift">Work Shift</Link>,
-//     },
-//     {
-//         key: "3",
-//         icon: <UploadOutlined />,
-//         label: "nav 3",
-//     },
-// ];
+export const Employee = [
+    {
+        key: "1",
+        icon: <UserOutlined />,
+        label: <Link to="./home/">Home</Link>,
+    },
+    {
+        key: "2",
+        icon: <VideoCameraOutlined />,
+        label: <Link to="./work_shift/shift_information">Work Shift</Link>,
+    },
+    {
+        key: "4",
+        icon: <SmileOutlined />,
+        label: <Link to="./bonus_salary">Bonus salary</Link>,
+    },
+    {
+        key: "5",
+        icon: <DollarOutlined />,
+        label: <Link to="./salary_history">Salary history</Link>,
+    },
+    {
+        key: "6",
+        icon: <SolutionOutlined />,
+        label: <Link to="./shift_checking">Shift checking</Link>,
+    },
+    {
+        key: "7",
+        icon: <SolutionOutlined />,
+        label: <Link to="./shift_report">Shift reports</Link>,
+    },
+    {
+        key: "/change-password",
+        icon: <SafetyOutlined />,
+        label: <Link to="/change-password">Change Password</Link>,
+    },
+    {
+        key: "/login",
+        icon: <CloseOutlined />,
+        label: <Link to="/login">Logout</Link>,
+    },
+];

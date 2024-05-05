@@ -4,9 +4,9 @@ export const AccountContext = createContext();
 export const AccountProvider = (props) => {
     const [account, setAccount] = useState({});
     const value = {
-        account,
-        onChange: function (account) {
-            setAccount(account);
+        account: account,
+        onChange: function (newAccount) {
+            setAccount(newAccount);
         },
     };
     return (
