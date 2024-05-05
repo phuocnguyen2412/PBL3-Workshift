@@ -99,6 +99,5 @@ namespace PBL3.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
-
     }
 }
