@@ -11,22 +11,23 @@ namespace PBL3.Server.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepo;
-        public EmployeeController(IEmployee employeeRepo)
 
+        public EmployeeController(IEmployee employeeRepo)
         {
             _employeeRepo = employeeRepo;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployee()
+        public async Task<IActionResult> GetAllEmployees()
         {
             try
             {
-                return Ok(await _employeeRepo.GetAllEmployeesAsync());
+                var employees = await _employeeRepo.GetAllEmployeesAsync();
+                return Ok(employees);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(e);
             }
         }
 
@@ -35,63 +36,55 @@ namespace PBL3.Server.Controllers
         {
             try
             {
-                return Ok(await _employeeRepo.GetEmployeeByIdAsync(id));
+                var employee = await _employeeRepo.GetEmployeeByIdAsync(id);
+                return Ok(employee);
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(e);
             }
         }
 
         [HttpGet("status/{status}")]
-        public async Task<IActionResult> GetAllEmployeeByStatus(bool status)
+        public async Task<IActionResult> GetAllEmployeesByStatus(bool status)
         {
             try
             {
-                return Ok(await _employeeRepo.GetAllEmployeesByStatusAsync(status));
+                var employees = await _employeeRepo.GetAllEmployeesByStatusAsync(status);
+                return Ok(employees);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(e);
             }
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(EmloyeeModel employee)
+        public async Task<IActionResult> AddEmployee(EmployeeModel employee)
         {
             try
             {
-
-                var newEmployeeId = await _employeeRepo.AddEmployeeAsync(employee);
-                var Employee = await _employeeRepo.GetEmployeeByIdAsync(newEmployeeId);
-                return Employee == null ? NotFound() : Ok(Employee);
-
+                var result = await _employeeRepo.AddEmployeeAsync(employee);
+                return Ok(result);
             }
-
-            catch 
-
+            catch (Exception e)
             {
-                return BadRequest("Add Employee fail!");
+                return BadRequest(e);
             }
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmloyee(int id, EmloyeeModel employee)
+        public async Task<IActionResult> UpdateEmployee(EmployeeModel employee)
         {
-            if (id != employee.Id)
+            try
             {
-                return BadRequest();
+                var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
+                return Ok(updatedEmployee);
             }
-
-            var existingEmployee = await _employeeRepo.GetEmployeeByIdAsync(id);
-            if (existingEmployee == null)
+            catch(Exception e)
             {
-                return NotFound();
+                return BadRequest(e);
             }
-
-            var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
-            return Ok(updatedEmployee);
         }
 
         [HttpDelete("{id}")]
@@ -106,7 +99,25 @@ namespace PBL3.Server.Controllers
             {
                 return BadRequest(e);
             }
+        }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchEmployees(string searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return BadRequest("Search string cannot be empty.");
+            }
+
+            try
+            {
+                var employees = await _employeeRepo.SearchEmployeeByStringAsync(searchString);
+                return Ok(employees);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

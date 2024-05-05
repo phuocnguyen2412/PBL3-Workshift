@@ -15,6 +15,8 @@ namespace PBL3.Server.Controllers
         {
             _accountRepo = accountRepo;
         }
+
+
         [HttpPost("Login")]
         public async Task<ActionResult<AccountModel>> Login(AccountModel model)
         {
@@ -22,6 +24,7 @@ namespace PBL3.Server.Controllers
             {
                 return BadRequest("Username cannot be empty!");
             }
+
             if (string.IsNullOrEmpty(model.Password)) 
             {
                 return BadRequest("Password cannot be empty!");

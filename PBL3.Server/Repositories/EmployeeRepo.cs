@@ -1,0 +1,243 @@
+﻿using PBL3.Server.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using PBL3.Server.Data;
+using Microsoft.AspNetCore.Mvc;
+using System;
+
+namespace PBL3.Server.Repositories
+{
+    public class EmployeeRepo : IEmployee
+    {
+        private readonly MyDbContext _context;
+        private readonly IMapper _mapper;
+        private readonly IAccount _accountRepo;
+
+        public EmployeeRepo(MyDbContext context, IMapper mapper, IAccount accountRepo)
+        {
+            _context = context;
+            _mapper = mapper;
+            _accountRepo = accountRepo;
+        }
+
+        public async Task<object> AddEmployeeAsync(EmployeeModel employeeModel)
+        {
+            if (employeeModel == null)
+            {
+                return new { Error = "Employee data cannot be empty." };
+            }
+
+            try
+            {
+                var employee = _mapper.Map<Employee>(employeeModel);
+
+                _context.Employees!.Add(employee);
+                await _context.SaveChangesAsync();
+
+                var username = employeeModel.Email;
+                var hashedPassword = _accountRepo.HashPassword(employeeModel.Email!);
+
+                var account = new Account
+                {
+                    UserName = username,
+                    Password = hashedPassword,
+                    EmployeeId = employee.Id
+                };
+                _context.Accounts.Add(account);
+                await _context.SaveChangesAsync();
+
+                return new { Message = "Add employee successfully!" };
+            }
+            catch (Exception ex)
+            {
+                return new { Error = $"Failed to add employee: {ex.Message}" };
+            }
+        }
+
+
+
+
+        public async Task<object> DeleteEmployeeAsync(int id)
+        {
+            try
+            {
+                var employee = await _context.Employees.FindAsync(id);
+                if (employee == null)
+                {
+                    return new { Message = "Employee not found!" };
+                }
+
+                _context.Employees.Remove(employee);
+                await _context.SaveChangesAsync();
+
+                return new { Message = "Delete employee successfully!" };
+            }
+            catch (Exception ex)
+            {
+                return new { Error = $"Failed to delete employee: {ex.Message}" };
+            }
+        }
+
+
+        public async Task<object> GetAllEmployeesAsync()
+        {
+            try
+            {
+                var result = from employee in _context.Employees
+                             join duty in _context.Duties on employee.DutyId equals duty.Id
+                             select new
+                             {
+                                 Id = employee.Id,
+                                 FullName = employee.FullName,
+                                 Email = employee.Email,
+                                 PhoneNumber = employee.PhoneNumber,
+                                 TypeOfEmployee = employee.TypeOfEmployee,
+                                 CoefficientsSalary = employee.CoefficientsSalary,
+                                 Status = employee.Status,
+                                 DutyName = duty.DutyName
+                             };
+
+                return await result.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve all employees: {ex.Message}", ex);
+            }
+        }
+
+
+        public async Task<object> GetAllEmployeesByStatusAsync(bool status)
+        {
+            try
+            {
+                var result = from employee in _context.Employees
+                             join duty in _context.Duties on employee.DutyId equals duty.Id
+                             where employee.Status == status
+                             select new
+                             {
+                                 Id = employee.Id,
+                                 FullName = employee.FullName,
+                                 Email = employee.Email,
+                                 PhoneNumber = employee.PhoneNumber,
+                                 TypeOfEmployee = employee.TypeOfEmployee,
+                                 CoefficientsSalary = employee.CoefficientsSalary,
+                                 //DutyId = employee.DutyId,
+                                 Status = employee.Status,
+                                 DutyName = duty.DutyName
+                             };
+
+                return await result.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve all employees by status: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<object> GetEmployeeByIdAsync(int id)
+        {
+            try
+            {
+                var result = from employee in _context.Employees
+                             join duty in _context.Duties on employee.DutyId equals duty.Id
+                             where employee.Id == id
+                             select new
+                             {
+                                 Id = employee.Id,
+                                 FullName = employee.FullName,
+                                 Email = employee.Email,
+                                 PhoneNumber = employee.PhoneNumber,
+                                 TypeOfEmployee = employee.TypeOfEmployee,
+                                 CoefficientsSalary = employee.CoefficientsSalary,
+                                 Status = employee.Status,
+                                 DutyName = duty.DutyName
+                             };
+
+                var employeeInfo = await result.FirstOrDefaultAsync();
+                if (employeeInfo == null)
+                {
+                    return new { Message = "Employee not found!" };
+                }
+
+                return employeeInfo;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to retrieve employee by ID: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<object> UpdateEmployeeAsync(EmployeeModel employeeModel)
+        {
+            try
+            {
+                var existingEmployee = await _context.Employees.FindAsync(employeeModel.Id);
+                if (existingEmployee == null)
+                {
+                    return new { Message = "Employee not found!" };
+                }
+
+
+                _mapper.Map(employeeModel, existingEmployee);
+
+
+                _context.Employees.Attach(existingEmployee);
+                _context.Entry(existingEmployee).State = EntityState.Modified;
+
+
+                _context.Entry(existingEmployee).Property(x => x.Id).IsModified = false;
+
+                await _context.SaveChangesAsync();
+
+                return new { Message = "Update employee successfully!" };
+            }
+            catch (DbUpdateException ex)
+            {
+                return new { Error = $"Failed to update employee due to database constraints: {ex.Message}" };
+            }
+            catch (Exception ex)
+            {
+                return new { Error = $"Failed to update employee: {ex.Message}" };
+            }
+        }
+
+
+
+        public async Task<object> SearchEmployeeByStringAsync(string searchString)
+        {
+            try
+            {
+                var employees = from employee in _context.Employees
+                                join duty in _context.Duties on employee.DutyId equals duty.Id
+                                where EF.Functions.Like(employee.FullName, $"%{searchString}%")
+                                select new
+                                {
+                                    Id = employee.Id,
+                                    FullName = employee.FullName,
+                                    Email = employee.Email,
+                                    PhoneNumber = employee.PhoneNumber,
+                                    TypeOfEmployee = employee.TypeOfEmployee,
+                                    CoefficientsSalary = employee.CoefficientsSalary,
+                                    Status = employee.Status,
+                                    DutyName = duty.DutyName
+                                };
+
+                var employeeList = await employees.ToListAsync();
+
+                if (employeeList.Count == 0)
+                {
+                    return new { Message = "No employees found matching the search criteria." };
+                }
+
+                return employeeList;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to search employees by string: {ex.Message}", ex);
+            }
+        }
+
+    }
+}

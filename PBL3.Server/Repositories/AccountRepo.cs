@@ -36,7 +36,7 @@ namespace PBL3.Server.Repositories
                              EmployeeId = employee.Id,
                              dutyName = duty.DutyName
                          };
-            return await result.FirstOrDefaultAsync(); 
+            return await result.FirstOrDefaultAsync();
         }
 
         public async Task<bool> ChangePassword(int Id, string password, string newPassword)
@@ -62,5 +62,6 @@ namespace PBL3.Server.Repositories
             var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
+
     }
 }

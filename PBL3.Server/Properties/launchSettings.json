@@ -1,15 +1,5 @@
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
-=======
 {
   "$schema": "http://json.schemastore.org/launchsettings.json",
->>>>>>> Stashed changes
-=======
-{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
->>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -39,3 +29,19 @@
     }
   }
 }
+<<<<<<< HEAD
+=======
+{
+  "profiles": {
+    "PBL3.Server": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:59631;http://localhost:59632"
+    }
+  }
+}
+=======
+>>>>>>> 45ecc88b756384382666babbfc339c40779dc94e
