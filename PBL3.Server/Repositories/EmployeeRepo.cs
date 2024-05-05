@@ -152,7 +152,8 @@ namespace PBL3.Server.Repositories
                                  TypeOfEmployee = employee.TypeOfEmployee,
                                  CoefficientsSalary = employee.CoefficientsSalary,
                                  Status = employee.Status,
-                                 DutyName = duty.DutyName
+                                 DutyName = duty.DutyName,
+                                 BasicSalary = duty.BasicSalary,
                              };
 
                 var employeeInfo = await result.FirstOrDefaultAsync();

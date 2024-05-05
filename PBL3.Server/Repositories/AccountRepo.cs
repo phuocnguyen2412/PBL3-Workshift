@@ -33,6 +33,7 @@ namespace PBL3.Server.Repositories
                          where account.UserName == model.UserName && account.Password == hashedPassword
                          select new
                          {
+                            fullName = employee.FullName,
                              EmployeeId = employee.Id,
                              dutyName = duty.DutyName
                          };
