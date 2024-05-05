@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -57,7 +58,7 @@ namespace PBL3.Server.Repositories
                     BasicSalary = duty.BasicSalary,
                 };
 
-            return result.FirstOrDefault();;
+            return result.FirstOrDefault(); ;
         }
 
         public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
