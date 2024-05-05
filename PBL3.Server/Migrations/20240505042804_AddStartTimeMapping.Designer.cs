@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBL3.Server.Data;
 
@@ -11,9 +12,10 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240505042804_AddStartTimeMapping")]
+    partial class AddStartTimeMapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +49,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Account", (string)null);
+                    b.ToTable("Account");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
@@ -71,7 +73,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("BonusSalaryHistory", (string)null);
+                    b.ToTable("BonusSalaryHistory");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Duty", b =>
@@ -91,7 +93,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Duty", (string)null);
+                    b.ToTable("Duty");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
@@ -128,7 +130,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Employee", (string)null);
+                    b.ToTable("Employee");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.HourHistory", b =>
@@ -152,7 +154,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("HourHistory", (string)null);
+                    b.ToTable("HourHistory");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.SalaryHistory", b =>
@@ -191,7 +193,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("SalaryHistory", (string)null);
+                    b.ToTable("SalaryHistory");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Shift", b =>
@@ -215,7 +217,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Shift", (string)null);
+                    b.ToTable("Shift");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.ShiftInfo", b =>
@@ -244,13 +246,14 @@ namespace PBL3.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time")
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("StartTime");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShiftInfo", (string)null);
+                    b.ToTable("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
@@ -279,7 +282,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("ShiftInfoId");
 
-                    b.ToTable("Violate", (string)null);
+                    b.ToTable("Violate");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Account", b =>
