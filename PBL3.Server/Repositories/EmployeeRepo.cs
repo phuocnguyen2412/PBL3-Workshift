@@ -22,8 +22,13 @@ namespace PBL3.Server.Repositories
             _accountRepo = accountRepo;
         }
 
-        public async Task<string> AddEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<object> AddEmployeeAsync(EmployeeModel employeeModel)
         {
+            if (employeeModel == null)
+            {
+                return new { Error = "Employee data cannot be empty." };
+            }
+
             try
             {
                 var employee = _mapper.Map<Employee>(employeeModel);
@@ -43,33 +48,35 @@ namespace PBL3.Server.Repositories
                 _context.Accounts.Add(account);
                 await _context.SaveChangesAsync();
 
-                return "Add employee successfully!";
+                return new { Message = "Add employee successfully!" };
             }
             catch (Exception ex)
             {
-                return $"Failed to add employee: {ex.Message}";
+                return new { Error = $"Failed to add employee: {ex.Message}" };
             }
         }
 
 
-        public async Task<string> DeleteEmployeeAsync(int id)
+
+
+        public async Task<object> DeleteEmployeeAsync(int id)
         {
             try
             {
                 var employee = await _context.Employees.FindAsync(id);
                 if (employee == null)
                 {
-                    return "Employee not found!";
+                    return new { Message = "Employee not found!" };
                 }
 
                 _context.Employees.Remove(employee);
                 await _context.SaveChangesAsync();
 
-                return "Delete employee successfully!";
+                return new { Message = "Delete employee successfully!" };
             }
             catch (Exception ex)
             {
-                return $"Failed to delete employee: {ex.Message}";
+                return new { Error = $"Failed to delete employee: {ex.Message}" };
             }
         }
 
@@ -144,16 +151,21 @@ namespace PBL3.Server.Repositories
                                  PhoneNumber = employee.PhoneNumber,
                                  TypeOfEmployee = employee.TypeOfEmployee,
                                  CoefficientsSalary = employee.CoefficientsSalary,
-                                 //DutyId = employee.DutyId,
                                  Status = employee.Status,
                                  DutyName = duty.DutyName
                              };
 
-                return await result.FirstOrDefaultAsync();
+                var employeeInfo = await result.FirstOrDefaultAsync();
+                if (employeeInfo == null)
+                {
+                    return new { Message = "Employee not found!" };
+                }
+
+                return employeeInfo;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to retrieve all employees by status: {ex.Message}", ex);
+                throw new Exception($"Failed to retrieve employee by ID: {ex.Message}", ex);
             }
         }
 
@@ -161,22 +173,37 @@ namespace PBL3.Server.Repositories
         {
             try
             {
-                var employee = _mapper.Map<Employee>(employeeModel);
+                var existingEmployee = await _context.Employees.FindAsync(employeeModel.Id);
+                if (existingEmployee == null)
+                {
+                    return new { Message = "Employee not found!" };
+                }
 
-                _context.Entry(employee).State = EntityState.Modified;
+
+                _mapper.Map(employeeModel, existingEmployee);
+
+
+                _context.Employees.Attach(existingEmployee);
+                _context.Entry(existingEmployee).State = EntityState.Modified;
+
+
+                _context.Entry(existingEmployee).Property(x => x.Id).IsModified = false;
+
                 await _context.SaveChangesAsync();
 
-                return employeeModel;
+                return new { Message = "Update employee successfully!" };
             }
             catch (DbUpdateException ex)
             {
-                throw new Exception($"Failed to update employee due to database constraints: {ex.Message}", ex);
+                return new { Error = $"Failed to update employee due to database constraints: {ex.Message}" };
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to update employee: {ex.Message}", ex);
+                return new { Error = $"Failed to update employee: {ex.Message}" };
             }
         }
+
+
 
         public async Task<object> SearchEmployeeByStringAsync(string searchString)
         {
@@ -196,12 +223,21 @@ namespace PBL3.Server.Repositories
                                     Status = employee.Status,
                                     DutyName = duty.DutyName
                                 };
-                return await employees.ToListAsync();
+
+                var employeeList = await employees.ToListAsync();
+
+                if (employeeList.Count == 0)
+                {
+                    return new { Message = "No employees found matching the search criteria." };
+                }
+
+                return employeeList;
             }
             catch (Exception ex)
             {
                 throw new Exception($"Failed to search employees by string: {ex.Message}", ex);
             }
         }
+
     }
 }
