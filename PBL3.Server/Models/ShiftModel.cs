@@ -9,7 +9,7 @@ namespace PBL3.Server.Models
         public int Id { get; set; }
         public int EmployeeId { get; set; }
         public virtual Employee? Employee { get; set; }
-        public DateTime CheckInTime { get; set; }
-        public DateTime CheckOutTime { get; set; }
+        public string? CheckInTime { get; set; }
+        public string? CheckOutTime { get; set; }
     }
 }

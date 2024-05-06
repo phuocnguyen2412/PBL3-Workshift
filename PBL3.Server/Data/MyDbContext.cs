@@ -12,39 +12,39 @@ namespace PBL3.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ShiftInfoModel>()
+            modelBuilder.Entity<ShiftInfo>()
                 .Property(m => m.Date)
                 .HasColumnType("DATE");
 
-            modelBuilder.Entity<ShiftInfoModel>()
+            modelBuilder.Entity<ShiftInfo>()
                 .Property(m => m.StartTime)
                 .HasColumnType("TIME");
 
-            modelBuilder.Entity<ShiftInfoModel>()
+            modelBuilder.Entity<ShiftInfo>()
                 .Property(m => m.EndTime)
                 .HasColumnType("TIME");
 
-            modelBuilder.Entity<ShiftModel>()
+            modelBuilder.Entity<Shift>()
                 .Property(m => m.CheckInTime)
                 .HasColumnType("DATE");
 
-            modelBuilder.Entity<ShiftModel>()
+            modelBuilder.Entity<Shift>()
                 .Property(m => m.CheckOutTime)
                 .HasColumnType("DATE");
 
-            modelBuilder.Entity<SalaryHistoryModel>()
+            modelBuilder.Entity<SalaryHistory>()
                 .Property(m => m.StartDate)
                 .HasColumnType("DATE");
 
-            modelBuilder.Entity<SalaryHistoryModel>()
+            modelBuilder.Entity<SalaryHistory>()
                 .Property(m => m.EndDate)
                 .HasColumnType("DATE");
 
-            modelBuilder.Entity<SalaryHistoryModel>()
+            modelBuilder.Entity<SalaryHistory>()
                 .Property(m => m.PaidDate)
                 .HasColumnType("DATE");
 
-            modelBuilder.Entity<HourHistoryModel>()
+            modelBuilder.Entity<HourHistory>()
                 .Property(m => m.DateAt)
                 .HasColumnType("DATE");
 
