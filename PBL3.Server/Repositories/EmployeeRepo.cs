@@ -126,6 +126,11 @@ namespace PBL3.Server.Repositories
 
         public async Task<ActionResult> UpdateEmployeeAsync(EmployeeModel employeeModel)
         {
+            if (employeeModel == null)
+            {
+                return new BadRequestObjectResult("Employee data cannot be empty.");
+            }
+
             var existingEmployee = await _context.Employees.FindAsync(employeeModel.Id);
             if (existingEmployee == null)
             {
@@ -135,12 +140,42 @@ namespace PBL3.Server.Repositories
             _mapper.Map(employeeModel, existingEmployee);
 
             _context.Employees.Attach(existingEmployee);
-            _context.Entry(existingEmployee).State = EntityState.Modified;
+
             _context.Entry(existingEmployee).Property(x => x.Id).IsModified = false;
 
-            await _context.SaveChangesAsync();
+            bool anyFieldModified = false;
 
-            return new OkObjectResult("Update employee successfully!");
+            
+            foreach (var property in _context.Entry(existingEmployee).Properties)
+            {
+                var originalValue = property.OriginalValue;
+                var currentValue = property.CurrentValue;
+                if (property.Metadata.Name != "Id" && !Equals(originalValue, currentValue))
+                {
+                    property.IsModified = true;
+                    anyFieldModified = true;
+                }
+            }
+
+            
+            if (!anyFieldModified)
+            {
+                return new BadRequestObjectResult("At least one field other than 'Id' must be updated.");
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                return new OkObjectResult("Update employee successfully!");
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return new BadRequestObjectResult($"An error occurred while updating the employee: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult($"An unexpected error occurred: {ex.Message}");
+            }
         }
 
         public async Task<ActionResult> SearchEmployeeByStringAsync(string searchString)
