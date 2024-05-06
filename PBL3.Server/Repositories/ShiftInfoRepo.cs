@@ -31,12 +31,12 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftInfoModel>(shiftInfo);
         }
 
-        public async Task<int> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
+        public async Task<ShiftInfoModel> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
         {
             var shiftInfoEntity = _mapper.Map<ShiftInfo>(shiftInfoModel);
             _context.ShiftInfos!.Add(shiftInfoEntity);
             await _context.SaveChangesAsync();
-            return shiftInfoEntity.Id;
+            return _mapper.Map<ShiftInfoModel>(shiftInfoEntity);
         }
 
         public async Task<ShiftInfoModel> UpdateShiftInfoAsync(ShiftInfoModel shiftInfoModel)

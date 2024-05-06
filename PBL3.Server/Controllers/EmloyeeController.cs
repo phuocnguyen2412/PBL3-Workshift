@@ -18,105 +18,99 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllEmployees()
+        public async Task<ActionResult> GetAllEmployeesAsync()
         {
             try
             {
-                var employees = await _employeeRepo.GetAllEmployeesAsync();
-                return Ok(employees);
+                return await _employeeRepo.GetAllEmployeesAsync();
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployeeById(int id)
+        public async Task<ActionResult> GetEmployeeByIdAsync(int id)
         {
             try
             {
                 var employee = await _employeeRepo.GetEmployeeByIdAsync(id);
-                return Ok(employee);
+                if (employee == null)
+                {
+                    return NotFound();
+                }
+
+                return employee;
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
-        [HttpGet("status/{status}")]
-        public async Task<IActionResult> GetAllEmployeesByStatus(bool status)
+        [HttpGet("GetAllEmployeesByStatusAsync")]
+        public async Task<ActionResult> GetAllEmployeesByStatusAsync(bool status)
         {
             try
             {
-                var employees = await _employeeRepo.GetAllEmployeesByStatusAsync(status);
-                return Ok(employees);
+                return await _employeeRepo.GetAllEmployeesByStatusAsync(status);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(EmployeeModel employee)
+        public async Task<ActionResult> AddEmployeeAsync(EmployeeModel employee)
         {
             try
             {
-                var result = await _employeeRepo.AddEmployeeAsync(employee);
-                return Ok(result);
+                return await _employeeRepo.AddEmployeeAsync(employee);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEmployee(EmployeeModel employee)
+        public async Task<ActionResult> UpdateEmployeeAsync(EmployeeModel employee)
         {
             try
             {
-                var updatedEmployee = await _employeeRepo.UpdateEmployeeAsync(employee);
-                return Ok(updatedEmployee);
+                return await _employeeRepo.UpdateEmployeeAsync(employee);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEmployee(int id)
+        public async Task<ActionResult> DeleteEmployeeAsync(int id)
         {
             try
             {
-                var success = await _employeeRepo.DeleteEmployeeAsync(id);
-                return Ok(success);
+                return await _employeeRepo.DeleteEmployeeAsync(id);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
-        [HttpGet("search")]
-        public async Task<IActionResult> SearchEmployees(string searchString)
+        [HttpGet("SearchEmployeeByStringAsync")]
+        public async Task<ActionResult> SearchEmployeeByStringAsync(string searchString)
         {
-            if (string.IsNullOrWhiteSpace(searchString))
-            {
-                return BadRequest("Search string cannot be empty.");
-            }
-
             try
             {
-                var employees = await _employeeRepo.SearchEmployeeByStringAsync(searchString);
-                return Ok(employees);
+                return await _employeeRepo.SearchEmployeeByStringAsync(searchString);
             }
             catch (Exception e)
             {
-                return BadRequest(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
     }

@@ -13,76 +13,96 @@ namespace PBL3.Server.Repositories
     {
         private readonly MyDbContext _context;
         private readonly IMapper _mapper;
-        private readonly IAccount _accountRepo;
+        private readonly IAccount _accountRepository;
 
-        public EmployeeRepo(MyDbContext context, IMapper mapper, IAccount accountRepo)
+        public EmployeeRepo(MyDbContext context, IMapper mapper, IAccount accountRepository)
         {
             _context = context;
             _mapper = mapper;
-            _accountRepo = accountRepo;
+            _accountRepository = accountRepository;
         }
 
-        public async Task<object> AddEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<ActionResult> AddEmployeeAsync(EmployeeModel employeeModel)
         {
             if (employeeModel == null)
             {
-                return new { Error = "Employee data cannot be empty." };
+                return new BadRequestObjectResult("Employee data cannot be empty.");
             }
 
-            try
+            var employee = _mapper.Map<Employee>(employeeModel);
+
+            _context.Employees!.Add(employee);
+            await _context.SaveChangesAsync();
+
+            var username = employeeModel.Email ?? throw new ArgumentNullException(nameof(employeeModel.Email), "Email cannot be null.");
+            var hashedPassword = _accountRepository.HashPassword(employeeModel.Email);
+
+            var account = new Account
             {
-                var employee = _mapper.Map<Employee>(employeeModel);
+                UserName = username,
+                Password = hashedPassword,
+                EmployeeId = employee.Id
+            };
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
 
-                _context.Employees!.Add(employee);
-                await _context.SaveChangesAsync();
-
-                var username = employeeModel.Email;
-                var hashedPassword = _accountRepo.HashPassword(employeeModel.Email!);
-
-                var account = new Account
-                {
-                    UserName = username,
-                    Password = hashedPassword,
-                    EmployeeId = employee.Id
-                };
-                _context.Accounts.Add(account);
-                await _context.SaveChangesAsync();
-
-                return new { Message = "Add employee successfully!" };
-            }
-            catch (Exception ex)
-            {
-                return new { Error = $"Failed to add employee: {ex.Message}" };
-            }
+            return new OkObjectResult("Add employee successfully!");
         }
 
-
-
-
-        public async Task<object> DeleteEmployeeAsync(int id)
+        public async Task<ActionResult> DeleteEmployeeAsync(int id)
         {
-            try
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
             {
-                var employee = await _context.Employees.FindAsync(id);
-                if (employee == null)
-                {
-                    return new { Message = "Employee not found!" };
-                }
-
-                _context.Employees.Remove(employee);
-                await _context.SaveChangesAsync();
-
-                return new { Message = "Delete employee successfully!" };
+                return new NotFoundObjectResult("Employee not found!");
             }
-            catch (Exception ex)
-            {
-                return new { Error = $"Failed to delete employee: {ex.Message}" };
-            }
+
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult("Delete employee successfully!");
         }
 
-
-        public async Task<object> GetAllEmployeesAsync()
+        public async Task<ActionResult> GetAllEmployeesAsync()
         {
+            var result = await _context.Employees
+                .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
+                {
+                    Id = employee.Id,
+                    FullName = employee.FullName,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    TypeOfEmployee = employee.TypeOfEmployee,
+                    CoefficientsSalary = employee.CoefficientsSalary,
+                    Status = employee.Status,
+                    DutyName = duty.DutyName
+                }).ToListAsync();
+
+            return new OkObjectResult(result);
+        }
+
+        public async Task<ActionResult> GetAllEmployeesByStatusAsync(bool status)
+        {
+            var result = await _context.Employees
+                .Where(employee => employee.Status == status)
+                .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
+                {
+                    Id = employee.Id,
+                    FullName = employee.FullName,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    TypeOfEmployee = employee.TypeOfEmployee,
+                    CoefficientsSalary = employee.CoefficientsSalary,
+                    Status = employee.Status,
+                    DutyName = duty.DutyName
+                }).ToListAsync();
+
+            return new OkObjectResult(result);
+        }
+
+        public async Task<ActionResult> GetEmployeeByIdAsync(int id)
+        {
+<<<<<<< HEAD
             try
             {
                 var result = from employee in _context.Employees
@@ -158,87 +178,76 @@ namespace PBL3.Server.Repositories
 
                 var employeeInfo = await result.FirstOrDefaultAsync();
                 if (employeeInfo == null)
+=======
+            var result = await _context.Employees
+                .Where(employee => employee.Id == id)
+                .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
+>>>>>>> 6.5
                 {
-                    return new { Message = "Employee not found!" };
-                }
+                    Id = employee.Id,
+                    FullName = employee.FullName,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    TypeOfEmployee = employee.TypeOfEmployee,
+                    CoefficientsSalary = employee.CoefficientsSalary,
+                    Status = employee.Status,
+                    DutyName = duty.DutyName
+                }).FirstOrDefaultAsync();
 
-                return employeeInfo;
-            }
-            catch (Exception ex)
+            if (result == null)
             {
-                throw new Exception($"Failed to retrieve employee by ID: {ex.Message}", ex);
+                return new NotFoundObjectResult("Employee not found!");
             }
+
+            return new OkObjectResult(result);
         }
 
-        public async Task<object> UpdateEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<ActionResult> UpdateEmployeeAsync(EmployeeModel employeeModel)
         {
-            try
+            var existingEmployee = await _context.Employees.FindAsync(employeeModel.Id);
+            if (existingEmployee == null)
             {
-                var existingEmployee = await _context.Employees.FindAsync(employeeModel.Id);
-                if (existingEmployee == null)
-                {
-                    return new { Message = "Employee not found!" };
-                }
-
-
-                _mapper.Map(employeeModel, existingEmployee);
-
-
-                _context.Employees.Attach(existingEmployee);
-                _context.Entry(existingEmployee).State = EntityState.Modified;
-
-
-                _context.Entry(existingEmployee).Property(x => x.Id).IsModified = false;
-
-                await _context.SaveChangesAsync();
-
-                return new { Message = "Update employee successfully!" };
+                return new NotFoundObjectResult("Employee not found!");
             }
-            catch (DbUpdateException ex)
-            {
-                return new { Error = $"Failed to update employee due to database constraints: {ex.Message}" };
-            }
-            catch (Exception ex)
-            {
-                return new { Error = $"Failed to update employee: {ex.Message}" };
-            }
+
+            _mapper.Map(employeeModel, existingEmployee);
+
+            _context.Employees.Attach(existingEmployee);
+            _context.Entry(existingEmployee).State = EntityState.Modified;
+            _context.Entry(existingEmployee).Property(x => x.Id).IsModified = false;
+
+            await _context.SaveChangesAsync();
+
+            return new OkObjectResult("Update employee successfully!");
         }
 
-
-
-        public async Task<object> SearchEmployeeByStringAsync(string searchString)
+        public async Task<ActionResult> SearchEmployeeByStringAsync(string searchString)
         {
-            try
+            if (string.IsNullOrEmpty(searchString))
             {
-                var employees = from employee in _context.Employees
-                                join duty in _context.Duties on employee.DutyId equals duty.Id
-                                where EF.Functions.Like(employee.FullName, $"%{searchString}%")
-                                select new
-                                {
-                                    Id = employee.Id,
-                                    FullName = employee.FullName,
-                                    Email = employee.Email,
-                                    PhoneNumber = employee.PhoneNumber,
-                                    TypeOfEmployee = employee.TypeOfEmployee,
-                                    CoefficientsSalary = employee.CoefficientsSalary,
-                                    Status = employee.Status,
-                                    DutyName = duty.DutyName
-                                };
+                throw new ArgumentNullException(nameof(searchString), "Search string cannot be null or empty.");
+            }
 
-                var employeeList = await employees.ToListAsync();
-
-                if (employeeList.Count == 0)
+            var employees = await _context.Employees
+                .Where(employee => EF.Functions.Like(employee.FullName, $"%{searchString}%"))
+                .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
                 {
-                    return new { Message = "No employees found matching the search criteria." };
-                }
+                    Id = employee.Id,
+                    FullName = employee.FullName,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    TypeOfEmployee = employee.TypeOfEmployee,
+                    CoefficientsSalary = employee.CoefficientsSalary,
+                    Status = employee.Status,
+                    DutyName = duty.DutyName
+                }).ToListAsync();
 
-                return employeeList;
-            }
-            catch (Exception ex)
+            if (employees.Count == 0)
             {
-                throw new Exception($"Failed to search employees by string: {ex.Message}", ex);
+                return new NotFoundObjectResult("No employees found matching the search criteria.");
             }
-        }
 
+            return new OkObjectResult(employees);
+        }
     }
 }
