@@ -1,7 +1,7 @@
 import { Button, Drawer, Form } from "antd";
 import { useState } from "react";
 import InputDutyForm from "./InputDutyForm";
-import PropTypes from "prop-types";
+import PropsType from "prop-types";
 
 export default function AddDuty({ setDutyList }) {
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -34,5 +34,5 @@ export default function AddDuty({ setDutyList }) {
     );
 }
 AddDuty.propTypes = {
-    setEmployee: PropTypes.func.isRequired,
+    setDutyList: PropsType.func.isRequired,
 };

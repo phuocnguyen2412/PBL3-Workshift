@@ -1,5 +1,11 @@
+import CreateBonusSalary from "./CreateBonusSalary";
+
 const BonusSalary = () => {
-    return <div>BonusSalary</div>;
+    return (
+        <>
+            <CreateBonusSalary />
+        </>
+    );
 };
 
 export default BonusSalary;

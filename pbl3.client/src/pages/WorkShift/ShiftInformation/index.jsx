@@ -1,51 +1,29 @@
-import { Alert, Badge, Button, Calendar, Drawer, Flex, Modal } from "antd";
+import {
+    Alert,
+    Badge,
+    Button,
+    Calendar,
+    Drawer,
+    Flex,
+    Modal,
+    Spin,
+} from "antd";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import WorkInDay from "./WorkInDay";
 import AddShiftForm from "./AddShiftForm";
+import useFetch from "../../../custom hook/useFetch";
+import localhost from "../../../Services/localhost";
 
 const ShiftInformation = () => {
     const [data, setData] = useState([]);
     const [value, setValue] = useState(() => dayjs());
     const [openModal, setOpenModal] = useState(false);
     const [openDrawer, setOpenDrawer] = useState(false);
-
+    const { getApi, loading } = useFetch(localhost);
     useEffect(() => {
-        // Điều chỉnh hàm fetchData để lấy dữ liệu từ nguồn dữ liệu của bạn
-        const fetchData = () => {
-            // Lấy dữ liệu từ nguồn dữ liệu của bạn (API hoặc bất kỳ nguồn nào khác)
-            // và thiết lập cho state `data`
-            const yourData = [
-                {
-                    id: "1",
-                    shiftName: "Ca sang",
-                    date: "2024-5-2",
-                    startTime: "8:00:00",
-                    endTime: "21:00:00",
-                },
-                {
-                    id: "2",
-                    shiftName: "Ca toi",
-                    date: "2024-5-2",
-                    startTime: "17:00:00",
-                    endTime: "21:00:00",
-                },
-                {
-                    id: "3",
-                    shiftName: "Ca chieu",
-                    date: "2024-5-2",
-                    startTime: "17:00:00",
-                    endTime: "21:00:00",
-                },
-                {
-                    id: "4",
-                    shiftName: "Shift 1",
-                    date: "2024-5-3",
-                    startTime: "19:00:00",
-                    endTime: "21:00:00",
-                },
-                // Thêm dữ liệu khác nếu cần
-            ];
+        const fetchData = async () => {
+            const yourData = await getApi("/ShiftInfo");
             setData(yourData);
         };
         fetchData();
@@ -63,18 +41,19 @@ const ShiftInformation = () => {
         data.forEach((shift) => {
             if (dayjs(shift.date).isSame(value, "day")) {
                 const item = {
-                    content: `${shift.shiftName} start ${shift.startTime} and end ${shift.endTime}`,
+                    content: `${shift.shiftName}: ${shift.startTime}-${shift.endTime}`,
                 };
 
-                // So sánh thời gian bắt đầu của ca làm với một thời gian cụ thể
                 const timeStart = dayjs(shift.startTime, "HH:mm:ss");
 
-                // Xác định loại của ca làm dựa trên thời gian bắt đầu
-                if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss"))) {
+                if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss"))) {
+                    item.type = "black";
+                } else if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss"))) {
                     item.type = "yellow";
-                } else if (timeStart.isBefore(dayjs("18:00:00", "HH:mm:ss"))) {
-                    item.type = "orange";
-                } else {
+                }
+                if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
+                    item.type === "orange";
+                else {
                     item.type = "purple";
                 }
 
@@ -125,10 +104,10 @@ const ShiftInformation = () => {
                     },
                 }}
             >
-                <AddShiftForm />
+                <AddShiftForm setData={setData} />
             </Drawer>
             <Modal
-                title={`Lịch làm việc ngày ${value?.format("DD-MM-YYYY")}`}
+                title={`Lịch làm việc ngày ${value?.format("YY-MM-DD")}`}
                 centered
                 open={openModal}
                 onOk={() => setOpenModal(false)}
@@ -138,12 +117,13 @@ const ShiftInformation = () => {
             >
                 <WorkInDay />
             </Modal>
-
-            <Calendar
-                cellRender={cellRender}
-                value={value}
-                onSelect={onSelect}
-            />
+            <Spin spinning={loading}>
+                <Calendar
+                    cellRender={cellRender}
+                    value={value}
+                    onSelect={onSelect}
+                />
+            </Spin>
         </div>
     );
 };

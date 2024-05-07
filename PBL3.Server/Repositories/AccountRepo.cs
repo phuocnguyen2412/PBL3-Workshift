@@ -34,10 +34,11 @@ namespace PBL3.Server.Repositories
                          where account.UserName == model.UserName && account.Password == hashedPassword
                          select new
                          {
+                            fullName = employee.FullName,
                              EmployeeId = employee.Id,
                              dutyName = duty.DutyName
                          };
-            return await result.FirstOrDefaultAsync(); 
+            return await result.FirstOrDefaultAsync();
         }
 
         public async Task<bool> ChangePassword(int Id, string password, string newPassword)
@@ -63,5 +64,6 @@ namespace PBL3.Server.Repositories
             var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
+
     }
 }

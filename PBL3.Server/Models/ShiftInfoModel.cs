@@ -9,14 +9,14 @@ namespace PBL3.Server.Models
         public int Id { get; set; }
         public string? ShiftName { get; set; }
 
-        public DateTime Date { get; set; }
+        public string? Date { get; set; }
 
-        public TimeSpan StartTime { get; set; }
+        public string? StartTime { get; set; }
 
-        public TimeSpan EndTime { get; set; }
+        public string? EndTime { get; set; }
 
         public bool Checked { get; set; }
 
-        public int ManagerId { get; set; }
+        public int? ManagerId { get; set; }
     }
 }

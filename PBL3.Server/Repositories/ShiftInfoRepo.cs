@@ -32,12 +32,12 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftInfoModel>(shiftInfo);
         }
 
-        public async Task<int> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
+        public async Task<ShiftInfoModel> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
         {
             var shiftInfoEntity = _mapper.Map<ShiftInfo>(shiftInfoModel);
             _context.ShiftInfos!.Add(shiftInfoEntity);
             await _context.SaveChangesAsync();
-            return shiftInfoEntity.Id;
+            return _mapper.Map<ShiftInfoModel>(shiftInfoEntity);
         }
 
         public async Task<ShiftInfoModel> UpdateShiftInfoAsync(ShiftInfoModel shiftInfoModel)
@@ -46,6 +46,20 @@ namespace PBL3.Server.Repositories
             _context.ShiftInfos!.Update(shiftInfoEntity);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftInfoModel>(shiftInfoEntity);
+        }
+
+        public async Task<ShiftInfoModel> UpdateShiftInfoCheckedAsync(int id, bool isChecked)
+        {
+            var shiftInfo = await _context.ShiftInfos!.FindAsync(id);
+            if (shiftInfo == null)
+            {
+                return null;
+            }
+
+            shiftInfo.Checked = isChecked;
+            _context.ShiftInfos!.Update(shiftInfo);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ShiftInfoModel>(shiftInfo);
         }
 
         public async Task<bool> DeleteShiftInfoAsync(int id)
