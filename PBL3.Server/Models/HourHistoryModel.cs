@@ -10,6 +10,6 @@ namespace PBL3.Server.Models
         public int EmployeeId { get; set; }
         public virtual Employee? Employee { get; set; }
         public string? HoursPerDay { get; set; }
-        public DateTime DateAt { get; set; }
+        public string? DateAt { get; set; }
     }
 }

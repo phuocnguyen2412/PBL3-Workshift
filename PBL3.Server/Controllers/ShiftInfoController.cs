@@ -21,11 +21,16 @@ namespace PBL3.Server.Controllers
         {
             try
             {
-                return await _shiftInfoRepo.GetAllShiftInfoAsync();
+                var shiftInfos = await _shiftInfoRepo.GetAllShiftInfoAsync();
+                if (shiftInfos == null || !shiftInfos.Any())
+                {
+                    return NotFound("No shift information found.");
+                }
+                return shiftInfos;
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
             }
         }
 
@@ -37,68 +42,97 @@ namespace PBL3.Server.Controllers
                 var shiftInfo = await _shiftInfoRepo.GetShiftInfoByIdAsync(id);
                 if (shiftInfo == null)
                 {
-                    return NotFound();
+                    return NotFound($"Shift information with ID {id} not found.");
                 }
-
                 return shiftInfo;
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddShiftInfoAsync(ShiftInfoModel shiftInfo)
+        public async Task<ActionResult> AddShiftInfoAsync(ShiftInfoModel shiftInfo)
         {
+            if (shiftInfo == null)
+            {
+                return BadRequest("Shift information is null.");
+            }
+
             try
             {
                 var newShiftInfo = await _shiftInfoRepo.AddShiftInfoAsync(shiftInfo);
-                return newShiftInfo.Id;
+                if (newShiftInfo == null)
+                {
+                    return BadRequest("Failed to add shift information.");
+                }
+                return Ok("Shift information added successfully.");
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
             }
         }
 
         [HttpPut]
-        public async Task<ActionResult<ShiftInfoModel>> UpdateShiftInfoAsync(ShiftInfoModel shiftInfo)
+        public async Task<ActionResult> UpdateShiftInfoAsync(ShiftInfoModel shiftInfo)
         {
+            if (shiftInfo == null)
+            {
+                return BadRequest("Shift information is null.");
+            }
+
             try
             {
                 var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoAsync(shiftInfo);
                 if (updatedShiftInfo == null)
                 {
-                    return NotFound();
+                    return NotFound("Failed to update shift information.");
                 }
-
-                return updatedShiftInfo;
+                return Ok($"Shift information updated successfully.");
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteShiftInfoAsync(int id)
+        [HttpPut("{id}/{isChecked}")]
+        public async Task<ActionResult<ShiftInfoModel>> UpdateShiftInfoCheckedAsync(int id, bool isChecked)
         {
             try
             {
-                var result = await _shiftInfoRepo.DeleteShiftInfoAsync(id);
-                if (!result)
+                var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoCheckedAsync(id, isChecked);
+                if (updatedShiftInfo == null)
                 {
-                    return NotFound();
+                    return NotFound($"Shift information with ID {id} not found.");
                 }
-
-                return result;
+                return Ok($"Shift information with ID {id} updated.");
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
             }
         }
 
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<ShiftInfoModel>> DeleteShiftInfoAsync(int id)
+        {
+            try
+            {
+                var deleted = await _shiftInfoRepo.DeleteShiftInfoAsync(id);
+                if (!deleted)
+                {
+                    return NotFound($"Shift information with ID {id} not found.");
+                }
+                return Ok($"Shift information with ID {id} deleted.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+            }
+        }
     }
 }

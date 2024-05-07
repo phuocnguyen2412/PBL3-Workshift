@@ -8,6 +8,7 @@ namespace PBL3.Server.Repositories
         public Task<ShiftInfoModel> GetShiftInfoByIdAsync(int id);
         public Task<ShiftInfoModel> AddShiftInfoAsync(ShiftInfoModel shiftInfo);
         public Task<ShiftInfoModel> UpdateShiftInfoAsync(ShiftInfoModel shiftInfo);
+        public Task<ShiftInfoModel> UpdateShiftInfoCheckedAsync(int id, bool isChecked);
         public Task<bool> DeleteShiftInfoAsync(int id);
     }
 }
