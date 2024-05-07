@@ -98,6 +98,24 @@ namespace PBL3.Server.Controllers
             }
         }
 
+        [HttpPut("{id}/{isChecked}")]
+        public async Task<ActionResult<ShiftInfoModel>> UpdateShiftInfoCheckedAsync(int id, bool isChecked)
+        {
+            try
+            {
+                var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoCheckedAsync(id, isChecked);
+                if (updatedShiftInfo == null)
+                {
+                    return NotFound($"Shift information with ID {id} not found.");
+                }
+                return Ok($"Shift information with ID {id} updated.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+            }
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ShiftInfoModel>> DeleteShiftInfoAsync(int id)
