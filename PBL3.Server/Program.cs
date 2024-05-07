@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Repositories;
+using PBL3.Server.Interface;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddScoped<IEmployee, EmployeeRepo>();
 builder.Services.AddScoped<IShiftInfo, ShiftInfoRepo>();
 builder.Services.AddScoped<IDuty, DutyRepo>();
 builder.Services.AddScoped<IAccount, AccountRepo>();
+builder.Services.AddScoped<IBonusSalary, BonusSalaryRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -12,7 +12,7 @@ namespace PBL3.Server.Data
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
         [Range(0, int.MaxValue)]
-        public int? TotalBonus { get; set; }
+        public int TotalBonus { get; set; }
         public string? Reason { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
+using PBL3.Server.Interface;
 
 namespace PBL3.Server.Repositories
 {

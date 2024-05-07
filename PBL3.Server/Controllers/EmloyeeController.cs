@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Data;
+using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
 using System.Threading.Tasks;
@@ -17,19 +18,6 @@ namespace PBL3.Server.Controllers
             _employeeRepo = employeeRepo;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllEmployee()
-        {
-            try
-            {
-                return Ok(await _employeeRepo.GetAllEmployeesAsync());
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
@@ -43,18 +31,6 @@ namespace PBL3.Server.Controllers
             }
         }
 
-        [HttpGet("status/{status}")]
-        public async Task<IActionResult> GetAllEmployeeByStatus(bool status)
-        {
-            try
-            {
-                return Ok(await _employeeRepo.GetAllEmployeesByStatusAsync(status));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
 
 
         [HttpPost]

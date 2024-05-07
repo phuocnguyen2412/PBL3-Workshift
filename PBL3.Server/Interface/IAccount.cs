@@ -1,7 +1,7 @@
 ﻿using PBL3.Server.Data;
 using PBL3.Server.Models;
 
-namespace PBL3.Server.Repositories
+namespace PBL3.Server.Interface
 {
     public interface IAccount
     {

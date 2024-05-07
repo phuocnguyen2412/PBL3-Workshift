@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
+using PBL3.Server.Interface;
 using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
@@ -23,21 +24,7 @@ namespace PBL3.Server.Repositories
             _accountRepo = accountRepo;
         }
 
-        public async Task<List<EmployeeSummaryModel>> GetAllEmployeesAsync()
-        {
-            var employees = await _context
-                .Employees!.Include(e => e.Duty)
-                .Select(e => new EmployeeSummaryModel
-                {
-                    Id = e.Id,
-                    FullName = e.FullName,
-                    TypeOfEmployee = e.TypeOfEmployee,
-                    Status = e.Status,
-                    DutyName = e.Duty.DutyName
-                })
-                .ToListAsync();
-            return employees;
-        }
+       
 
         public async Task<object> GetEmployeeByIdAsync(int id)
         {
@@ -58,27 +45,10 @@ namespace PBL3.Server.Repositories
                     BasicSalary = duty.BasicSalary,
                 };
 
-            return result.FirstOrDefault(); ;
+            return result.FirstOrDefault();
         }
 
-        public async Task<List<EmployeeSummaryModel>> GetAllEmployeesByStatusAsync(bool status)
-        {
-            var employees = await _context
-                .Employees.Include(e => e.Duty)
-                .Where(e => e.Status == status)
-                .Select(e => new EmployeeSummaryModel
-                {
-                    Id = e.Id,
-                    FullName = e.FullName,
-                    TypeOfEmployee = e.TypeOfEmployee,
-                    Status = e.Status,
-                    DutyName = e.Duty != null ? e.Duty.DutyName : "N/A"
-                })
-                .ToListAsync();
-
-            return employees;
-        }
-
+    
         public async Task<int> AddEmployeeAsync(EmloyeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
