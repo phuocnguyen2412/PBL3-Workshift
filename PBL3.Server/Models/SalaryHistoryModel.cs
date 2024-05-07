@@ -15,6 +15,6 @@ namespace PBL3.Server.Models
         public int TotalBonus { get; set; }
         public int TotalViolate { get; set; }
         public int TotalSalary { get; set; }
-        public DateTime PaidDate { get; set; }
+        public string? PaidDate { get; set; }
     }
 }
