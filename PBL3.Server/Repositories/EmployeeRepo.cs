@@ -26,7 +26,7 @@ namespace PBL3.Server.Repositories
         {
             if (employeeModel == null)
             {
-                return new BadRequestObjectResult("Employee data cannot be empty.");
+                return new BadRequestObjectResult(new { message = "Employee data cannot be empty." });
             }
 
             var employee = _mapper.Map<Employee>(employeeModel);
@@ -46,7 +46,7 @@ namespace PBL3.Server.Repositories
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Add employee successfully!");
+            return new OkObjectResult(new { message = "Add employee successfully!" });
         }
 
         public async Task<ActionResult> DeleteEmployeeAsync(int id)
@@ -54,13 +54,13 @@ namespace PBL3.Server.Repositories
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
-                return new NotFoundObjectResult("Employee not found!");
+                return new NotFoundObjectResult(new { message = "Employee not found!" });
             }
 
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Delete employee successfully!");
+            return new OkObjectResult(new {message = "Delete employee successfully!" });
         }
 
         public async Task<ActionResult> GetAllEmployeesAsync()
@@ -97,6 +97,11 @@ namespace PBL3.Server.Repositories
                     DutyName = duty.DutyName
                 }).ToListAsync();
 
+            if (result == null)
+            {
+                return new NotFoundObjectResult(new { message = "Employee not found!" });
+            }
+
             return new OkObjectResult(result);
         }
 
@@ -118,7 +123,7 @@ namespace PBL3.Server.Repositories
 
             if (result == null)
             {
-                return new NotFoundObjectResult("Employee not found!");
+                return new NotFoundObjectResult(new { message = "Employee not found!" });
             }
 
             return new OkObjectResult(result);
@@ -128,13 +133,13 @@ namespace PBL3.Server.Repositories
         {
             if (employeeModel == null)
             {
-                return new BadRequestObjectResult("Employee data cannot be empty.");
+                return new BadRequestObjectResult(new { message = "Employee data cannot be empty." });
             }
 
             var existingEmployee = await _context.Employees.FindAsync(employeeModel.Id);
             if (existingEmployee == null)
             {
-                return new NotFoundObjectResult("Employee not found!");
+                return new NotFoundObjectResult(new { message = "Employee not found!" });
             }
 
             _mapper.Map(employeeModel, existingEmployee);
@@ -160,21 +165,21 @@ namespace PBL3.Server.Repositories
             
             if (!anyFieldModified)
             {
-                return new BadRequestObjectResult("At least one field other than 'Id' must be updated.");
+                return new BadRequestObjectResult(new { message = "At least one field other than 'Id' must be updated." });
             }
 
             try
             {
                 await _context.SaveChangesAsync();
-                return new OkObjectResult("Update employee successfully!");
+                return new OkObjectResult(new { message = "Update employee successfully!" });
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                return new BadRequestObjectResult($"An error occurred while updating the employee: {ex.Message}");
+                return new BadRequestObjectResult(new { message = $"An error occurred while updating the employee: {ex.Message}" });
             }
             catch (Exception ex)
             {
-                return new BadRequestObjectResult($"An unexpected error occurred: {ex.Message}");
+                return new BadRequestObjectResult(new { message = $"An unexpected error occurred: {ex.Message}" });
             }
         }
 
@@ -201,7 +206,7 @@ namespace PBL3.Server.Repositories
 
             if (employees.Count == 0)
             {
-                return new NotFoundObjectResult("No employees found matching the search criteria.");
+                return new NotFoundObjectResult(new { message = "No employees found matching the search criteria." });
             }
 
             return new OkObjectResult(employees);
