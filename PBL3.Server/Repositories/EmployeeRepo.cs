@@ -46,7 +46,7 @@ namespace PBL3.Server.Repositories
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Add employee successfully!");
+            return new OkObjectResult(employee);
         }
 
         public async Task<ActionResult> DeleteEmployeeAsync(int id)

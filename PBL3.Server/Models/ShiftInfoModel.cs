@@ -17,6 +17,6 @@ namespace PBL3.Server.Models
 
         public bool Checked { get; set; }
 
-        public int ManagerId { get; set; }
+        public int? ManagerId { get; set; }
     }
 }

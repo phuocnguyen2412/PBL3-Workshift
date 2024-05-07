@@ -1,11 +1,12 @@
 import { Collapse } from "antd";
 import TableEmployeePerShift from "./TableEmployeePerShift";
+import ShiftAction from "./ShiftAction";
 
 const WorkInDay = () => {
     const items = [
         {
             key: "1",
-            label: "This is panel header 1",
+            label: <ShiftAction />,
             children: <TableEmployeePerShift />,
         },
         {

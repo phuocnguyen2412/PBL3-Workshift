@@ -2,6 +2,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal, Spin } from "antd";
 import { useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
+import PropsType from "prop-types";
 
 const RemoveEmployee = ({ record }) => {
     const { loading, deleteApi } = useFetch("");
@@ -37,5 +38,7 @@ const RemoveEmployee = ({ record }) => {
         </>
     );
 };
-
+RemoveEmployee.propTypes = {
+    record: PropsType.object.isRequired,
+};
 export default RemoveEmployee;
