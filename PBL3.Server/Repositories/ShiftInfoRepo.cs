@@ -61,17 +61,18 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftInfoModel>(shiftInfo);
         }
 
-        public async Task<bool> DeleteShiftInfoAsync(int id)
+        public async Task<ShiftInfoModel> DeleteShiftInfoAsync(int id)
         {
             var shiftInfo = await _context.ShiftInfos!.FindAsync(id);
             if (shiftInfo == null)
             {
-                return false;
+                return null;
             }
 
             _context.ShiftInfos!.Remove(shiftInfo);
             await _context.SaveChangesAsync();
-            return true;
-        }   
+            return _mapper.Map<ShiftInfoModel>(shiftInfo);
+        }
+
     }
 }
