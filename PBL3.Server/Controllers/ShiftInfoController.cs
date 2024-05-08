@@ -67,7 +67,7 @@ namespace PBL3.Server.Controllers
                 {
                     return BadRequest(new { message = "Failed to add shift information." });
                 }
-                return Ok(new { message = "Shift information added successfully." });
+                return Ok(newShiftInfo);
             }
             catch (Exception e)
             {
@@ -88,15 +88,16 @@ namespace PBL3.Server.Controllers
                 var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoAsync(shiftInfo);
                 if (updatedShiftInfo == null)
                 {
-                    return NotFound(new { message = "Failed to update shift information." });
+                    return NotFound(new { message = $"Shift information with ID {shiftInfo.Id} not found." });
                 }
-                return Ok(new { message = "Shift information updated successfully." });
+                return Ok(updatedShiftInfo);
             }
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
+
 
         [HttpPut("{id}/{isChecked}")]
         public async Task<ActionResult<ShiftInfoModel>> UpdateShiftInfoCheckedAsync(int id, bool isChecked)
@@ -108,7 +109,7 @@ namespace PBL3.Server.Controllers
                 {
                     return NotFound(new { message = $"Shift information with ID {id} not found." });
                 }
-                return Ok(new { message = $"Shift information with ID {id} updated." });
+                return Ok(updatedShiftInfo);
             }
             catch (Exception e)
             {
@@ -126,7 +127,7 @@ namespace PBL3.Server.Controllers
                 {
                     return NotFound(new { message = $"Shift information with ID {id} not found." });
                 }
-                return Ok(new { message = $"Shift information with ID {id} deleted." });
+                return Ok(deleted);
             }
             catch (Exception e)
             {

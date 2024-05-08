@@ -46,7 +46,7 @@ namespace PBL3.Server.Repositories
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult(new { message = "Add employee successfully!" });
+            return new OkObjectResult(account);
         }
 
         public async Task<ActionResult> DeleteEmployeeAsync(int id)
@@ -60,7 +60,7 @@ namespace PBL3.Server.Repositories
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult(new {message = "Delete employee successfully!" });
+            return new OkObjectResult(employee);
         }
 
         public async Task<ActionResult> GetAllEmployeesAsync()
@@ -171,7 +171,7 @@ namespace PBL3.Server.Repositories
             try
             {
                 await _context.SaveChangesAsync();
-                return new OkObjectResult(new { message = "Update employee successfully!" });
+                return new OkObjectResult(anyFieldModified ? existingEmployee : null);
             }
             catch (DbUpdateConcurrencyException ex)
             {
