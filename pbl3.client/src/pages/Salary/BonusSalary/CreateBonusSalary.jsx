@@ -62,9 +62,7 @@ export default function CreateBonusSalary() {
             });
             return;
         }
-        e.date = `${e.date.date()}-${
-            e.date.month() + 1
-        }-${e.date.year()} ${e.date.hour()}:${e.date.minute()}`;
+        e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
         console.log(e);
     };
     return (
