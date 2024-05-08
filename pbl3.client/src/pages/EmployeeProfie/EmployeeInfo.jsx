@@ -11,7 +11,7 @@ const EmployeeInfo = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getApi(`/Employee/${params.id}`);
-            console.log(data);
+
             setEmployee(data);
         };
         fetchData();

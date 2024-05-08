@@ -1,18 +1,18 @@
 import { Col, Row } from "antd";
-
-import CardItem from "./CardItem";
 import PropTypes from "prop-types";
-KanbanReport.propTypes = {
+
+import CardBonus from "./CardBonus";
+KanbanBonus.propTypes = {
     data: PropTypes.array.isRequired,
 };
-export default function KanbanReport({ data }) {
+export default function KanbanBonus({ data }) {
     return (
         <div>
             <Row gutter={12}>
                 {data &&
                     data.map((item, index) => (
                         <Col key={index} span={8} style={{ margin: "6px 0" }}>
-                            <CardItem data={item} />
+                            <CardBonus data={item} />
                         </Col>
                     ))}
             </Row>
