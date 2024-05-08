@@ -30,7 +30,7 @@ namespace PBL3.Server.Controllers
                 return BadRequest(e);
             }
         }
-
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
