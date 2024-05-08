@@ -60,7 +60,7 @@ namespace PBL3.Server.Repositories
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 
-            return new OkObjectResult("Delete employee successfully!");
+            return new OkObjectResult(employee);
         }
 
         public async Task<ActionResult> GetAllEmployeesAsync()

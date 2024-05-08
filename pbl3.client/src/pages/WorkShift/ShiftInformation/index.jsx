@@ -24,6 +24,7 @@ const ShiftInformation = () => {
     useEffect(() => {
         const fetchData = async () => {
             const yourData = await getApi("/ShiftInfo");
+            console.log(yourData);
             setData(yourData);
         };
         fetchData();

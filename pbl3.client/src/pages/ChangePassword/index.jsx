@@ -10,7 +10,6 @@ export default function ChangePassword() {
             <Form
                 autoFocus
                 layout="vertical"
-                hideRequiredMark
                 onFinish={handleSubmitForm}
             >
                 <Row gutter={12}>

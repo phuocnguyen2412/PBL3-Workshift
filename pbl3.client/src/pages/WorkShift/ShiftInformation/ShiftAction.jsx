@@ -4,17 +4,20 @@ import { AccountContext } from "../../../Context/AccountContext";
 
 export default function ShiftAction() {
     const account = useContext(AccountContext);
+    const handleDelete = async () => {};
+    const handleUpdate = async () => {};
+    const handleCreate = async () => {};
     return (
-        <Flex justify="space-between">
-            <span>Ca llafm</span>
+        <Flex justify="space-between"   >
+            <span>Ca làm</span>
             {account.account.dutyName === "Admin" && (
-                <Button>Xóa ca làm</Button>
+                <Button onClick={handleDelete}>Xóa ca làm</Button>
             )}
             {account.account.dutyName === "Quản lý" && (
-                <Button>Đăng kí quản lý</Button>
+                <Button onClick={handleUpdate}>Đăng kí quản lý</Button>
             )}
             {account.account.dutyName === "Nhân viên" && (
-                <Button>Đăng kí nhân viên</Button>
+                <Button onClick={handleCreate}>Đăng kí nhân viên</Button>
             )}
         </Flex>
     );
