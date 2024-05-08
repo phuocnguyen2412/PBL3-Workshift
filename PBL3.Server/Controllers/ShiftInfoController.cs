@@ -22,7 +22,7 @@ namespace PBL3.Server.Controllers
             try
             {
                 var shiftInfos = await _shiftInfoRepo.GetAllShiftInfoAsync();
-                if (shiftInfos == null || !shiftInfos.Any())
+                if (shiftInfos == null)
                 {
                     return NotFound(new { message = "No shift information found." });
                 }

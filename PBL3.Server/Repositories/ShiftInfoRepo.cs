@@ -19,16 +19,52 @@ namespace PBL3.Server.Repositories
             _mapper = mapper;
         }
 
-        public async Task<List<ShiftInfoModel>> GetAllShiftInfoAsync()
+        public async Task<object> GetAllShiftInfoAsync()
         {
-            var shiftInfos = await _context.ShiftInfos!.ToListAsync();
-            return _mapper.Map<List<ShiftInfoModel>>(shiftInfos);
+            var shiftInfosWithFullName = await _context.ShiftInfos
+                .Join(_context.Employees,
+                      shiftInfo => shiftInfo.ManagerId,
+                      employee => employee.Id,
+                      (shiftInfo, employee) => new
+                      {
+                          Id = shiftInfo.Id,
+                          //ManagerId = shiftInfo.ManagerId,
+                          ShiftName = shiftInfo.ShiftName,
+                          Date = shiftInfo.Date,
+                          StartTime = shiftInfo.StartTime,
+                          EndTime = shiftInfo.EndTime,
+                          Checked = shiftInfo.Checked,
+                          FullName = employee.FullName
+                      })
+                .ToListAsync();
+            return shiftInfosWithFullName;
         }
 
-        public async Task<ShiftInfoModel> GetShiftInfoByIdAsync(int id)
+
+        public async Task<object> GetShiftInfoByIdAsync(int id)
         {
             var shiftInfo = await _context.ShiftInfos!.FindAsync(id);
-            return _mapper.Map<ShiftInfoModel>(shiftInfo);
+            if (shiftInfo == null)
+            {
+                return null;
+            }
+
+            var employee = await _context.Employees!.FindAsync(shiftInfo.ManagerId);
+            if (employee == null)
+            {
+                return null;
+            }
+
+            return new
+            {
+                Id = shiftInfo.Id,
+                ShiftName = shiftInfo.ShiftName,
+                Date = shiftInfo.Date,
+                StartTime = shiftInfo.StartTime,
+                EndTime = shiftInfo.EndTime,
+                Checked = shiftInfo.Checked,
+                FullName = employee.FullName
+            };
         }
 
         public async Task<ShiftInfoModel> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
