@@ -75,7 +75,8 @@ namespace PBL3.Server.Repositories
                     TypeOfEmployee = employee.TypeOfEmployee,
                     CoefficientsSalary = employee.CoefficientsSalary,
                     Status = employee.Status,
-                    DutyName = duty.DutyName
+                    DutyName = duty.DutyName,
+                    BasicSalary = duty.BasicSalary
                 }).ToListAsync();
 
             return new OkObjectResult(result);
@@ -94,7 +95,8 @@ namespace PBL3.Server.Repositories
                     TypeOfEmployee = employee.TypeOfEmployee,
                     CoefficientsSalary = employee.CoefficientsSalary,
                     Status = employee.Status,
-                    DutyName = duty.DutyName
+                    DutyName = duty.DutyName,
+                    BasicSalary = duty.BasicSalary
                 }).ToListAsync();
 
             if (result == null)
@@ -118,7 +120,8 @@ namespace PBL3.Server.Repositories
                     TypeOfEmployee = employee.TypeOfEmployee,
                     CoefficientsSalary = employee.CoefficientsSalary,
                     Status = employee.Status,
-                    DutyName = duty.DutyName
+                    DutyName = duty.DutyName,
+                    BasicSalary = duty.BasicSalary
                 }).FirstOrDefaultAsync();
 
             if (result == null)
@@ -201,7 +204,8 @@ namespace PBL3.Server.Repositories
                     TypeOfEmployee = employee.TypeOfEmployee,
                     CoefficientsSalary = employee.CoefficientsSalary,
                     Status = employee.Status,
-                    DutyName = duty.DutyName
+                    DutyName = duty.DutyName,
+                    BasicSalary = duty.BasicSalary
                 }).ToListAsync();
 
             if (employees.Count == 0)
