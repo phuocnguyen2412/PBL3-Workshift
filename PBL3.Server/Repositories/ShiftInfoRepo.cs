@@ -5,6 +5,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace PBL3.Server.Repositories
 {
@@ -116,6 +118,34 @@ namespace PBL3.Server.Repositories
             _context.ShiftInfos!.Remove(shiftInfo);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftInfoModel>(shiftInfo);
+        }
+
+        public async Task<object> GetShiftsAndEmployeesByDateAsync(DateTime date)
+        {
+            var shifts = await _context.ShiftInfos
+                .Where(s => s.Date.Date == date.Date)
+                .Select(s => new
+                {
+                    s.Id,
+                    s.ShiftName,
+                    s.Date,
+                    s.StartTime,
+                    s.EndTime,
+                    Employees = _context.Employees
+                    .Where(e => e.Id == s.ManagerId)
+                        .Select(e => new
+                        {
+                            e.Id,
+                            e.FullName
+                        })
+                        .FirstOrDefault()
+                })
+                .ToListAsync();
+            if(shifts.Count == 0)
+            {
+                return null;
+            }
+            return shifts;
         }
 
     }

@@ -134,5 +134,23 @@ namespace PBL3.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
+
+        [HttpGet("shifts-and-employees-by-date/{date}")]
+        public async Task<ActionResult<object>> GetShiftsAndEmployeesByDateAsync(DateTime date)
+        {
+            try
+            {
+                var shiftsAndEmployees = await _shiftInfoRepo.GetShiftsAndEmployeesByDateAsync(date);
+                if (shiftsAndEmployees == null)
+                {
+                    return NotFound(new { message = "No shift information found." });
+                }
+                return Ok(shiftsAndEmployees);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
+        }
     }
 }
