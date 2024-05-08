@@ -22,15 +22,15 @@ namespace PBL3.Server.Controllers
             try
             {
                 var shiftInfos = await _shiftInfoRepo.GetAllShiftInfoAsync();
-                if (shiftInfos == null || !shiftInfos.Any())
+                if (shiftInfos == null)
                 {
-                    return NotFound("No shift information found.");
+                    return NotFound(new { message = "No shift information found." });
                 }
-                return shiftInfos;
+                return Ok(shiftInfos);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
 
@@ -42,13 +42,13 @@ namespace PBL3.Server.Controllers
                 var shiftInfo = await _shiftInfoRepo.GetShiftInfoByIdAsync(id);
                 if (shiftInfo == null)
                 {
-                    return NotFound($"Shift information with ID {id} not found.");
+                    return NotFound(new { message = $"Shift information with ID {id} not found." });
                 }
-                return shiftInfo;
+                return Ok(shiftInfo);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
 
@@ -57,7 +57,7 @@ namespace PBL3.Server.Controllers
         {
             if (shiftInfo == null)
             {
-                return BadRequest("Shift information is null.");
+                return BadRequest(new { message = "Shift information is null." });
             }
 
             try
@@ -65,13 +65,13 @@ namespace PBL3.Server.Controllers
                 var newShiftInfo = await _shiftInfoRepo.AddShiftInfoAsync(shiftInfo);
                 if (newShiftInfo == null)
                 {
-                    return BadRequest("Failed to add shift information.");
+                    return BadRequest(new { message = "Failed to add shift information." });
                 }
-                return Ok("Shift information added successfully.");
+                return Ok(newShiftInfo);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
 
@@ -80,7 +80,7 @@ namespace PBL3.Server.Controllers
         {
             if (shiftInfo == null)
             {
-                return BadRequest("Shift information is null.");
+                return BadRequest(new { message = "Shift information is null." });
             }
 
             try
@@ -88,15 +88,16 @@ namespace PBL3.Server.Controllers
                 var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoAsync(shiftInfo);
                 if (updatedShiftInfo == null)
                 {
-                    return NotFound("Failed to update shift information.");
+                    return NotFound(new { message = $"Shift information with ID {shiftInfo.Id} not found." });
                 }
-                return Ok($"Shift information updated successfully.");
+                return Ok(updatedShiftInfo);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
+
 
         [HttpPut("{id}/{isChecked}")]
         public async Task<ActionResult<ShiftInfoModel>> UpdateShiftInfoCheckedAsync(int id, bool isChecked)
@@ -106,16 +107,15 @@ namespace PBL3.Server.Controllers
                 var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoCheckedAsync(id, isChecked);
                 if (updatedShiftInfo == null)
                 {
-                    return NotFound($"Shift information with ID {id} not found.");
+                    return NotFound(new { message = $"Shift information with ID {id} not found." });
                 }
-                return Ok($"Shift information with ID {id} updated.");
+                return Ok(updatedShiftInfo);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
-
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ShiftInfoModel>> DeleteShiftInfoAsync(int id)
@@ -123,15 +123,33 @@ namespace PBL3.Server.Controllers
             try
             {
                 var deleted = await _shiftInfoRepo.DeleteShiftInfoAsync(id);
-                if (!deleted)
+                if (deleted == null)
                 {
-                    return NotFound($"Shift information with ID {id} not found.");
+                    return NotFound(new { message = $"Shift information with ID {id} not found." });
                 }
-                return Ok($"Shift information with ID {id} deleted.");
+                return Ok(deleted);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Server error: {e.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+            }
+        }
+
+        [HttpGet("shifts-and-employees-by-date/{date}")]
+        public async Task<ActionResult<object>> GetShiftsAndEmployeesByDateAsync(DateTime date)
+        {
+            try
+            {
+                var shiftsAndEmployees = await _shiftInfoRepo.GetShiftsAndEmployeesByDateAsync(date);
+                if (shiftsAndEmployees == null)
+                {
+                    return NotFound(new { message = "No shift information found." });
+                }
+                return Ok(shiftsAndEmployees);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
     }
