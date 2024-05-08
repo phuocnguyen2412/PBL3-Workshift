@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using PBL3.Server.Interface;
 
 namespace PBL3.Server.Repositories
 {
@@ -145,7 +146,7 @@ namespace PBL3.Server.Repositories
 
             bool anyFieldModified = false;
 
-            
+
             foreach (var property in _context.Entry(existingEmployee).Properties)
             {
                 var originalValue = property.OriginalValue;
@@ -157,7 +158,7 @@ namespace PBL3.Server.Repositories
                 }
             }
 
-            
+
             if (!anyFieldModified)
             {
                 return new BadRequestObjectResult("At least one field other than 'Id' must be updated.");

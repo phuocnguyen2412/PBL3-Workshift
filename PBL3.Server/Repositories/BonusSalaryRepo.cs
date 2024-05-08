@@ -1,43 +1,70 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PBL3.Server.Repositories
 {
     public class BonusSalaryRepo : IBonusSalary
     {
-        private MyDbContext _context;
-        private IMapper _mapper;
+        private readonly MyDbContext _context;
 
-        public BonusSalaryRepo(MyDbContext context, IMapper mapper)
+        public BonusSalaryRepo(MyDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public async Task<List<BonusSalaryModel>> GetAllBonusSalaries()
+        public async Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryRequest request)
         {
-            var bonusSalaries = await _context.BonusSalaryHistories!.ToListAsync();
-            return _mapper.Map<List<BonusSalaryModel>>(bonusSalaries);
-        }
+            foreach (var employeeId in request.EmployeeIds)
+            {
+                var newBonusSalary = new BonusSalaryHistory
+                {
+                    EmployeeId = employeeId,
+                    TotalBonus = request.TotalBonus,
+                    DateTime = DateTime.Now,
+                    Reason = request.Reason
+                };
+                _context.BonusSalaryHistories.Add(newBonusSalary);
+            }
 
-        public async Task<int> AddBonusSalaryAsync(BonusSalaryModel model)
-        {
-            var bonusSalary = _mapper.Map<BonusSalaryHistory>(model);
-            _context.BonusSalaryHistories!.Add(bonusSalary);
             await _context.SaveChangesAsync();
-            return bonusSalary.Id;
+
+            return _context.BonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
         }
 
-        public async Task UpdateBonusSalaryAsync(BonusSalaryModel model)
+        public async Task<ActionResult> GetAllBonusSalaryAsync()
         {
-            var bonusSalary = _mapper.Map<BonusSalaryHistory>(model);
-            _context.BonusSalaryHistories!.Update(bonusSalary);
-            await _context.SaveChangesAsync();
-        }
+            var bonusSalaries = await _context.BonusSalaryHistories
+                .Join(_context.Employees, 
+                      bonus => bonus.EmployeeId, 
+                      emp => emp.Id,
+                      (bonus, emp) => new  
+                      {
+                          Id = bonus.Id,
+                          EmployeeId = bonus.EmployeeId,
+                          FullName= emp.FullName,
+                          DateTime = bonus.DateTime,
+                          TotalBonus = bonus.TotalBonus,
+                          Reason = bonus.Reason
+                      })
+                .ToListAsync();
 
+            return new OkObjectResult(bonusSalaries);
+        }
+        public async Task<bool> DeleteBonusSalaryAsync(int id)
+        {
+            var bonusSalary = await _context.BonusSalaryHistories.FindAsync(id);
+            if (bonusSalary == null)
+                return false;
+
+            _context.BonusSalaryHistories.Remove(bonusSalary);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
-    
 }

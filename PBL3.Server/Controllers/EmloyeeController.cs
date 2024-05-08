@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Data;
+using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
 using System.Threading.Tasks;

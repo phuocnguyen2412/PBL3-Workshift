@@ -26,12 +26,12 @@ namespace PBL3.Server.Repositories
         }
 
         public async Task<object> GetAccountByUserNameAndPassword(AccountModel model)
-        {
+        { 
             var hashedPassword = HashPassword(model.Password);
             var result = from account in _context.Accounts
                          join employee in _context.Employees on account.EmployeeId equals employee.Id
                          join duty in _context.Duties on employee.DutyId equals duty.Id
-                         where account.UserName == model.UserName && account.Password == hashedPassword
+                         where account.UserName == model.UserName && account.Password == hashedPassword && employee.Status == true
                          select new
                          {
                             fullName = employee.FullName,

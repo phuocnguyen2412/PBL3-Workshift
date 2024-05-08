@@ -1,12 +1,13 @@
-﻿using PBL3.Server.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Data;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Interface
 {
     public interface IBonusSalary
     {
-        Task<List<BonusSalaryModel>> GetAllBonusSalaries();
-        Task<int> AddBonusSalaryAsync(BonusSalaryModel model);
-        Task UpdateBonusSalaryAsync(BonusSalaryModel model);
-
+        Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryRequest request);
+        Task<ActionResult> GetAllBonusSalaryAsync();
+        Task<bool> DeleteBonusSalaryAsync(int id);
     }
 }
