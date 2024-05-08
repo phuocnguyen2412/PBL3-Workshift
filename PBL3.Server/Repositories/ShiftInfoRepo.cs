@@ -147,6 +147,5 @@ namespace PBL3.Server.Repositories
             }
             return shifts;
         }
-
     }
 }
