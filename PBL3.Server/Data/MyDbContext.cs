@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Data
 
@@ -6,39 +7,48 @@ namespace PBL3.Server.Data
     public class MyDbContext : DbContext
     {
         public MyDbContext(DbContextOptions<MyDbContext> option) : base(option) { }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<ShiftInfo>()
-        //        .Property(e => e.Date)
-        //        .HasConversion(
-        //            v => v.ToDateTime(TimeOnly.MinValue), // Existing conversion for DateOnly to DateTime
-        //            v => DateOnly.FromDateTime(v) // Existing conversion for DateTime to DateOnly
-        //        );
 
-        //    // Add this block for the TimeOnly property named EndTime
-        //    modelBuilder.Entity<ShiftInfo>()
-        //        .Property(e => e.EndTime) // Assuming your ShiftInfo class has a TimeOnly property named EndTime
-        //        .HasConversion(
-        //            v => v.ToTimeSpan(), // Convert TimeOnly to TimeSpan when saving to database
-        //            v => TimeOnly.FromTimeSpan(v) // Convert TimeSpan to TimeOnly when reading from database
-        //        );
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
-        //    // Add this block for the TimeOnly property named StartTime
-        //    modelBuilder.Entity<ShiftInfo>()
-        //        .Property(e => e.StartTime)
-        //        .HasConversion(
-        //            v => v.ToTimeSpan(), // Convert TimeOnly to TimeSpan when saving to database
-        //            v => TimeOnly.FromTimeSpan(v) // Convert TimeSpan to TimeOnly when reading from database
-        //        );
+            modelBuilder.Entity<ShiftInfo>()
+                .Property(m => m.Date)
+                .HasColumnType("DATE");
 
+            modelBuilder.Entity<ShiftInfo>()
+                .Property(m => m.StartTime)
+                .HasColumnType("TIME");
 
+            modelBuilder.Entity<ShiftInfo>()
+                .Property(m => m.EndTime)
+                .HasColumnType("TIME");
 
-        //    #region DbSet declarations
-        //    // Your DbSet properties
-        //    modelBuilder.Entity<ShiftInfo>();
+            modelBuilder.Entity<Shift>()
+                .Property(m => m.CheckInTime)
+                .HasColumnType("DATE");
 
-        //    #endregion
-        //}
+            modelBuilder.Entity<Shift>()
+                .Property(m => m.CheckOutTime)
+                .HasColumnType("DATE");
+
+            modelBuilder.Entity<SalaryHistory>()
+                .Property(m => m.StartDate)
+                .HasColumnType("DATE");
+
+            modelBuilder.Entity<SalaryHistory>()
+                .Property(m => m.EndDate)
+                .HasColumnType("DATE");
+
+            modelBuilder.Entity<SalaryHistory>()
+                .Property(m => m.PaidDate)
+                .HasColumnType("DATE");
+
+            modelBuilder.Entity<HourHistory>()
+                .Property(m => m.DateAt)
+                .HasColumnType("DATE");
+
+        }
 
         #region
         public DbSet<Employee>? Employees { get; set; }

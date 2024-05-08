@@ -9,6 +9,5 @@ namespace PBL3.Server.Models
         public int Id { get; set; }
         public string? DutyName { get; set; }
         public double BasicSalary { get; set; }
-        public ICollection<EmployeeModel> Employees { get; set; }
     }
 }

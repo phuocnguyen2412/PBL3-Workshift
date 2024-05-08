@@ -1,4 +1,5 @@
-﻿using PBL3.Server.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Data;
 using PBL3.Server.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,12 +8,12 @@ namespace PBL3.Server.Repositories
 {
     public interface IEmployee
     {
-        public Task<object> GetAllEmployeesAsync();
-        public Task<object> GetEmployeeByIdAsync(int id);
-        public Task<object> GetAllEmployeesByStatusAsync(bool status);
-        public Task<object> AddEmployeeAsync(EmployeeModel employee);
-        public Task<object> UpdateEmployeeAsync(EmployeeModel employee);
-        public Task<object> DeleteEmployeeAsync(int id);
-        public Task<object> SearchEmployeeByStringAsync(string searchString);
+        public Task<ActionResult> GetAllEmployeesAsync();
+        public Task<ActionResult> GetEmployeeByIdAsync(int id);
+        public Task<ActionResult> GetAllEmployeesByStatusAsync(bool status);
+        public Task<ActionResult> AddEmployeeAsync(EmployeeModel employee);
+        public Task<ActionResult> UpdateEmployeeAsync(EmployeeModel employee);
+        public Task<ActionResult> DeleteEmployeeAsync(int id);
+        public Task<ActionResult> SearchEmployeeByStringAsync(string searchString);
     }
 }
