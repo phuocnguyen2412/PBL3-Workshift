@@ -5,8 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using System.Globalization;
+using PBL3.Server.Interface;
 
 namespace PBL3.Server.Repositories
 {
@@ -25,19 +24,19 @@ namespace PBL3.Server.Repositories
         {
             var shiftInfosWithFullName = await _context.ShiftInfos
                 .Join(_context.Employees,
-                      shiftInfo => shiftInfo.ManagerId,
-                      employee => employee.Id,
-                      (shiftInfo, employee) => new
-                      {
-                          Id = shiftInfo.Id,
-                          //ManagerId = shiftInfo.ManagerId,
-                          ShiftName = shiftInfo.ShiftName,
-                          Date = shiftInfo.Date,
-                          StartTime = shiftInfo.StartTime,
-                          EndTime = shiftInfo.EndTime,
-                          Checked = shiftInfo.Checked,
-                          FullName = employee.FullName
-                      })
+                        shiftInfo => shiftInfo.ManagerId,
+                        employee => employee.Id,
+                        (shiftInfo, employee) => new
+                        {
+                            Id = shiftInfo.Id,
+                            //ManagerId = shiftInfo.ManagerId,
+                            ShiftName = shiftInfo.ShiftName,
+                            Date = shiftInfo.Date,
+                            StartTime = shiftInfo.StartTime,
+                            EndTime = shiftInfo.EndTime,
+                            Checked = shiftInfo.Checked,
+                            FullName = employee.FullName
+                        })
                 .ToListAsync();
             return shiftInfosWithFullName;
         }
@@ -141,7 +140,7 @@ namespace PBL3.Server.Repositories
                         .FirstOrDefault()
                 })
                 .ToListAsync();
-            if(shifts.Count == 0)
+            if (shifts.Count == 0)
             {
                 return null;
             }

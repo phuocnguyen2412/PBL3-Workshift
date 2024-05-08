@@ -17,7 +17,9 @@ const Employee = () => {
             if (id === "Tất cả") {
                 result = await getApi("/Employee");
             } else {
-                result = await getApi(`/Employee/status/${id}`);
+                result = await getApi(
+                    `/Employee/GetAllEmployeesByStatusAsync?status=${id}`
+                );
             }
 
             setEmployee(result);

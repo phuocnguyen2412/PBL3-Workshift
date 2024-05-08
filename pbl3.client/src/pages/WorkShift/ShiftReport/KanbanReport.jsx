@@ -1,7 +1,10 @@
-import { Card, Col, Row } from "antd";
-import React from "react";
-import CardItem from "./CardItem";
+import { Col, Row } from "antd";
 
+import CardItem from "./CardItem";
+import PropTypes from "prop-types";
+KanbanReport.propTypes = {
+    data: PropTypes.object.isRequired,
+};
 export default function KanbanReport({ data }) {
     return (
         <div>
@@ -9,7 +12,7 @@ export default function KanbanReport({ data }) {
                 {data &&
                     data.map((item, index) => (
                         <Col key={index} span={8} style={{ margin: "6px 0" }}>
-                            <CardItem />
+                            <CardItem data={item} />
                         </Col>
                     ))}
             </Row>

@@ -1,12 +1,18 @@
-import { PlusOutlined } from "@ant-design/icons";
+import {
+    AppstoreOutlined,
+    BarsOutlined,
+    PlusOutlined,
+} from "@ant-design/icons";
 import {
     Button,
     Col,
     DatePicker,
     Drawer,
+    Flex,
     Form,
     Input,
     Row,
+    Segmented,
     Select,
     Spin,
     notification,
@@ -40,7 +46,7 @@ export default function CreateBonusSalary() {
         };
         fetchData();
     }, []);
-    console.log(employeeOptions);
+
     const showDrawer = () => {
         setOpen(true);
     };
@@ -56,19 +62,30 @@ export default function CreateBonusSalary() {
             });
             return;
         }
-        e.date = `${e.date.date()}-${
-            e.date.month() + 1
-        }-${e.date.year()} ${e.date.hour()}:${e.date.minute()}`;
+        e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
         console.log(e);
     };
     return (
         <>
             {contextHolderNotification}
-            <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-                New account
-            </Button>
+            <Flex align="center" justify="space-between">
+                <Segmented
+                    options={[
+                        { value: "List", icon: <BarsOutlined /> },
+                        { value: "Kanban", icon: <AppstoreOutlined /> },
+                    ]}
+                />
+                <Button
+                    type="primary"
+                    onClick={showDrawer}
+                    icon={<PlusOutlined />}
+                >
+                    Create bonus salary
+                </Button>
+            </Flex>
+
             <Drawer
-                title="Create a new account"
+                title="Create a new bonus salary"
                 width={720}
                 onClose={onClose}
                 open={open}
