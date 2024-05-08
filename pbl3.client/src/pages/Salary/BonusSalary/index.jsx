@@ -1,11 +1,10 @@
+import { useContext } from "react";
 import CreateBonusSalary from "./CreateBonusSalary";
+import { AccountContext } from "../../../Context/AccountContext";
 
 const BonusSalary = () => {
-    return (
-        <>
-            <CreateBonusSalary />
-        </>
-    );
+    const account = useContext(AccountContext);
+    return <>{account.account.dutyName === "Admin" && <CreateBonusSalary />}</>;
 };
 
 export default BonusSalary;

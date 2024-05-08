@@ -19,9 +19,6 @@ function MainLayout() {
             if (Object.keys(account.account).length === 0) {
                 try {
                     if (localStorage.getItem("account")) {
-                        console.log(
-                            JSON.parse(localStorage.getItem("account"))
-                        );
                         const data = await postApi(
                             "/Account/Login",
                             JSON.parse(localStorage.getItem("account"))
@@ -36,7 +33,7 @@ function MainLayout() {
         };
         login();
     });
-    console.log(account);
+
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
