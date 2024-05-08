@@ -29,7 +29,7 @@ namespace PBL3.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
             }
         }
-
+        
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEmployeeByIdAsync(int id)
         {
