@@ -8,8 +8,8 @@ namespace PBL3.Server.Models
     {
         public int Id { get; set; }
         public int EmployeeId { get; set; }
-        public virtual Employee? Employee { get; set; }
         public string? CheckInTime { get; set; }
         public string? CheckOutTime { get; set; }
+        public EmployeeModel? Employee { get; set; }
     }
 }

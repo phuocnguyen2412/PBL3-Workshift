@@ -2500,24 +2500,26 @@
     ]
   },
   "packageFolders": {
-    "/Users/ttcenter/.nuget/packages/": {}
+    "C:\\Users\\Dinh Duc\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
+      "projectUniqueName": "D:\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
       "projectName": "PBL3.Server",
-      "projectPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
-      "packagesPath": "/Users/ttcenter/.nuget/packages/",
-      "outputPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/obj/",
+      "projectPath": "D:\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
+      "packagesPath": "C:\\Users\\Dinh Duc\\.nuget\\packages\\",
+      "outputPath": "D:\\PBL3\\PBL3.Server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/ttcenter/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Dinh Duc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2530,6 +2532,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -2576,20 +2583,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.26, 6.0.26]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.osx-arm64",
-            "version": "[6.0.26, 6.0.26]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.26, 6.0.26]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -2598,8 +2591,16 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file D:\\PBL3\\PBL3.Server\\obj\\project.nuget.cache : Unexpected character encountered while parsing value: <. Path '', line 0, position 0."
+    }
+  ]
 }
