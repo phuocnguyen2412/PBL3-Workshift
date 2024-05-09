@@ -72,6 +72,8 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("BonusSalaryHistory");
                 });
 
@@ -214,6 +216,9 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShiftInfoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -293,6 +298,17 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
                 {
                     b.HasOne("PBL3.Server.Data.Duty", "Duty")
@@ -334,7 +350,15 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
