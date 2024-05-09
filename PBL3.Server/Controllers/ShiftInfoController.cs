@@ -49,7 +49,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message});
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -72,7 +72,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -95,7 +95,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -114,6 +114,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }

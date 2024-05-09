@@ -13,12 +13,12 @@ const BonusSalary = () => {
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
     const [type, setType] = useState(null);
+    const fetchData = async () => {
+        const response = await getApi("/BonusSalary");
+        console.log(response);
+        setData(response);
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await getApi("/BonusSalary");
-            
-            setData(response);
-        };
         fetchData();
     }, []);
 
@@ -50,7 +50,9 @@ const BonusSalary = () => {
                         },
                     ]}
                 />
-                {account.account.dutyName === "Admin" && <CreateBonusSalary />}
+                {account.account.dutyName === "Admin" && (
+                    <CreateBonusSalary reload={fetchData} />
+                )}
             </Flex>
 
             <Spin spinning={loading}>{type}</Spin>

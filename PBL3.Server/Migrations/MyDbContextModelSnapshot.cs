@@ -211,13 +211,16 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CheckInTime")
-                        .HasColumnType("DATE");
+                    b.Property<TimeSpan>("CheckInTime")
+                        .HasColumnType("TIME");
 
-                    b.Property<DateTime>("CheckOutTime")
-                        .HasColumnType("DATE");
+                    b.Property<TimeSpan>("CheckOutTime")
+                        .HasColumnType("TIME");
 
                     b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftInfoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -351,7 +354,15 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
