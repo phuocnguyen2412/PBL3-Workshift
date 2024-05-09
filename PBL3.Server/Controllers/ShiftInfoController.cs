@@ -31,7 +31,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -49,7 +49,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -72,7 +72,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -95,7 +95,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -114,7 +114,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -132,7 +132,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -150,7 +150,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "An error occurred while processing your request." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
     }
