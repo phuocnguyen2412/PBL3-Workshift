@@ -1,17 +1,15 @@
+import localhost from "../../Services/localhost.js";
 import useFetch from "./../../custom hook/useFetch.js";
 import { Form, Row, Col, Input, Button } from "antd";
 export default function ChangePassword() {
-    const { postApi, loading } = useFetch("");
-    const handleSubmitForm = (e) => {
+    const { postApi, loading } = useFetch(localhost);
+    const handleSubmitForm = async (e) => {
+        postApi()
         console.log(e);
     };
     return (
         <div>
-            <Form
-                autoFocus
-                layout="vertical"
-                onFinish={handleSubmitForm}
-            >
+            <Form autoFocus layout="vertical" onFinish={handleSubmitForm}>
                 <Row gutter={12}>
                     <Col span={24}>
                         <Form.Item

@@ -42,9 +42,9 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost("LoginByToken")]
-        public async Task<ActionResult<object>> LoginByToken(string token)
+        public async Task<ActionResult<object>> LoginByToken(TokenModel token)
         {
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token.Token))
             {
                 return BadRequest("Token cannot be empty!");
             }
