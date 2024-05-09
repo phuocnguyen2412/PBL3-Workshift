@@ -1,6 +1,6 @@
 import { Collapse, Empty, Spin } from "antd";
 import TableEmployeePerShift from "./TableEmployeePerShift";
-import ShiftAction from "./ShiftAction";
+
 import { useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
@@ -20,12 +20,21 @@ const WorkInDay = ({ date }) => {
                     setItems([]);
                     throw new Error("không tìm thấy");
                 }
-                setItems(
+                setItems(() =>
                     data.map((e, index) => {
                         return {
                             key: index,
-                            label: <ShiftAction shift={e} />,
-                            children: <TableEmployeePerShift shift={e} />,
+                            label: (
+                                <h3>{`${e.shiftName}: ${e.startTime} - ${e.endTime} `}</h3>
+                            ),
+                            children: (
+                                <TableEmployeePerShift
+                                    shift={e}
+                                    setItems={async () => {
+                                        fetchData();
+                                    }}
+                                />
+                            ),
                         };
                     })
                 );

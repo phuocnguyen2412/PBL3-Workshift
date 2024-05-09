@@ -131,6 +131,7 @@ namespace PBL3.Server.Repositories
                     s.Date,
                     s.StartTime,
                     s.EndTime,
+                    s.Checked,
                     Employees = _context.Employees
                     .Where(e => e.Id == s.ManagerId)
                         .Select(e => new
