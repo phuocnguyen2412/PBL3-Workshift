@@ -72,7 +72,6 @@ namespace PBL3.Server.Repositories
             {
                 return null;
             }
-
             //shift.CheckInTime = checkInTime;
             _context.Entry(shift).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -86,7 +85,6 @@ namespace PBL3.Server.Repositories
             {
                 return null;
             }
-
             //shift.CheckOutTime = checkOutTime;
             _context.Entry(shift).State = EntityState.Modified;
             await _context.SaveChangesAsync();
