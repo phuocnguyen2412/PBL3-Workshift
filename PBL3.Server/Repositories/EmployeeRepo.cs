@@ -23,31 +23,16 @@ namespace PBL3.Server.Repositories
             _accountRepository = accountRepository;
         }
 
-        public async Task<ActionResult> AddEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<Employee> AddEmployeeAsync(EmployeeModel employeeModel)
         {
             if (employeeModel == null)
             {
-                return new BadRequestObjectResult(new { message = "Employee data cannot be empty." });
+                throw new Exception("Employee data cannot be empty.");
             }
-
             var employee = _mapper.Map<Employee>(employeeModel);
-
-            _context.Employees!.Add(employee);
+            _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
-
-            var username = employeeModel.Email ?? throw new ArgumentNullException(nameof(employeeModel.Email), "Email cannot be null.");
-            var hashedPassword = _accountRepository.HashPassword(employeeModel.Email);
-
-            var account = new Account
-            {
-                UserName = username,
-                Password = hashedPassword,
-                EmployeeId = employee.Id
-            };
-            _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
-
-            return new OkObjectResult(account);
+            return employee;
         }
 
         public async Task<ActionResult> DeleteEmployeeAsync(int id)

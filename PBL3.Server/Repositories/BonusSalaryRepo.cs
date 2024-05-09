@@ -18,25 +18,42 @@ namespace PBL3.Server.Repositories
             _context = context;
         }
 
-        public async Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryRequest request)
+        public async Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryModel request)
         {
-            foreach (var employeeId in request.EmployeeIds)
+            if (request.EmployeeIds.Contains(0))
             {
-                var newBonusSalary = new BonusSalaryHistory
+                var allEmployeeIds = await _context.Employees.Select(e => e.Id).ToListAsync();
+                foreach (var employeeId in allEmployeeIds)
                 {
-                    EmployeeId = employeeId,
-                    TotalBonus = request.TotalBonus,
-                    DateTime = DateTime.Now,
-                    Reason = request.Reason
-                };
-                _context.BonusSalaryHistories.Add(newBonusSalary);
+                    var newBonusSalary = new BonusSalaryHistory
+                    {
+                        EmployeeId = employeeId,
+                        TotalBonus = request.TotalBonus,
+                        DateTime = DateTime.Now,
+                        Reason = request.Reason
+                    };
+                    _context.BonusSalaryHistories.Add(newBonusSalary);
+                }
+            }
+            else
+            {
+                foreach (var employeeId in request.EmployeeIds)
+                {
+                    var newBonusSalary = new BonusSalaryHistory
+                    {
+                        EmployeeId = employeeId,
+                        TotalBonus = request.TotalBonus,
+                        DateTime = DateTime.Now,
+                        Reason = request.Reason
+                    };
+                    _context.BonusSalaryHistories.Add(newBonusSalary);
+                }
             }
 
             await _context.SaveChangesAsync();
 
             return _context.BonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
         }
-
         public async Task<ActionResult> GetAllBonusSalaryAsync()
         {
             var bonusSalaries = await _context.BonusSalaryHistories

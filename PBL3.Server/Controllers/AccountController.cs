@@ -41,18 +41,36 @@ namespace PBL3.Server.Controllers
             return Ok(account);
         }
 
-        [HttpPost("ChangePassword")]
-        public async Task<ActionResult<bool>> ChangePassword(int Id, string password, string newPassword)
+        [HttpPost("LoginByToken")]
+        public async Task<ActionResult<object>> LoginByToken(TokenModel token)
         {
-            if (string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(token.Token))
+            {
+                return BadRequest("Token cannot be empty!");
+            }
+
+            var account = await _accountRepo.GetAccountByToken(token);
+
+            if (account == null)
+            {
+                return NotFound("Token is invalid!");
+            }
+
+            return Ok(account);
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult<bool>> ChangePassword(ChangePasswordModel model)
+        {
+            if (string.IsNullOrEmpty(model.Password))
             {
                 return BadRequest("Password cannot be empty!");
             }
-            if (string.IsNullOrEmpty(newPassword))
+            if (string.IsNullOrEmpty(model.newPassword))
             {
                 return BadRequest("New Password cannot be empty!");
             }
-            var success = await _accountRepo.ChangePassword(Id, password, newPassword);
+            var success = await _accountRepo.ChangePassword(model);
 
             if (success)
             {

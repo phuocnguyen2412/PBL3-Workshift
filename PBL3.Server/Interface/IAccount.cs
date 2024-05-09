@@ -1,13 +1,14 @@
-﻿using PBL3.Server.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Data;
 using PBL3.Server.Models;
 
 namespace PBL3.Server.Interface
 {
     public interface IAccount
     {
-        Task AddAccountAsync(AccountModel account);
         Task<object> GetAccountByUserNameAndPassword(AccountModel model);
-        string HashPassword(string password);
-        Task<bool> ChangePassword(int Id, string password, string newPassword);
+        Task<object> GetAccountByToken(TokenModel token);
+        Task AddAccountAsync(string email, int employeeId);
+        Task<bool> ChangePassword(ChangePasswordModel model);
     }
 }

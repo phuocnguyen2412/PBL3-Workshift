@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240508170812_ad")]
-    partial class ad
+    [Migration("20240509112847_dsadsdads")]
+    partial class dsadsdads
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,10 @@ namespace PBL3.Server.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -73,6 +77,8 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("BonusSalaryHistory");
                 });
@@ -130,6 +136,8 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DutyId");
 
                     b.ToTable("Employee");
                 });
@@ -291,6 +299,28 @@ namespace PBL3.Server.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Duty", "duty")
+                        .WithMany()
+                        .HasForeignKey("DutyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("duty");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.HourHistory", b =>
