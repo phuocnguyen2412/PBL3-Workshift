@@ -29,10 +29,10 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
-
+        
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEmployeeByIdAsync(int id)
         {
@@ -48,7 +48,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
 
@@ -61,20 +61,20 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<ActionResult<EmployeeModel>> AddEmployeeAsync(EmployeeModel employeeModel)
         {
             try
             {
                 var addedEmployee = await _employeeRepo.AddEmployeeAsync(employeeModel);
                 if (addedEmployee != null)
                 {
-                    await _accountRepo.AddAccountAsync(employeeModel.Email, employeeModel.Id);
-                    return Ok("Add Employee and Account successfully!");
+                    await _accountRepo.AddAccountAsync(employeeModel.Email, addedEmployee.Id);
+                    return Ok(employeeModel);
                 }
                 else
                 {
@@ -83,7 +83,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
 
@@ -96,7 +96,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
 
@@ -109,7 +109,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
 
@@ -122,7 +122,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
     }

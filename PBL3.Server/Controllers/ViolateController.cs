@@ -17,15 +17,12 @@ namespace PBL3.Server.Controllers
         {
             _violateRepo = violateRepo;
         }
-
-        // GET: api/Violate
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Violate>>> GetViolates()
         {
             return Ok(await _violateRepo.GetAllViolates());
         }
 
-        // GET: api/Violate/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Violate>> GetViolate(int id)
         {
@@ -37,31 +34,22 @@ namespace PBL3.Server.Controllers
             return Ok(violate);
         }
 
-        // POST: api/Violate
-        /*[HttpPost]
+        [HttpPost]
         public async Task<ActionResult<ViolateModel>> PostViolate(ViolateModel violatemodel)
         {
-            var createdViolate = await _violateRepo.AddViolate(violatemodel);
-            return CreatedAtAction(nameof(GetViolate), new { id = Id }, createdViolate);
-        }
-        */
+            violatemodel.Checked = false;
 
-        // PUT: api/Violate/5
-       /* [HttpPut("{id}")]
-        public async Task<IActionResult> PutViolate(int id, Violate violate)
+            var createdViolateId = await _violateRepo.AddViolate(violatemodel);
+            var createdViolate = await _violateRepo.GetViolateById(createdViolateId);
+            return CreatedAtAction(nameof(GetViolate), new { id = createdViolateId }, createdViolate);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutViolate(int id, ViolateModel violateModel)
         {
-            var updatedViolate = await _violateRepo.UpdateViolate(id, violate);
+            var updatedViolate = await _violateRepo.UpdateViolate(id, violateModel);
             if (updatedViolate == null)
                 return NotFound();
-            return NoContent();
-        }
-       */
-
-        // DELETE: api/Violate/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteViolate(int id)
-        {
-            await _violateRepo.DeleteViolate(id);
             return NoContent();
         }
     }

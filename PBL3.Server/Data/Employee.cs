@@ -20,7 +20,7 @@ namespace PBL3.Server.Data
         public double CoefficientsSalary { get; set; }
         public int DutyId { get; set; }
         [ForeignKey("DutyId")]
-        public Duty Duty { get; set; }
+        public Duty? Duty { get; set; }
         public bool Status { get; set; }
     }
 }

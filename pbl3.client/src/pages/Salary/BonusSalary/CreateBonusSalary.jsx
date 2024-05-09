@@ -20,7 +20,7 @@ export default function CreateBonusSalary() {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const [open, setOpen] = useState(false);
-    const { getApi, loading } = useFetch(localhost);
+    const { getApi, loading, postApi } = useFetch(localhost);
     const [employeeOptions, setEmployeeOptions] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -40,15 +40,15 @@ export default function CreateBonusSalary() {
         };
         fetchData();
     }, []);
-    console.log(employeeOptions);
+
     const showDrawer = () => {
         setOpen(true);
     };
     const onClose = () => {
         setOpen(false);
     };
-    const handleSubmit = (e) => {
-        if (e.employeeId.some((id) => id === 0) && e.employeeId.length > 1) {
+    const handleSubmit = async (e) => {
+        if (e.employeeIds.some((id) => id === 0) && e.employeeIds.length > 1) {
             apiNotification.error({
                 message: "Thất bại!",
                 description: `Chỉ được chọn tất cả hoặc 1 số nhân viên`,
@@ -56,19 +56,21 @@ export default function CreateBonusSalary() {
             });
             return;
         }
-        e.date = `${e.date.date()}-${
-            e.date.month() + 1
-        }-${e.date.year()} ${e.date.hour()}:${e.date.minute()}`;
+        e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
+        const response = await postApi("/BonusSalary/addforemployees", e);
+        console.log(response);
         console.log(e);
     };
     return (
         <>
             {contextHolderNotification}
+
             <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
-                New account
+                Create bonus salary
             </Button>
+
             <Drawer
-                title="Create a new account"
+                title="Create a new bonus salary"
                 width={720}
                 onClose={onClose}
                 open={open}
@@ -83,7 +85,7 @@ export default function CreateBonusSalary() {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="employeeId"
+                                    name="employeeIds"
                                     label="Tên nhân viên"
                                     rules={[
                                         {

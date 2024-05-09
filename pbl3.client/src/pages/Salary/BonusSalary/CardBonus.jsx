@@ -1,23 +1,27 @@
 import { Button, Card } from "antd";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import ReportContent from "./ReportContent";
-export default function CardItem({ data }) {
+import dayjs from "dayjs";
+import BonusContent from "./BonusContent";
+
+export default function CardBonus({ data }) {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <ReportContent data={data} setOpen={setOpen} open={open} />
+            <BonusContent data={data} setOpen={setOpen} open={open} />
 
             <Card
                 type="inner"
-                title={`Báo cáo ${data.employeeName}`}
+                title={`Báo cáo ${data.fullName}`}
                 extra={<Button onClick={() => setOpen(true)}>More</Button>}
             >
-                {`Báo cáo ${data.shiftName}: ${data.startTime} - ${data.endTime}  `}
+                {`Báo cáo ${dayjs(data.dateTime).format(
+                    "DD-MM-YYYY HH:mm:ss"
+                )}  `}
             </Card>
         </>
     );
 }
-CardItem.propTypes = {
+CardBonus.propTypes = {
     data: PropTypes.object.isRequired,
 };

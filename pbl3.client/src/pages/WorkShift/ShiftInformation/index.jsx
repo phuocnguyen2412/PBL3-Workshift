@@ -24,13 +24,14 @@ const ShiftInformation = () => {
     useEffect(() => {
         const fetchData = async () => {
             const yourData = await getApi("/ShiftInfo");
+            console.log(yourData);
             setData(yourData);
         };
         fetchData();
     }, []);
 
     const onSelect = (newValue) => {
-        if (newValue.isValid() && newValue.date() !== value.date()) {
+        if (newValue.isValid()) {
             setOpenModal(true);
         }
         setValue(newValue);
@@ -107,7 +108,7 @@ const ShiftInformation = () => {
                 <AddShiftForm setData={setData} />
             </Drawer>
             <Modal
-                title={`Lịch làm việc ngày ${value?.format("YY-MM-DD")}`}
+                title={`Lịch làm việc ngày ${value?.format("DD-MM-YYYY")}`}
                 centered
                 open={openModal}
                 onOk={() => setOpenModal(false)}
@@ -115,7 +116,7 @@ const ShiftInformation = () => {
                 width={1000}
                 footer={null}
             >
-                <WorkInDay />
+                <WorkInDay date={value?.format("YYYY-MM-DD")} />
             </Modal>
             <Spin spinning={loading}>
                 <Calendar

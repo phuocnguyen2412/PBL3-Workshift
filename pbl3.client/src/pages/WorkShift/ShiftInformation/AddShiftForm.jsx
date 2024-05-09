@@ -17,13 +17,13 @@ const AddShiftForm = ({ setData }) => {
     const handleSubmit = async (e) => {
         const data = {
             ...e,
-            date: `${e.date.format("YYYY-MM-DD")}T09:15:53.322Z`,
+            date: `${e.date.format("YYYY-MM-DD")}T00:00:00.000Z`,
             startTime: `${e.startTime.format("HH:mm:ss")}`,
             endTime: `${e.endTime.format("HH:mm:ss")}`,
             managerId: null,
             checked: false,
         };
-
+        console.log(data);
         const response = await postApi("/ShiftInfo", data);
         console.log(response);
         setData(await getApi("/ShiftInfo"));

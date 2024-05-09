@@ -20,6 +20,7 @@ builder.Services.AddScoped<IShiftInfo, ShiftInfoRepo>();
 builder.Services.AddScoped<IDuty, DutyRepo>();
 builder.Services.AddScoped<IAccount, AccountRepo>();
 builder.Services.AddScoped<IBonusSalary, BonusSalaryRepo>();
+builder.Services.AddScoped<IViolate, ViolateRepo>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

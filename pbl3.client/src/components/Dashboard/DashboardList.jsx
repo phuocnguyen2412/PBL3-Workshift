@@ -1,5 +1,4 @@
 import {
-    ReconciliationFilled,
     TransactionOutlined,
     UserOutlined,
     CalendarOutlined,
@@ -12,7 +11,6 @@ import {
     CloseOutlined,
     HomeOutlined,
     VideoCameraOutlined,
-    UploadOutlined,
     SmileOutlined,
     SolutionOutlined,
 } from "@ant-design/icons";

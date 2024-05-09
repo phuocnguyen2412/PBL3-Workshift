@@ -21,11 +21,6 @@ namespace PBL3.Server.Repositories
         }
         public async Task AddAccountAsync(string email, int employeeId)
         {
-            if (email == null)
-            {
-                throw new ArgumentNullException(nameof(email), "Email cannot be null.");
-            }
-
             var hashedPassword = HashPassword(email);
             string token = GenerateToken();
 

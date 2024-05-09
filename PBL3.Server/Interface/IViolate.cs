@@ -10,7 +10,6 @@ namespace PBL3.Server.Interface
         Task<IEnumerable<ViolateModel>> GetAllViolates();
         Task<ViolateModel> GetViolateById(int id);
         Task<int> AddViolate(ViolateModel violatemodel);
-        Task<ViolateModel> UpdateViolate(int id, ViolateModel violate);
-        Task DeleteViolate(int id);
+        Task<ViolateModel> UpdateViolate(int id, ViolateModel violateModel);
     }
 }

@@ -1,11 +1,63 @@
-import { Table } from "antd";
-
+import { Button, Table } from "antd";
+import ReportContent from "./ReportContent";
+import { useState } from "react";
+import PropTypes from "prop-types";
+TableReport.propTypes = {
+    data: PropTypes.array.isRequired,
+};
 export default function TableReport({ data }) {
-    const colunms = [];
+    const [open, setOpen] = useState(false);
+    const columns = [
+        {
+            title: "Employee",
+            dataIndex: "employeeName",
+            key: "name",
+        },
+        {
+            title: "Age",
+            dataIndex: "shiftName",
+            key: "shiftName",
+        },
+        {
+            title: "Address",
+            dataIndex: "date",
+            key: "date",
+        },
+        {
+            title: "Start time",
+            key: "startTime",
+            dataIndex: "startTime",
+        },
+        {
+            title: "End time",
+            key: "endTime",
+            dataIndex: "endTime",
+        },
+        {
+            title: "Action",
+            key: "action",
+            render: (_, record) => (
+                <>
+                    <Button
+                        onClick={() => {
+                            setOpen(true);
+                        }}
+                    >
+                        More
+                    </Button>
+                    <ReportContent
+                        data={record}
+                        setOpen={setOpen}
+                        open={open}
+                    />
+                </>
+            ),
+        },
+    ];
 
     return (
         <div>
-            <Table dataSource={data} columns={colunms} />
+            <Table rowKey="id" dataSource={data} columns={columns} />
         </div>
     );
 }
