@@ -12,10 +12,12 @@ namespace PBL3.Server.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepo;
+        private readonly IAccount _accountRepo;
 
-        public EmployeeController(IEmployee employeeRepo)
+        public EmployeeController(IEmployee employeeRepo, IAccount accountRepo)
         {
             _employeeRepo = employeeRepo;
+            _accountRepo = accountRepo;
         }
 
         [HttpGet]
@@ -64,11 +66,20 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddEmployeeAsync(EmployeeModel employee)
+        public async Task<ActionResult> AddEmployeeAsync(EmployeeModel employeeModel)
         {
             try
             {
-                return await _employeeRepo.AddEmployeeAsync(employee);
+                var addedEmployee = await _employeeRepo.AddEmployeeAsync(employeeModel);
+                if (addedEmployee != null)
+                {
+                    await _accountRepo.AddAccountAsync(employeeModel.Email, employeeModel.Id);
+                    return Ok("Add Employee and Account successfully!");
+                }
+                else
+                {
+                    return BadRequest("Failed to add Employee!");
+                }
             }
             catch (Exception e)
             {

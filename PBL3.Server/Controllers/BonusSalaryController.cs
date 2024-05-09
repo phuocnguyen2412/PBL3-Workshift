@@ -27,12 +27,13 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost("addforemployees")]
-        public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryRequest request)
+        public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryModel request)
         {
+           
             var id = await _bonusSalaryRepo.AddBonusSalaryForEmployeesAsync(request);
             if (id > 0)
             {
-                return Ok(new { Message = "Bonus salary added successfully", BonusSalaryId = id });
+                return Ok(new { Message = "Bonus salary added successfully" });
             }
             else
             {
@@ -43,8 +44,8 @@ namespace PBL3.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBonusSalary(int id)
         {
-            var deleted = await _bonusSalaryRepo.DeleteBonusSalaryAsync(id);
-            if (deleted)
+            var delete = await _bonusSalaryRepo.DeleteBonusSalaryAsync(id);
+            if (delete)
             {
                 return Ok(new { Message = "Bonus salary deleted successfully" });
             }

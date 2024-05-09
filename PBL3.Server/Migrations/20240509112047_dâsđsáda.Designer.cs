@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBL3.Server.Data;
 
@@ -11,9 +12,10 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240509112047_dâsđsáda")]
+    partial class dâsđsáda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,8 +77,6 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("BonusSalaryHistory");
                 });
@@ -299,26 +299,15 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
-            modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
-                {
-                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
             modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
                 {
-                    b.HasOne("PBL3.Server.Data.Duty", "Duty")
+                    b.HasOne("PBL3.Server.Data.Duty", "duty")
                         .WithMany()
                         .HasForeignKey("DutyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Duty");
+                    b.Navigation("duty");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.HourHistory", b =>
