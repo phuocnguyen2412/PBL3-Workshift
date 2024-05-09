@@ -33,7 +33,6 @@ const TableEmployee = ({ data, setEmployee }) => {
         },
 
         {
-            width: "400px",
             title: "Duty",
             dataIndex: "dutyName",
             render: (_, record) => (
