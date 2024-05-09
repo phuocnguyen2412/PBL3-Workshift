@@ -84,38 +84,42 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut("{id}/checkin")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int id, string checkInTime)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int id, TimeSpan checkInTime)
         {
-            if (string.IsNullOrEmpty(checkInTime))
+            try
             {
-                return BadRequest(new { message = "Invalid check-in time." });
+                var updatedShift = await _shiftRepo.UpdateShiftCheckInTimeAsync(id, checkInTime);
+                if (updatedShift == null)
+                {
+                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                }
+                return Ok(updatedShift);
             }
-
-            var updatedShift = await _shiftRepo.UpdateShiftCheckInTimeAsync(id, checkInTime);
-            if (updatedShift == null)
+            catch (System.Exception e)
             {
-                return NotFound(new { message = $"Shift with ID {id} not found." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
-            return Ok(updatedShift);
         }
+
 
         [HttpPut("{id}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, string checkOutTime)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, TimeSpan checkOutTime)
         {
-            if (string.IsNullOrEmpty(checkOutTime))
+            try
             {
-                return BadRequest(new { message = "Invalid check-out time." });
+                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, checkOutTime);
+                if (updatedShift == null)
+                {
+                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                }
+                return Ok(updatedShift);
             }
-
-            var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, checkOutTime);
-            if (updatedShift == null)
+            catch (System.Exception e)
             {
-                return NotFound(new { message = $"Shift with ID {id} not found." });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
-
-            return Ok(updatedShift);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<ShiftModel>> DeleteShiftAsync(int id)
