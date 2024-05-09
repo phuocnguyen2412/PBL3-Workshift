@@ -26,11 +26,11 @@ namespace PBL3.Server.Data
 
             modelBuilder.Entity<Shift>()
                 .Property(m => m.CheckInTime)
-                .HasColumnType("DATE");
+                .HasColumnType("TIME");
 
             modelBuilder.Entity<Shift>()
                 .Property(m => m.CheckOutTime)
-                .HasColumnType("DATE");
+                .HasColumnType("TIME");
 
             modelBuilder.Entity<SalaryHistory>()
                 .Property(m => m.StartDate)
