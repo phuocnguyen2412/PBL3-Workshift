@@ -1,18 +1,12 @@
-import {
-    AppstoreOutlined,
-    BarsOutlined,
-    PlusOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import {
     Button,
     Col,
     DatePicker,
     Drawer,
-    Flex,
     Form,
     Input,
     Row,
-    Segmented,
     Select,
     Spin,
     notification,
@@ -26,7 +20,7 @@ export default function CreateBonusSalary() {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const [open, setOpen] = useState(false);
-    const { getApi, loading } = useFetch(localhost);
+    const { getApi, loading, postApi } = useFetch(localhost);
     const [employeeOptions, setEmployeeOptions] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -53,8 +47,8 @@ export default function CreateBonusSalary() {
     const onClose = () => {
         setOpen(false);
     };
-    const handleSubmit = (e) => {
-        if (e.employeeId.some((id) => id === 0) && e.employeeId.length > 1) {
+    const handleSubmit = async (e) => {
+        if (e.employeeIds.some((id) => id === 0) && e.employeeIds.length > 1) {
             apiNotification.error({
                 message: "Thất bại!",
                 description: `Chỉ được chọn tất cả hoặc 1 số nhân viên`,
@@ -63,26 +57,17 @@ export default function CreateBonusSalary() {
             return;
         }
         e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
+        const response = await postApi("/BonusSalary/addforemployees", e);
+        console.log(response);
         console.log(e);
     };
     return (
         <>
             {contextHolderNotification}
-            <Flex align="center" justify="space-between">
-                <Segmented
-                    options={[
-                        { value: "List", icon: <BarsOutlined /> },
-                        { value: "Kanban", icon: <AppstoreOutlined /> },
-                    ]}
-                />
-                <Button
-                    type="primary"
-                    onClick={showDrawer}
-                    icon={<PlusOutlined />}
-                >
-                    Create bonus salary
-                </Button>
-            </Flex>
+
+            <Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
+                Create bonus salary
+            </Button>
 
             <Drawer
                 title="Create a new bonus salary"
@@ -100,7 +85,7 @@ export default function CreateBonusSalary() {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="employeeId"
+                                    name="employeeIds"
                                     label="Tên nhân viên"
                                     rules={[
                                         {

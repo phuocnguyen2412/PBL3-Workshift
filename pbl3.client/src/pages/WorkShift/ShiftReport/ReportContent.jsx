@@ -33,7 +33,7 @@ export default function ReportContent({ data, setOpen, open }) {
             children: data.employeeName,
         },
         {
-            key: "5",
+            key: "10",
             label: "Handle",
             children:
                 data.handle > 0 ? (
@@ -49,7 +49,7 @@ export default function ReportContent({ data, setOpen, open }) {
             span: 3,
         },
         {
-            key: "7",
+            key: "8",
             label: "Reason",
             children: data.managerName,
         },
