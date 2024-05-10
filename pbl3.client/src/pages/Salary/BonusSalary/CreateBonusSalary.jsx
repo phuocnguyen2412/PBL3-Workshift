@@ -15,8 +15,11 @@ import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
-
-export default function CreateBonusSalary() {
+import PropTypes from "prop-types";
+CreateBonusSalary.propTypes = {
+    reload: PropTypes.func.isRequired,
+};
+export default function CreateBonusSalary({ reload }) {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const [open, setOpen] = useState(false);
@@ -59,7 +62,7 @@ export default function CreateBonusSalary() {
         e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
         const response = await postApi("/BonusSalary/addforemployees", e);
         console.log(response);
-        console.log(e);
+        reload();
     };
     return (
         <>

@@ -42,9 +42,9 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost("LoginByToken")]
-        public async Task<ActionResult<object>> LoginByToken(string token)
+        public async Task<ActionResult<object>> LoginByToken(TokenModel token)
         {
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrEmpty(token.Token))
             {
                 return BadRequest("Token cannot be empty!");
             }
@@ -74,11 +74,11 @@ namespace PBL3.Server.Controllers
 
             if (success)
             {
-                return Ok("Change password successfully!");
+                return Ok(new {Message = "Change password successfully!" });
             }
             else
             {
-                return NotFound("Employee not found or old password is incorrect!");
+                return NotFound(new { Message = "Employee not found or old password is incorrect!" });
             }
         }
     }

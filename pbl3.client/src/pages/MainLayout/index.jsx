@@ -18,12 +18,17 @@ function MainLayout() {
         const login = async () => {
             if (Object.keys(account.account).length === 0) {
                 try {
-                    if (localStorage.getItem("account")) {
-                        const data = await postApi(
-                            "/Account/Login",
-                            JSON.parse(localStorage.getItem("account"))
-                        );
+                    if (localStorage.getItem("token")) {
+                        const data = await postApi("/Account/LoginByToken", {
+                            token: JSON.parse(localStorage.getItem("token")),
+                        });
+
                         account.onChange(data);
+                        localStorage.removeItem("token");
+                        localStorage.setItem(
+                            "token",
+                            JSON.stringify(data.token)
+                        );
                     }
                 } catch (e) {
                     navigate("/login");
@@ -32,7 +37,7 @@ function MainLayout() {
             }
         };
         login();
-    });
+    }, []);
 
     const {
         token: { colorBgContainer, borderRadiusLG },

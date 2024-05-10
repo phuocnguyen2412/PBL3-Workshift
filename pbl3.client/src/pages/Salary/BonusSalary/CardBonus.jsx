@@ -3,6 +3,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import BonusContent from "./BonusContent";
+import DeleteBonus from "./DeleteBonus";
 
 export default function CardBonus({ data }) {
     const [open, setOpen] = useState(false);
@@ -13,7 +14,12 @@ export default function CardBonus({ data }) {
             <Card
                 type="inner"
                 title={`Báo cáo ${data.fullName}`}
-                extra={<Button onClick={() => setOpen(true)}>More</Button>}
+                extra={
+                    <>
+                        <DeleteBonus record={data} />
+                        <Button onClick={() => setOpen(true)}>More</Button>
+                    </>
+                }
             >
                 {`Báo cáo ${dayjs(data.dateTime).format(
                     "DD-MM-YYYY HH:mm:ss"

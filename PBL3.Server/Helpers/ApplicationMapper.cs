@@ -16,6 +16,8 @@ namespace PBL3.Server.Helpers
             CreateMap<Duty, DutyModel>().ReverseMap();
             CreateMap<BonusSalaryHistory,BonusSalaryModel>().ReverseMap();
             CreateMap<Violate, ViolateModel>().ReverseMap();
+            CreateMap<Shift, ShiftModel>().ReverseMap();
+
         }
     }
 }

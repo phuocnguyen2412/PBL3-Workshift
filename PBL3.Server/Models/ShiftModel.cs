@@ -8,8 +8,7 @@ namespace PBL3.Server.Models
     {
         public int Id { get; set; }
         public int EmployeeId { get; set; }
-        public string? CheckInTime { get; set; }
-        public string? CheckOutTime { get; set; }
-        public EmployeeModel? Employee { get; set; }
+        public TimeSpan CheckInTime { get; set; }
+        public TimeSpan CheckOutTime { get; set; }
     }
 }

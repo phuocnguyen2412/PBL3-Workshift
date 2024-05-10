@@ -7,7 +7,7 @@ namespace PBL3.Server.Interface
     public interface IAccount
     {
         Task<object> GetAccountByUserNameAndPassword(AccountModel model);
-        Task<object> GetAccountByToken(string token);
+        Task<object> GetAccountByToken(TokenModel token);
         Task AddAccountAsync(string email, int employeeId);
         Task<bool> ChangePassword(ChangePasswordModel model);
     }

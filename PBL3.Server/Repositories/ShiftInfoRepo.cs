@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -130,9 +131,16 @@ namespace PBL3.Server.Repositories
                     s.Date,
                     s.StartTime,
                     s.EndTime,
+<<<<<<< HEAD
                     Employees = _context.Shifts
                         .Where(se => se.Id == s.Id)
                         .Select(se => new
+=======
+                    s.Checked,
+                    Employees = _context.Employees
+                    .Where(e => e.Id == s.ManagerId)
+                        .Select(e => new
+>>>>>>> 55400c1fc560709443cffc801e3ceb7da65739b0
                         {
                             Employee = _context.Employees
                                 .Where(e => e.Id == se.EmployeeId)
@@ -160,6 +168,25 @@ namespace PBL3.Server.Repositories
             return shifts;
         }
 
+<<<<<<< HEAD
 
+=======
+        public async Task<List<DateTime>> GetWorkDatesForEmployeeAsync(int employeeId)
+        {
+            return await _context.ShiftInfos
+                .Where(shiftInfo => shiftInfo.ManagerId == employeeId)
+                .Select(shiftInfo => shiftInfo.Date)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        public async Task<List<ShiftInfoModel>> GetShiftsForManagerAsync(int managerId)
+        {
+            var shiftInfos = await _context.ShiftInfos
+                .Where(shiftInfo => shiftInfo.ManagerId == managerId)
+                .ToListAsync();
+            return _mapper.Map<List<ShiftInfoModel>>(shiftInfos);
+        }
+>>>>>>> 55400c1fc560709443cffc801e3ceb7da65739b0
     }
 }

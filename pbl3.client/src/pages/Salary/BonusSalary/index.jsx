@@ -13,23 +13,21 @@ const BonusSalary = () => {
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
     const [type, setType] = useState(null);
+    const fetchData = async () => {
+        const response = await getApi("/BonusSalary");
+        setData(response);
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await getApi("/BonusSalary");
-            
-            setData(response);
-        };
         fetchData();
     }, []);
 
     useEffect(() => {
-        if (data.length > 0) {
-            setType(<TableBonus data={data} />);
-        }
+        setType(<TableBonus data={data} fetchData={fetchData} />);
     }, [data]);
 
     const onChangeSegmented = (e) => {
-        if (e === "List") setType(<TableBonus data={data} />);
+        if (e === "List")
+            setType(<TableBonus data={data} fetchData={fetchData} />);
         else setType(<KanbanBonus data={data} />);
     };
     return (
@@ -50,7 +48,9 @@ const BonusSalary = () => {
                         },
                     ]}
                 />
-                {account.account.dutyName === "Admin" && <CreateBonusSalary />}
+                {account.account.dutyName === "Admin" && (
+                    <CreateBonusSalary reload={fetchData} />
+                )}
             </Flex>
 
             <Spin spinning={loading}>{type}</Spin>

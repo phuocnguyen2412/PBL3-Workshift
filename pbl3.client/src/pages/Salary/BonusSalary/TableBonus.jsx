@@ -6,8 +6,10 @@ import dayjs from "dayjs";
 import DeleteBonus from "./DeleteBonus";
 TableBonus.propTypes = {
     data: PropTypes.array.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };
-export default function TableBonus({ data }) {
+export default function TableBonus({ data, fetchData }) {
+
     const [open, setOpen] = useState(false);
     const columns = [
         {
@@ -60,7 +62,7 @@ export default function TableBonus({ data }) {
             key: "delete",
             render: (_, record) => (
                 <>
-                    <DeleteBonus record={record} />
+                    <DeleteBonus record={record} fetchData={fetchData} />
                 </>
             ),
         },

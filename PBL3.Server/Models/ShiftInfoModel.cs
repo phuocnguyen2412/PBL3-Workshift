@@ -11,9 +11,9 @@ namespace PBL3.Server.Models
 
         public DateTime Date { get; set; }
 
-        public string? StartTime { get; set; }
+        public TimeSpan StartTime { get; set; }
 
-        public string? EndTime { get; set; }
+        public TimeSpan EndTime { get; set; }
 
         public bool Checked { get; set; }
 

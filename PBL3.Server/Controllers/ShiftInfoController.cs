@@ -49,7 +49,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message});
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -72,7 +72,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -95,7 +95,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
 
@@ -114,6 +114,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
@@ -147,6 +148,42 @@ namespace PBL3.Server.Controllers
                     return NotFound(new { message = "No shift information found." });
                 }
                 return Ok(shiftsAndEmployees);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+            }
+        }
+
+        [HttpGet("workdates/{employeeId}")]
+        public async Task<ActionResult<List<DateTime>>> GetWorkDatesForEmployeeAsync(int employeeId)
+        {
+            try
+            {
+                var workDates = await _shiftInfoRepo.GetWorkDatesForEmployeeAsync(employeeId);
+                if (workDates == null || workDates.Count == 0)
+                {
+                    return NotFound(new { message = $"No work dates found for employee ID {employeeId}." });
+                }
+                return Ok(workDates);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+            }
+        }
+
+        [HttpGet("manager/{managerId}")]
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetShiftsForManagerAsync(int managerId)
+        {
+            try
+            {
+                var shifts = await _shiftInfoRepo.GetShiftsForManagerAsync(managerId);
+                if (shifts == null || shifts.Count == 0)
+                {
+                    return NotFound(new { message = $"No shifts found for manager ID {managerId}." });
+                }
+                return Ok(shifts);
             }
             catch (Exception e)
             {
