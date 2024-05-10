@@ -26,12 +26,15 @@ function Login() {
         notification.useNotification();
     const onFinish = async (values) => {
         try {
-            console.log(values);
             const response = await postApi("/Account/Login", values);
+
             if (values.remember) {
-                localStorage.setItem("account", JSON.stringify(values));
+                localStorage.setItem(
+                    "isRemember",
+                    JSON.stringify(values.remember)
+                );
             }
-            localStorage.setItem("account", JSON.stringify(values));
+            localStorage.setItem("token", JSON.stringify(response.token));
             account.onChange(response);
             navigate("/home");
         } catch (err) {
@@ -65,10 +68,6 @@ function Login() {
                             src="https://demo.1office.vn/packages/4x/style/packages/login/images/logo.svg"
                             alt=""
                         />
-                        <div>
-                            Không chỉ là hai <span>GIẢI PHÁP QUẢN LÝ</span>
-                        </div>
-                        <div>Làm việc mọi lúc mọi nơi</div>
                     </Typography>
                 </Row>
 
@@ -147,7 +146,7 @@ function Login() {
                 </Form>
             </Col>
         </Row>
-    );
+    );  //                                                                                  
 }
 
 export default Login;

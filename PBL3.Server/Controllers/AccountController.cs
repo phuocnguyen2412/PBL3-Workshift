@@ -74,11 +74,11 @@ namespace PBL3.Server.Controllers
 
             if (success)
             {
-                return Ok("Change password successfully!");
+                return Ok(new {Message = "Change password successfully!" });
             }
             else
             {
-                return NotFound("Employee not found or old password is incorrect!");
+                return NotFound(new { Message = "Employee not found or old password is incorrect!" });
             }
         }
     }

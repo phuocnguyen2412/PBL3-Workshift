@@ -15,7 +15,6 @@ const BonusSalary = () => {
     const [type, setType] = useState(null);
     const fetchData = async () => {
         const response = await getApi("/BonusSalary");
-        console.log(response);
         setData(response);
     };
     useEffect(() => {
@@ -23,13 +22,12 @@ const BonusSalary = () => {
     }, []);
 
     useEffect(() => {
-        if (data.length > 0) {
-            setType(<TableBonus data={data} />);
-        }
+        setType(<TableBonus data={data} fetchData={fetchData} />);
     }, [data]);
 
     const onChangeSegmented = (e) => {
-        if (e === "List") setType(<TableBonus data={data} />);
+        if (e === "List")
+            setType(<TableBonus data={data} fetchData={fetchData} />);
         else setType(<KanbanBonus data={data} />);
     };
     return (
