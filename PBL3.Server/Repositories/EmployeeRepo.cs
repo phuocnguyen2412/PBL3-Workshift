@@ -53,15 +53,15 @@ namespace PBL3.Server.Repositories
             var result = await _context.Employees
                 .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
                 {
-                    Id = employee.Id,
-                    FullName = employee.FullName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    TypeOfEmployee = employee.TypeOfEmployee,
-                    CoefficientsSalary = employee.CoefficientsSalary,
-                    Status = employee.Status,
-                    DutyName = duty.DutyName,
-                    BasicSalary = duty.BasicSalary
+                    employee.Id,
+                    employee.FullName,
+                    employee.Email,
+                    employee.PhoneNumber,
+                    employee.TypeOfEmployee,
+                    employee.CoefficientsSalary,
+                    employee.Status,
+                    duty.DutyName,
+                    duty.BasicSalary
                 }).ToListAsync();
 
             return new OkObjectResult(result);
@@ -73,15 +73,15 @@ namespace PBL3.Server.Repositories
                 .Where(employee => employee.Status == status)
                 .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
                 {
-                    Id = employee.Id,
-                    FullName = employee.FullName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    TypeOfEmployee = employee.TypeOfEmployee,
-                    CoefficientsSalary = employee.CoefficientsSalary,
-                    Status = employee.Status,
-                    DutyName = duty.DutyName,
-                    BasicSalary = duty.BasicSalary
+                    employee.Id,
+                    employee.FullName,
+                    employee.Email,
+                    employee.PhoneNumber,
+                    employee.TypeOfEmployee,
+                    employee.CoefficientsSalary,
+                    employee.Status,
+                    duty.DutyName,
+                    duty.BasicSalary
                 }).ToListAsync();
 
             if (result == null)
@@ -98,15 +98,15 @@ namespace PBL3.Server.Repositories
                 .Where(employee => employee.Id == id)
                 .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
                 {
-                    Id = employee.Id,
-                    FullName = employee.FullName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    TypeOfEmployee = employee.TypeOfEmployee,
-                    CoefficientsSalary = employee.CoefficientsSalary,
-                    Status = employee.Status,
-                    DutyName = duty.DutyName,
-                    BasicSalary = duty.BasicSalary
+                    employee.Id,
+                    employee.FullName,
+                    employee.Email,
+                    employee.PhoneNumber,
+                    employee.TypeOfEmployee,
+                    employee.CoefficientsSalary,
+                    employee.Status,
+                    duty.DutyName,
+                    duty.BasicSalary
                 }).FirstOrDefaultAsync();
 
             if (result == null)
@@ -182,15 +182,15 @@ namespace PBL3.Server.Repositories
                 .Where(employee => EF.Functions.Like(employee.FullName, $"%{searchString}%"))
                 .Join(_context.Duties, employee => employee.DutyId, duty => duty.Id, (employee, duty) => new
                 {
-                    Id = employee.Id,
-                    FullName = employee.FullName,
-                    Email = employee.Email,
-                    PhoneNumber = employee.PhoneNumber,
-                    TypeOfEmployee = employee.TypeOfEmployee,
-                    CoefficientsSalary = employee.CoefficientsSalary,
-                    Status = employee.Status,
-                    DutyName = duty.DutyName,
-                    BasicSalary = duty.BasicSalary
+                    employee.Id,
+                    employee.FullName,
+                    employee.Email,
+                    employee.PhoneNumber,
+                    employee.TypeOfEmployee,
+                    employee.CoefficientsSalary,
+                    employee.Status,
+                    duty.DutyName,
+                    duty.BasicSalary
                 }).ToListAsync();
 
             if (employees.Count == 0)
