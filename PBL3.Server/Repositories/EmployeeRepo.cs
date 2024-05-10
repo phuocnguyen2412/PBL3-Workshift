@@ -42,7 +42,6 @@ namespace PBL3.Server.Repositories
             {
                 return new NotFoundObjectResult(new { message = "Employee not found!" });
             }
-
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
 

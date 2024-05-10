@@ -5,6 +5,7 @@ using PBL3.Server.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PBL3.Server.Repositories
 {
@@ -18,17 +19,55 @@ namespace PBL3.Server.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ViolateModel>> GetAllViolates()
+        public async Task<object> GetAllViolates()
         {
-            var violates = await _context.Violates.ToListAsync();
-            return _mapper.Map<List<ViolateModel>>(violates);
+            var violates = await (from v in _context.Violates
+                                  join e in _context.Employees on v.EmployeeId equals e.Id
+                                  join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
+                                  join m in _context.Employees on s.ManagerId equals m.Id into managers
+                                  from manager in managers.DefaultIfEmpty()
+                                  select new
+                                  {
+                                      v.Id,
+                                      EmployeeName = e.FullName,
+                                      v.Handle,
+                                      v.Reason,
+                                      v.Checked,
+                                      s.ShiftName,
+                                      s.StartTime,
+                                      s.EndTime,
+                                      s.Date,
+                                      ManagerName = manager != null ? manager.FullName : "N/A"
+                                  }).ToListAsync();
+
+            return violates;
         }
 
-        public async Task<ViolateModel> GetViolateById(int id)
+        public async Task<object> GetViolateById(int id)
         {
-            var violate = await _context.Violates.FindAsync(id);
-            return _mapper.Map<ViolateModel>(violate);
+            var violate = await (from v in _context.Violates
+                                 join e in _context.Employees on v.EmployeeId equals e.Id
+                                 join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
+                                 join m in _context.Employees on s.ManagerId equals m.Id into managers
+                                 from manager in managers.DefaultIfEmpty()
+                                 where v.Id == id
+                                 select new
+                                 {
+                                     v.Id,
+                                     EmployeeName = e.FullName,
+                                     v.Handle,
+                                     v.Reason,
+                                     v.Checked,
+                                     s.ShiftName,
+                                     s.StartTime,
+                                     s.EndTime,
+                                     s.Date,
+                                     ManagerName = manager != null ? manager.FullName : "N/A"
+                                 }).FirstOrDefaultAsync();
+
+            return violate;
         }
+
 
         public async Task<int> AddViolate(ViolateModel violatemodel)
         {
@@ -38,34 +77,25 @@ namespace PBL3.Server.Repositories
             return violate.Id;
         }
 
-        public async Task<ViolateModel> UpdateViolate(int id, ViolateModel violateModel)
+        public async Task<bool> UpdateViolateChecked(int id, bool isChecked)
         {
             var violate = await _context.Violates.FindAsync(id);
             if (violate == null)
-                return null;
+                return false;
 
-            violate.Checked = true; 
-
-            _context.Entry(violate).State = EntityState.Modified;
+            violate.Checked = isChecked;
 
             try
             {
                 await _context.SaveChangesAsync();
+                return true;
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!ViolateExists(id))
-                    return null;
-                else
-                    throw;
+               
+                return false;
             }
-
-            return _mapper.Map<ViolateModel>(violate);
         }
 
-        private bool ViolateExists(int id)
-        {
-            return _context.Violates.Any(e => e.Id == id);
-        }
     }
 }
