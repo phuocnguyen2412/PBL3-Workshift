@@ -12,7 +12,6 @@ namespace PBL3.Server.Repositories
     {
         private readonly MyDbContext _context;
         private readonly IMapper _mapper;
-
         public ViolateRepo(MyDbContext context, IMapper mapper)
         {
             _context = context;
