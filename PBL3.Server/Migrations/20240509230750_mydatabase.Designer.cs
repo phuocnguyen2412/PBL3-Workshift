@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240509173228_checkdb")]
-    partial class checkdb
+    [Migration("20240509230750_mydatabase")]
+    partial class mydatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,10 @@ namespace PBL3.Server.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -218,6 +222,9 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ShiftInfoId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
@@ -349,7 +356,15 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
