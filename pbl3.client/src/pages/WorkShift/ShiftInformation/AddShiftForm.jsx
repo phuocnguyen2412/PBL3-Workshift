@@ -1,11 +1,35 @@
-import { Button, Col, DatePicker, Form, Input, Row, Select, Spin } from "antd";
+import {
+    Button,
+    Col,
+    DatePicker,
+    Form,
+    Row,
+    Select,
+    Spin,
+    TimePicker,
+} from "antd";
+import useFetch from "../../../custom hook/useFetch";
+import localhost from "../../../Services/localhost";
+import PropsType from "prop-types";
 
-const AddShiftForm = () => {
-    const handleSubmit = (e) => {
-        console.log(e);
+const AddShiftForm = ({ setData }) => {
+    const { getApi, postApi, loading } = useFetch(localhost);
+    const handleSubmit = async (e) => {
+        const data = {
+            ...e,
+            date: `${e.date.format("YYYY-MM-DD")}T00:00:00.000Z`,
+            startTime: `${e.startTime.format("HH:mm:ss")}`,
+            endTime: `${e.endTime.format("HH:mm:ss")}`,
+            managerId: null,
+            checked: false,
+        };
+        console.log(data);
+        const response = await postApi("/ShiftInfo", data);
+        console.log(response);
+        setData(await getApi("/ShiftInfo"));
     };
     return (
-        <Spin spinning={false}>
+        <Spin spinning={loading}>
             <Form layout="vertical" onFinish={handleSubmit}>
                 <Row gutter={16}>
                     <Col span={12}>
@@ -52,7 +76,7 @@ const AddShiftForm = () => {
                                 },
                             ]}
                         >
-                            <DatePicker />
+                            <DatePicker type="time" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -60,29 +84,8 @@ const AddShiftForm = () => {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="approver"
-                            label="Approver"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please choose the approver",
-                                },
-                            ]}
-                        >
-                            <Select placeholder="Please choose the approver">
-                                <Select.Option value="jack">
-                                    Jack Ma
-                                </Select.Option>
-                                <Select.Option value="tom">
-                                    Tom Liu
-                                </Select.Option>
-                            </Select>
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name="dateTime"
-                            label="DateTime"
+                            name="startTime"
+                            label="Start time"
                             rules={[
                                 {
                                     required: true,
@@ -90,7 +93,28 @@ const AddShiftForm = () => {
                                 },
                             ]}
                         >
-                            <DatePicker.RangePicker
+                            <TimePicker
+                                style={{
+                                    width: "100%",
+                                }}
+                                getPopupContainer={(trigger) =>
+                                    trigger.parentElement
+                                }
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name="endTime"
+                            label="End time"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please choose the dateTime",
+                                },
+                            ]}
+                        >
+                            <TimePicker
                                 style={{
                                     width: "100%",
                                 }}
@@ -101,25 +125,7 @@ const AddShiftForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={24}>
-                        <Form.Item
-                            name="description"
-                            label="Description"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "please enter url description",
-                                },
-                            ]}
-                        >
-                            <Input.TextArea
-                                rows={4}
-                                placeholder="please enter url description"
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
+
                 <Row gutter={16}>
                     <Col span={24}>
                         <Button block htmlType="submit">
@@ -131,5 +137,7 @@ const AddShiftForm = () => {
         </Spin>
     );
 };
-
+AddShiftForm.propTypes = {
+    setData: PropsType.func.isRequired,
+};
 export default AddShiftForm;

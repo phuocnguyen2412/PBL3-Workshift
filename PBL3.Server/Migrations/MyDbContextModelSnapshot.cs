@@ -38,6 +38,10 @@ namespace PBL3.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -58,13 +62,16 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TotalBonus")
+                    b.Property<int>("TotalBonus")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -142,7 +149,7 @@ namespace PBL3.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -169,13 +176,13 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime>("PaidDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<int>("TotalBonus")
                         .HasColumnType("int");
@@ -204,13 +211,16 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CheckInTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("CheckInTime")
+                        .HasColumnType("TIME");
 
-                    b.Property<DateTime>("CheckOutTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("CheckOutTime")
+                        .HasColumnType("TIME");
 
                     b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftInfoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -232,10 +242,10 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("DATE");
 
                     b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
+                        .HasColumnType("TIME");
 
                     b.Property<int>("ManagerId")
                         .HasColumnType("int");
@@ -245,7 +255,7 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
+                        .HasColumnType("TIME");
 
                     b.HasKey("Id");
 
@@ -306,7 +316,7 @@ namespace PBL3.Server.Migrations
             modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
                 {
                     b.HasOne("PBL3.Server.Data.Duty", "Duty")
-                        .WithMany("Employees")
+                        .WithMany()
                         .HasForeignKey("DutyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -344,7 +354,15 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
@@ -364,11 +382,6 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
 
                     b.Navigation("ShiftInfo");
-                });
-
-            modelBuilder.Entity("PBL3.Server.Data.Duty", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

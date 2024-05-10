@@ -1,5 +1,4 @@
-﻿using PBL3.Server.Repositories;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PBL3.Server.Data
@@ -19,6 +18,7 @@ namespace PBL3.Server.Data
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
+        public string Token { get; set; }
         
     }
 }

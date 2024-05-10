@@ -1,10 +1,17 @@
 import { Layout, Menu } from "antd";
 
-import { AdminList } from "./DashboardList";
-import { useState } from "react";
+import { AdminList, Employee } from "./DashboardList";
+import { useContext, useState } from "react";
 const { Sider } = Layout;
+import { AccountContext } from "../../Context/AccountContext";
+
+import PropsTypes from "prop-types";
+AdminDashboard.propTypes = {
+    collapsed: PropsTypes.bool.isRequired,
+};
 
 export default function AdminDashboard({ collapsed }) {
+    const account = useContext(AccountContext);
     const getLevelKeys = (items1) => {
         const key = {};
         const func = (items2, level = 1) => {
@@ -47,15 +54,23 @@ export default function AdminDashboard({ collapsed }) {
             setStateOpenKeys(openKeys);
         }
     };
+    const handleSelected = (e) => {
+        if (e.key === "/login") {
+            localStorage.removeItem("token");
+        }
+    };
     return (
         <Sider trigger={null} collapsible collapsed={collapsed}>
             <div className="demo-logo-vertical" />
             <Menu
+                onSelect={handleSelected}
                 openKeys={stateOpenKeys}
                 onOpenChange={onOpenChange}
                 theme="light"
                 mode="inline"
-                items={AdminList}
+                items={
+                    account.account.dutyName === "Admin" ? AdminList : Employee
+                }
                 style={{
                     height: "100%",
                 }}

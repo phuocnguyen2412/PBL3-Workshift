@@ -1,24 +1,23 @@
-import { Button, Card, Modal } from "antd";
-import React, { useState } from "react";
-
-export default function CardItem() {
+import { Button, Card } from "antd";
+import { useState } from "react";
+import PropTypes from "prop-types";
+import ReportContent from "./ReportContent";
+export default function CardItem({ data }) {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <Modal
-                open={open}
-                title="Chi tiết report"
-                onCancel={() => setOpen(false)}
-            >
-                ádasdasd
-            </Modal>
+            <ReportContent data={data} setOpen={setOpen} open={open} />
+
             <Card
                 type="inner"
-                title="Inner Card title"
+                title={`Báo cáo ${data.employeeName}`}
                 extra={<Button onClick={() => setOpen(true)}>More</Button>}
             >
-                aloalo
+                {`Báo cáo ${data.shiftName}: ${data.startTime} - ${data.endTime}  `}
             </Card>
         </>
     );
 }
+CardItem.propTypes = {
+    data: PropTypes.object.isRequired,
+};

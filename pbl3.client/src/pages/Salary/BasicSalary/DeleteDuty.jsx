@@ -9,7 +9,7 @@ export default function DeleteDuty({ record, setDutyList }) {
 
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const { getApi, deleteApi, loading } = useFetch(localhost);
+    const { getApi, deleteApi } = useFetch(localhost);
     const confirmDelete = async () => {
         console.log(record);
         try {

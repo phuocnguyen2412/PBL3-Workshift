@@ -11,9 +11,13 @@ namespace PBL3.Server.Helpers
         public ApplicationMapper() 
         {
             CreateMap<Account, AccountModel>().ReverseMap();
-            CreateMap<Employee, EmloyeeModel>().ReverseMap();
+            CreateMap<Employee, EmployeeModel>().ReverseMap();
             CreateMap<ShiftInfo, ShiftInfoModel>().ReverseMap();
             CreateMap<Duty, DutyModel>().ReverseMap();
+            CreateMap<BonusSalaryHistory,BonusSalaryModel>().ReverseMap();
+            CreateMap<Violate, ViolateModel>().ReverseMap();
+            CreateMap<Shift, ShiftModel>().ReverseMap();
+
         }
     }
 }

@@ -7,7 +7,14 @@ export default function useFetch(baseUrl) {
         setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url)
-                .then((response) => response.json())
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        return reject(errorData.message || "Server error");
+                    }
+
+                    return response.json();
+                })
                 .then((data) => {
                     if (!data) {
                         setLoading(false);
@@ -16,9 +23,9 @@ export default function useFetch(baseUrl) {
                     setLoading(false);
                     resolve(data);
                 })
-                .catch((error) => {
+                .catch((err) => {
                     setLoading(false);
-                    reject(error);
+                    throw err;
                 });
         });
     }
@@ -33,7 +40,14 @@ export default function useFetch(baseUrl) {
                 },
                 body: JSON.stringify(body),
             })
-                .then((response) => response.json())
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        return reject(errorData.message || "Server error");
+                    }
+
+                    return response.json();
+                })
                 .then((data) => {
                     if (!data) {
                         setLoading(false);
@@ -42,9 +56,9 @@ export default function useFetch(baseUrl) {
                     setLoading(false);
                     resolve(data);
                 })
-                .catch((error) => {
+                .catch((err) => {
                     setLoading(false);
-                    reject(error);
+                    throw err;
                 });
         });
     }
@@ -58,7 +72,14 @@ export default function useFetch(baseUrl) {
                 },
                 body: JSON.stringify(body),
             })
-                .then((response) => response.json())
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        return reject(errorData.message || "Server error");
+                    }
+
+                    return response.json();
+                })
                 .then((data) => {
                     if (!data) {
                         setLoading(false);
@@ -67,9 +88,9 @@ export default function useFetch(baseUrl) {
                     setLoading(false);
                     resolve(data);
                 })
-                .catch((error) => {
+                .catch((err) => {
                     setLoading(false);
-                    reject(error);
+                    throw err;
                 });
         });
     }
@@ -82,7 +103,14 @@ export default function useFetch(baseUrl) {
                     "Content-Type": "application/json",
                 },
             })
-                .then((response) => response.json())
+                .then(async (response) => {
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        return reject(errorData.message || "Server error");
+                    }
+
+                    return response.json();
+                })
                 .then((data) => {
                     if (!data) {
                         setLoading(false);
@@ -91,9 +119,9 @@ export default function useFetch(baseUrl) {
                     setLoading(false);
                     resolve(data);
                 })
-                .catch((error) => {
+                .catch((err) => {
                     setLoading(false);
-                    reject(error);
+                    throw err;
                 });
         });
     }

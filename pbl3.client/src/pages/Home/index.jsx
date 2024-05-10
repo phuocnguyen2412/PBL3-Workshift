@@ -1,6 +1,7 @@
 import { Card, Col, Row, Spin, Statistic } from "antd";
 import { useEffect, useState } from "react";
-//import CountUp from "react-count-up";
+import CountUp from "react-countup";
+
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
 import { UserOutlined } from "@ant-design/icons";

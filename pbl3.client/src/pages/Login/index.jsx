@@ -2,18 +2,49 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AccountContext } from "../../Context/AccountContext";
-import { Button, Checkbox, Col, Form, Input, Row, Typography } from "antd";
+import {
+    Button,
+    Checkbox,
+    Col,
+    Form,
+    Input,
+    Row,
+    Typography,
+    notification,
+} from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import "./Login.css";
+import useFetch from "../../custom hook/useFetch";
+import localhost from "../../Services/localhost";
 
 function Login() {
+    const { postApi, loading } = useFetch(localhost);
     const account = useContext(AccountContext);
     const navigate = useNavigate();
-    const onFinish = (values) => {
-        console.log("Success:", values);
-        account.onChange(values);
-        navigate("/");
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
+    const onFinish = async (values) => {
+        try {
+            const response = await postApi("/Account/Login", values);
+
+            if (values.remember) {
+                localStorage.setItem(
+                    "isRemember",
+                    JSON.stringify(values.remember)
+                );
+            }
+            localStorage.setItem("token", JSON.stringify(response.token));
+            account.onChange(response);
+            navigate("/home");
+        } catch (err) {
+            console.log(err);
+            apiNotification.error({
+                message: "Thất bại!",
+                description: `Bạn đã nhập sai tài khoản hoặc mật khẩu`,
+                placement: "topRight",
+            });
+        }
     };
 
     return (
@@ -29,6 +60,7 @@ function Login() {
             justify="center"
             align="middle"
         >
+            {contextHolderNotification}
             <Col span={12}>
                 <Row justify="center" align="middle">
                     <Typography>
@@ -36,10 +68,6 @@ function Login() {
                             src="https://demo.1office.vn/packages/4x/style/packages/login/images/logo.svg"
                             alt=""
                         />
-                        <div>
-                            Không chỉ là hai <span>GIẢI PHÁP QUẢN LÝ</span>
-                        </div>
-                        <div>Làm việc mọi lúc mọi nơi</div>
                     </Typography>
                 </Row>
 
@@ -57,7 +85,7 @@ function Login() {
                         Đăng nhập
                     </Typography>
                     <Form.Item
-                        name="username"
+                        name="userName"
                         rules={[
                             {
                                 required: true,
@@ -105,6 +133,7 @@ function Login() {
 
                     <Form.Item>
                         <Button
+                            loading={loading}
                             block
                             shape="round"
                             type="primary"
@@ -117,7 +146,7 @@ function Login() {
                 </Form>
             </Col>
         </Row>
-    );
+    );  //                                                                                  
 }
 
 export default Login;

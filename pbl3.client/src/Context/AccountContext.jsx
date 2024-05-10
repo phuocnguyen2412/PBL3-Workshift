@@ -1,22 +1,12 @@
 import { createContext, useState } from "react";
-
+import PropTypes from "prop-types";
 export const AccountContext = createContext();
 export const AccountProvider = (props) => {
     const [account, setAccount] = useState({});
     const value = {
-        account: {
-            fullName: "Huỳnh Phước Nguyên",
-            email: "huynhphuocnguyen2412@gmail.com",
-            phoneNumber: "0931960822",
-            typeOfEmployee: true ,
-            coefficientsSalary: "12",
-            duty: "Admin",
-            status: true,
-            id: "69",
-            idDuty: "1",
-        },
-        onChange: function (account) {
-            setAccount(account);
+        account: account,
+        onChange: function (newAccount) {
+            setAccount(newAccount);
         },
     };
     return (
@@ -24,4 +14,8 @@ export const AccountProvider = (props) => {
             {props.children}
         </AccountContext.Provider>
     );
+};
+AccountContext.propTypes = {
+    props: PropTypes.object.isRequired,
+
 };

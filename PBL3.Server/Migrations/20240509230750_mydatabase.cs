@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PBL3.Server.Migrations
 {
-    public partial class ALO : Migration
+    public partial class mydatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -30,9 +30,9 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ShiftName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    Date = table.Column<DateTime>(type: "DATE", nullable: false),
+                    StartTime = table.Column<TimeSpan>(type: "TIME", nullable: false),
+                    EndTime = table.Column<TimeSpan>(type: "TIME", nullable: false),
                     Checked = table.Column<bool>(type: "bit", nullable: false),
                     ManagerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -72,9 +72,10 @@ namespace PBL3.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +95,8 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    TotalBonus = table.Column<int>(type: "int", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalBonus = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -116,7 +118,7 @@ namespace PBL3.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     HoursPerDay = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateAt = table.Column<DateTime>(type: "DATE", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,13 +138,13 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "DATE", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     TotalHours = table.Column<int>(type: "int", nullable: false),
                     TotalBonus = table.Column<int>(type: "int", nullable: false),
                     TotalViolate = table.Column<int>(type: "int", nullable: false),
                     TotalSalary = table.Column<int>(type: "int", nullable: false),
-                    PaidDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PaidDate = table.Column<DateTime>(type: "DATE", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -161,9 +163,10 @@ namespace PBL3.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ShiftInfoId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    CheckInTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CheckOutTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CheckInTime = table.Column<TimeSpan>(type: "TIME", nullable: false),
+                    CheckOutTime = table.Column<TimeSpan>(type: "TIME", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -172,6 +175,12 @@ namespace PBL3.Server.Migrations
                         name: "FK_Shift_Employee_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "Employee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Shift_ShiftInfo_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "ShiftInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
