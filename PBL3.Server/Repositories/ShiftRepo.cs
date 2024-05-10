@@ -23,11 +23,21 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftModel> AddShiftAsync(ShiftModel shiftModel)
         {
+            bool shiftExists = await (from s in _context.Shifts
+                                      where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
+                                      select s
+                                      ).AnyAsync();
+            if (shiftExists)
+            {
+                throw new InvalidOperationException("Employee is already assigned to this shift.");
+            }
+
             var shift = _mapper.Map<Shift>(shiftModel);
             _context.Shifts.Add(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
+
 
         public async Task<ShiftModel> DeleteShiftAsync(int id)
         {
