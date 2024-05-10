@@ -3,7 +3,10 @@ import Column from "antd/es/table/Column";
 import RemoveEmployee from "./RemoveEmployee";
 import ShiftAction from "./ShiftAction";
 import PropTypes from "prop-types";
+import { useContext } from "react";
+import { AccountContext } from "../../../Context/AccountContext";
 const TableEmployeePerShift = ({ shift, setItems }) => {
+    const account = useContext(AccountContext);
     const data = [
         {
             id: "1",
@@ -81,15 +84,17 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                         </>
                     )}
                 />
-                <Column
-                    title="Action"
-                    key="action"
-                    render={(_, record) => (
-                        <Space size="middle">
-                            <RemoveEmployee record={record} />
-                        </Space>
-                    )}
-                />
+                {account.account.dutyName === "Admin" && (
+                    <Column
+                        title="Action"
+                        key="action"
+                        render={(_, record) => (
+                            <Space size="middle">
+                                <RemoveEmployee record={record} />
+                            </Space>
+                        )}
+                    />
+                )}
             </Table>
         </>
     );

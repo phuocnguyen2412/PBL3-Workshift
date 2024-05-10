@@ -22,13 +22,15 @@ function MainLayout() {
                         const data = await postApi("/Account/LoginByToken", {
                             token: JSON.parse(localStorage.getItem("token")),
                         });
-
+                        console.log(data);
                         account.onChange(data);
                         localStorage.removeItem("token");
                         localStorage.setItem(
                             "token",
                             JSON.stringify(data.token)
                         );
+                    } else {
+                        navigate("/login");
                     }
                 } catch (e) {
                     navigate("/login");
