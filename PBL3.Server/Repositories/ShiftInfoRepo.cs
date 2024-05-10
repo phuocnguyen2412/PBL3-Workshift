@@ -23,22 +23,17 @@ namespace PBL3.Server.Repositories
 
         public async Task<object> GetAllShiftInfoAsync()
         {
-            var shiftInfosWithFullName = await _context.ShiftInfos
-                .Join(_context.Employees,
-                        shiftInfo => shiftInfo.ManagerId,
-                        employee => employee.Id,
-                        (shiftInfo, employee) => new
-                        {
-                            Id = shiftInfo.Id,
-                            //ManagerId = shiftInfo.ManagerId,
-                            ShiftName = shiftInfo.ShiftName,
-                            Date = shiftInfo.Date,
-                            StartTime = shiftInfo.StartTime,
-                            EndTime = shiftInfo.EndTime,
-                            Checked = shiftInfo.Checked,
-                            FullName = employee.FullName
-                        })
-                .ToListAsync();
+            var shiftInfosWithFullName = await _context.ShiftInfos!
+                .Select(s => new
+                {
+                    s.Id,
+                    s.ShiftName,
+                    s.Date,
+                    s.StartTime,
+                    s.EndTime,
+                    s.Checked,
+                })
+                .ToListAsync(); 
             return shiftInfosWithFullName;
         }
 
@@ -65,7 +60,6 @@ namespace PBL3.Server.Repositories
                 StartTime = shiftInfo.StartTime,
                 EndTime = shiftInfo.EndTime,
                 Checked = shiftInfo.Checked,
-                FullName = employee.FullName
             };
         }
 
@@ -160,13 +154,24 @@ namespace PBL3.Server.Repositories
 
             return shifts;
         }
-        public async Task<List<DateTime>> GetWorkDatesForEmployeeAsync(int employeeId)
+        public async Task<List<ShiftInfoModel>> GetWorkDatesForEmployeeAsync(int employeeId)
         {
-            return await _context.ShiftInfos
-                .Where(shiftInfo => shiftInfo.ManagerId == employeeId)
-                .Select(shiftInfo => shiftInfo.Date)
-                .Distinct()
-                .ToListAsync();
+            var shiftInfos =
+                from shiftInfo in _context.ShiftInfos
+                join shift in _context.Shifts
+                on shiftInfo.Id equals shift.ShiftInfoId
+                where shift.EmployeeId == employeeId
+                select new ShiftInfoModel
+                {
+                    Id = shiftInfo.Id,
+                    ShiftName = shiftInfo.ShiftName,
+                    Date = shiftInfo.Date,
+                    StartTime = shiftInfo.StartTime,
+                    EndTime = shiftInfo.EndTime,
+                    Checked = shiftInfo.Checked
+                   
+                };
+            return _mapper.Map<List<ShiftInfoModel>>(shiftInfos);
         }
 
         public async Task<List<ShiftInfoModel>> GetShiftsForManagerAsync(int managerId)

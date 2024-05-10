@@ -83,5 +83,25 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<ActionResult> GetBonusSalaryByIdAsync(int id)
+        {
+            var bonusSalary = await _context.BonusSalaryHistories
+                .Join(_context.Employees
+                .Where(emp => emp.Id == id),
+                 bonus => bonus.EmployeeId,
+                 emp => emp.Id,
+                 (bonus, emp) => new
+                 {
+                     Id = bonus.Id,
+                     EmployeeId = bonus.EmployeeId,
+                     FullName = emp.FullName,
+                     DateTime = bonus.DateTime,
+                     TotalBonus = bonus.TotalBonus,
+                     Reason = bonus.Reason
+                 }).ToListAsync();
+
+            return new OkObjectResult(bonusSalary);
+        }
     }
 }

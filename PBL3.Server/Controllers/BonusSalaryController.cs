@@ -54,5 +54,16 @@ namespace PBL3.Server.Controllers
                 return NotFound(new { Message = "Bonus salary not found" });
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BonusSalaryHistory>> GetBonusSalaryById(int id)
+        {
+            var bonusSalary = await _bonusSalaryRepo.GetBonusSalaryByIdAsync(id);
+            if (bonusSalary == null)
+            {
+                return NotFound(new { Message = "Bonus salary not found" });
+            }
+            return bonusSalary;
+        }
     }
 }

@@ -156,7 +156,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("workdates/{employeeId}")]
-        public async Task<ActionResult<List<DateTime>>> GetWorkDatesForEmployeeAsync(int employeeId)
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetWorkDatesForEmployeeAsync(int employeeId)
         {
             try
             {
