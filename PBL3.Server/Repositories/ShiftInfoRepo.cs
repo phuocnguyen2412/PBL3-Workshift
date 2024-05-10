@@ -24,8 +24,8 @@ namespace PBL3.Server.Repositories
         public async Task<object> GetAllShiftInfoAsync()
         {
             var shiftInfos = await (from shiftInfo in _context.ShiftInfos
-                                    join employee in _context.Employees on shiftInfo.ManagerId equals employee.Id
-                                    where shiftInfo.ManagerId != null 
+                                    join employee in _context.Employees on shiftInfo.ManagerId equals employee.Id into shiftManager
+                                    from manager in shiftManager.DefaultIfEmpty()
                                     select new
                                     {
                                         shiftInfo.Id,
@@ -34,37 +34,30 @@ namespace PBL3.Server.Repositories
                                         shiftInfo.StartTime,
                                         shiftInfo.EndTime,
                                         shiftInfo.Checked,
-                                        ManagerName = employee.FullName
+                                        ManagerName = manager != null ? manager.FullName : "No Manager"
                                     }).ToListAsync();
             return shiftInfos;
         }
 
-
-
         public async Task<object> GetShiftInfoByIdAsync(int id)
         {
-            var shiftInfo = await _context.ShiftInfos!.FindAsync(id);
-            if (shiftInfo == null)
-            {
-                return null;
-            }
-
-            var employee = await _context.Employees!.FindAsync(shiftInfo.ManagerId);
-            if (employee == null)
-            {
-                return null;
-            }
-
-            return new
-            {
-                Id = shiftInfo.Id,
-                ShiftName = shiftInfo.ShiftName,
-                Date = shiftInfo.Date,
-                StartTime = shiftInfo.StartTime,
-                EndTime = shiftInfo.EndTime,
-                Checked = shiftInfo.Checked,
-            };
+            var shiftInfos = await (from shiftInfo in _context.ShiftInfos
+                                   where shiftInfo.Id == id
+                                   join employee in _context.Employees on shiftInfo.ManagerId equals employee.Id into shiftManager
+                                   from manager in shiftManager.DefaultIfEmpty()
+                                   select new
+                                   {
+                                       shiftInfo.Id,
+                                       shiftInfo.ShiftName,
+                                       shiftInfo.Date,
+                                       shiftInfo.StartTime,
+                                       shiftInfo.EndTime,
+                                       shiftInfo.Checked,
+                                       ManagerName = manager != null ? manager.FullName : "No Manager"
+                                   }).FirstOrDefaultAsync();
+            return shiftInfos;
         }
+
 
         public async Task<ShiftInfoModel> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
         {
