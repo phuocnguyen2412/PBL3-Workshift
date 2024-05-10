@@ -28,7 +28,7 @@ namespace PBL3.Server.Repositories
             {
                 UserName = email,
                 Password = hashedPassword,
-                EmployeeId = employeeId,
+                EmployeeId = employeeId,    
                 Token = token
             };
 
@@ -47,7 +47,9 @@ namespace PBL3.Server.Repositories
                          {
                              fullName = employee.FullName,
                              EmployeeId = employee.Id,
-                             dutyName = duty.DutyName
+                             dutyName = duty.DutyName,
+                             Token =  account.Token
+                             
                          };
             return await result.FirstOrDefaultAsync();
         }
