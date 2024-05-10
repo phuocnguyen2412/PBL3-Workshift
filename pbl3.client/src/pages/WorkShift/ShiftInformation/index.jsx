@@ -58,7 +58,7 @@ const ShiftInformation = () => {
                     item.type = "purple";
                 }
 
-                //console.log(item);
+                
                 listData.push(item);
             }
         });

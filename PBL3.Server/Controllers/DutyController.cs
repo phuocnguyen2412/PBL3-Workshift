@@ -39,9 +39,9 @@ namespace PBL3.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> AddDutyAsync(DutyModel dutyModel)
         {
-            var id = await _dutyRepository.AddDutyAsync(dutyModel);
+           int id = await _dutyRepository.AddDutyAsync(dutyModel);
 
-            if (id == null)
+            if (id == 0 )
             {
                 return BadRequest(new { message = "Failed to add Duty information." });
             }

@@ -24,19 +24,16 @@ export default function InputEmployeeForm({ setEmployee }) {
         notification.useNotification();
     const handleSubmitForm = async (e) => {
         try {
-            console.log({
-                ...e,
-                status: true,
-                typeOfEmployee: Boolean(e.typeOfEmployee),
-            });
-            await postApi("/Employee", {
+            const data = {
                 ...e,
                 status: true,
                 typeOfEmployee: e.typeOfEmployee === "true",
-            });
+            };
+            console.log(data);
+            await postApi("/Employee", data);
             form.resetFields();
             apiNotification.success({
-                message: "Thành công!",
+                message: "Success!",
                 description: `Bạn đã thêm thành công nhân viên ${e.fullName}`,
                 placement: "bottomRight",
             });
@@ -44,7 +41,7 @@ export default function InputEmployeeForm({ setEmployee }) {
         } catch (err) {
             console.log(err);
             apiNotification.error({
-                message: "Thất bại!",
+                message: "Error!",
                 description: `Bạn đã thêm thất bại nhân viên ${e.fullName}`,
                 placement: "bottomRight",
             });

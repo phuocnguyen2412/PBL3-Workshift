@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
-using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -41,6 +40,7 @@ namespace PBL3.Server.Repositories
 
         public async Task<object> GetShiftInfoByIdAsync(int id)
         {
+
             var shiftInfos = await (from shiftInfo in _context.ShiftInfos
                                    where shiftInfo.Id == id
                                    join employee in _context.Employees on shiftInfo.ManagerId equals employee.Id into shiftManager
@@ -113,8 +113,8 @@ namespace PBL3.Server.Repositories
         public async Task<object> GetShiftsAndEmployeesByDateAsync(DateTime date)
         {
             var shiftInfos = await (from shiftInfo in _context.ShiftInfos
-                                    join shift in _context.Shifts on shiftInfo.Id equals shift.ShiftInfoId
-                                    join employee in _context.Employees on shift.EmployeeId equals employee.Id
+                                   
+                                   
                                     where shiftInfo.Date == date
                                     select new
                                     {
@@ -124,22 +124,21 @@ namespace PBL3.Server.Repositories
                                         shiftInfo.StartTime,
                                         shiftInfo.EndTime,
                                         shiftInfo.Checked,
-                                        Employees = (from employee in _context.Employees
-                                                     join duty in _context.Duties on employee.DutyId equals duty.Id
-                                                     select new
-                                                     {
-                                                         employee.Id,
-                                                         employee.FullName,
-                                                         duty.DutyName,
-                                                         employee.TypeOfEmployee
-                                                     }).ToList<object>()
+                                         Employees = (from Shift in _context.Shifts
+                                                 
+                                                      join employee in _context.Employees on Shift.EmployeeId equals employee.Id
+                                                      join duty in _context.Duties on employee.DutyId equals duty.Id
+                                                      where shiftInfo.Id == Shift.ShiftInfoId
+                                                      select new
+                                                      {
+                                                          employee.Id,
+                                                          employee.FullName,
+                                                          duty.DutyName,
+                                                          employee.TypeOfEmployee
+                                                      }).ToList<object>() 
                                     }).ToListAsync();
 
-            if (shiftInfos.Count == 0)
-            {
-                return null;
-            }
-
+            
             return shiftInfos;
         }
 
