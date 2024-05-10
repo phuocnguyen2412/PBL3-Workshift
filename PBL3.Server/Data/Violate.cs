@@ -15,7 +15,8 @@ namespace PBL3.Server.Data
         public int ShiftInfoId { get; set; }
         [ForeignKey("ShiftInfoId")]
         public virtual ShiftInfo? ShiftInfo { get; set; }
-        public string? Handle { get; set; }
+        public string? Reason { get; set; }
+        public int Handle { get; set; }
         public bool Checked { get; set; }
     }
 }

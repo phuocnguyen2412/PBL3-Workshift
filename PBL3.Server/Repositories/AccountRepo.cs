@@ -57,9 +57,6 @@ namespace PBL3.Server.Repositories
                 await _context.SaveChangesAsync();
             }
 
-
-
-
             var result = from account in _context.Accounts
                          join employee in _context.Employees on account.EmployeeId equals employee.Id
                          join duty in _context.Duties on employee.DutyId equals duty.Id
@@ -71,7 +68,6 @@ namespace PBL3.Server.Repositories
                              fullName = employee.FullName,
                              EmployeeId = employee.Id,
                              dutyName = duty.DutyName,
-                             Token =  account.Token
                              
                          };
             return await result.FirstOrDefaultAsync();
