@@ -2503,19 +2503,28 @@
 <<<<<<< HEAD
     "C:\\Users\\USER\\.nuget\\packages\\": {}
 =======
+<<<<<<< HEAD
+    "C:\\Users\\USER\\.nuget\\packages\\": {}
+=======
     "C:\\Users\\Hi\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
 >>>>>>> ca064fcb77fed2fe8e6b5724248f419aa100120f
+>>>>>>> main
   },
   "project": {
     "version": "1.0.0",
     "restore": {
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
       "projectUniqueName": "C:\\Users\\USER\\Documents\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
       "projectName": "PBL3.Server",
       "projectPath": "C:\\Users\\USER\\Documents\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
       "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\USER\\Documents\\PBL3\\PBL3.Server\\obj\\",
+<<<<<<< HEAD
+=======
 =======
       "projectUniqueName": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
       "projectName": "PBL3.Server",
@@ -2523,6 +2532,7 @@
       "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\obj\\",
 >>>>>>> ca064fcb77fed2fe8e6b5724248f419aa100120f
+>>>>>>> main
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2531,9 +2541,13 @@
 <<<<<<< HEAD
         "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
 =======
+<<<<<<< HEAD
+        "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
         "C:\\Users\\Hi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
 >>>>>>> ca064fcb77fed2fe8e6b5724248f419aa100120f
+>>>>>>> main
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -131,24 +131,35 @@ namespace PBL3.Server.Repositories
                     s.Date,
                     s.StartTime,
                     s.EndTime,
-                    s.Checked,
-                    Employees = _context.Employees
-                    .Where(e => e.Id == s.ManagerId)
-                        .Select(e => new
+                    Employees = _context.Shifts
+                        .Where(se => se.Id == s.Id)
+                        .Select(se => new
                         {
-                            e.Id,
-                            e.FullName
+                            Employee = _context.Employees
+                                .Where(e => e.Id == se.EmployeeId)
+                                .Select(e => new
+                                {
+                                    e.Id,
+                                    e.FullName,
+                                    e.TypeOfEmployee,
+                                    DutyName = _context.Duties
+                                        .Where(d => d.Id == e.DutyId)
+                                        .Select(d => d.DutyName)
+                                        .FirstOrDefault()
+                                })
+                                .FirstOrDefault()
                         })
-                        .FirstOrDefault()
+                        .ToList()
                 })
                 .ToListAsync();
+
             if (shifts.Count == 0)
             {
                 return null;
             }
+
             return shifts;
         }
-
         public async Task<List<DateTime>> GetWorkDatesForEmployeeAsync(int employeeId)
         {
             return await _context.ShiftInfos

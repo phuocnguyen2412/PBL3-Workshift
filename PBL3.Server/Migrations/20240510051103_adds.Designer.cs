@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240509230750_mydatabase")]
-    partial class mydatabase
+    [Migration("20240510051103_adds")]
+    partial class adds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -278,7 +278,10 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Handle")
+                    b.Property<int>("Handle")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ShiftInfoId")

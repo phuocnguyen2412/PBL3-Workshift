@@ -18,7 +18,7 @@ namespace PBL3.Server.Controllers
             _violateRepo = violateRepo;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Violate>>> GetViolates()
+        public async Task<ActionResult> GetAllViolates()
         {
             return Ok(await _violateRepo.GetAllViolates());
         }
@@ -45,12 +45,27 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutViolate(int id, ViolateModel violateModel)
+        public async Task<IActionResult> UpdateViolateChecked(int id, bool isChecked)
         {
-            var updatedViolate = await _violateRepo.UpdateViolate(id, violateModel);
-            if (updatedViolate == null)
-                return NotFound();
-            return NoContent();
+            try
+            {
+                var success = await _violateRepo.UpdateViolateChecked(id, isChecked);
+
+                if (success)
+                {
+                    return Ok("Update successfully!");
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
         }
+
+
     }
 }
