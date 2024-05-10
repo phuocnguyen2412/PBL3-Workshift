@@ -20,7 +20,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<BonusSalaryHistory>>> GetAllBonusSalary()
+        public async Task<object> GetAllBonusSalaryAsync()
         {
             var bonusSalaries = await _bonusSalaryRepo.GetAllBonusSalaryAsync();
             return bonusSalaries;

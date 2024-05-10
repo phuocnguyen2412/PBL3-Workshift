@@ -29,14 +29,14 @@ namespace PBL3.Server.Repositories
                         employee => employee.Id,
                         (shiftInfo, employee) => new
                         {
-                            Id = shiftInfo.Id,
+                            shiftInfo.Id,
                             //ManagerId = shiftInfo.ManagerId,
-                            ShiftName = shiftInfo.ShiftName,
-                            Date = shiftInfo.Date,
-                            StartTime = shiftInfo.StartTime,
-                            EndTime = shiftInfo.EndTime,
-                            Checked = shiftInfo.Checked,
-                            FullName = employee.FullName
+                            shiftInfo.ShiftName,
+                            shiftInfo.Date,
+                            shiftInfo.StartTime,
+                            shiftInfo.EndTime,
+                            shiftInfo.Checked,
+                            employee.FullName
                         })
                 .ToListAsync();
             return shiftInfosWithFullName;
@@ -59,13 +59,13 @@ namespace PBL3.Server.Repositories
 
             return new
             {
-                Id = shiftInfo.Id,
-                ShiftName = shiftInfo.ShiftName,
-                Date = shiftInfo.Date,
-                StartTime = shiftInfo.StartTime,
-                EndTime = shiftInfo.EndTime,
-                Checked = shiftInfo.Checked,
-                FullName = employee.FullName
+                shiftInfo.Id,
+                shiftInfo.ShiftName,
+                shiftInfo.Date,
+                shiftInfo.StartTime,
+                shiftInfo.EndTime,
+                shiftInfo.Checked,
+                employee.FullName
             };
         }
 
@@ -122,44 +122,37 @@ namespace PBL3.Server.Repositories
 
         public async Task<object> GetShiftsAndEmployeesByDateAsync(DateTime date)
         {
-            var shifts = await _context.ShiftInfos
-                .Where(s => s.Date.Date == date.Date)
-                .Select(s => new
-                {
-                    s.Id,
-                    s.ShiftName,
-                    s.Date,
-                    s.StartTime,
-                    s.EndTime,
-                    Employees = _context.Shifts
-                        .Where(se => se.Id == s.Id)
-                        .Select(se => new
-                        {
-                            Employee = _context.Employees
-                                .Where(e => e.Id == se.EmployeeId)
-                                .Select(e => new
-                                {
-                                    e.Id,
-                                    e.FullName,
-                                    e.TypeOfEmployee,
-                                    DutyName = _context.Duties
-                                        .Where(d => d.Id == e.DutyId)
-                                        .Select(d => d.DutyName)
-                                        .FirstOrDefault()
-                                })
-                                .FirstOrDefault()
-                        })
-                        .ToList()
-                })
-                .ToListAsync();
+            var shiftInfos = await (from shiftInfo in _context.ShiftInfos
+                                    join shift in _context.Shifts on shiftInfo.Id equals shift.ShiftInfoId
+                                    join employee in _context.Employees on shift.EmployeeId equals employee.Id
+                                    where shiftInfo.Date == date
+                                    select new
+                                    {
+                                        shiftInfo.Id,
+                                        shiftInfo.ShiftName,
+                                        shiftInfo.Date,
+                                        shiftInfo.StartTime,
+                                        shiftInfo.EndTime,
+                                        shiftInfo.Checked,
+                                        Employees = (from employee in _context.Employees
+                                                     join duty in _context.Duties on employee.DutyId equals duty.Id
+                                                     select new
+                                                     {
+                                                         employee.Id,
+                                                         employee.FullName,
+                                                         duty.DutyName,
+                                                         employee.TypeOfEmployee
+                                                     }).ToList<object>()
+                                    }).ToListAsync();
 
-            if (shifts.Count == 0)
+            if (shiftInfos.Count == 0)
             {
                 return null;
             }
 
-            return shifts;
+            return shiftInfos;
         }
+
         public async Task<List<DateTime>> GetWorkDatesForEmployeeAsync(int employeeId)
         {
             return await _context.ShiftInfos
