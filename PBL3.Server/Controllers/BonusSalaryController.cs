@@ -56,7 +56,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<BonusSalaryHistory>> GetBonusSalaryById(int id)
+        public async Task<ActionResult<object>> GetBonusSalaryById(int id)
         {
             var bonusSalary = await _bonusSalaryRepo.GetBonusSalaryByIdAsync(id);
             if (bonusSalary == null)

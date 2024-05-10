@@ -84,7 +84,7 @@ namespace PBL3.Server.Repositories
             return true;
         }
 
-        public async Task<ActionResult> GetBonusSalaryByIdAsync(int id)
+        public async Task<object> GetBonusSalaryByIdAsync(int id)
         {
             var bonusSalary = await _context.BonusSalaryHistories
                 .Join(_context.Employees
@@ -101,7 +101,7 @@ namespace PBL3.Server.Repositories
                      Reason = bonus.Reason
                  }).ToListAsync();
 
-            return new OkObjectResult(bonusSalary);
+            return bonusSalary;
         }
     }
 }
