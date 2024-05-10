@@ -32,12 +32,12 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<DutyModel>(duty);
         }
 
-        public async Task<int> AddDutyAsync(DutyModel dutyModel)
+        public async Task<DutyModel> AddDutyAsync(DutyModel dutyModel)
         {
             var duty = _mapper.Map<Duty>(dutyModel);
             _context.Duties!.Add(duty);
             await _context.SaveChangesAsync();
-            return duty.Id;
+            return _mapper.Map<DutyModel>(duty);
         }
 
         public async Task UpdateDutyAsync(DutyModel dutyModel)
