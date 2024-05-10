@@ -4,6 +4,12 @@ import { AdminList, Employee } from "./DashboardList";
 import { useContext, useState } from "react";
 const { Sider } = Layout;
 import { AccountContext } from "../../Context/AccountContext";
+
+import PropsTypes from "prop-types";
+AdminDashboard.propTypes = {
+    collapsed: PropsTypes.bool.isRequired,
+};
+
 export default function AdminDashboard({ collapsed }) {
     const account = useContext(AccountContext);
     const getLevelKeys = (items1) => {
@@ -48,10 +54,16 @@ export default function AdminDashboard({ collapsed }) {
             setStateOpenKeys(openKeys);
         }
     };
+    const handleSelected = (e) => {
+        if (e.key === "/login") {
+            localStorage.removeItem("token");
+        }
+    };
     return (
         <Sider trigger={null} collapsible collapsed={collapsed}>
             <div className="demo-logo-vertical" />
             <Menu
+                onSelect={handleSelected}
                 openKeys={stateOpenKeys}
                 onOpenChange={onOpenChange}
                 theme="light"

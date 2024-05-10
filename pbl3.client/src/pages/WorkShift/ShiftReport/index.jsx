@@ -1,10 +1,11 @@
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { Button, Flex, Segmented, Spin } from "antd";
+import { Flex, Segmented, Spin } from "antd";
 import TableReport from "./TableReport";
 import KanbanReport from "./KanbanReport";
 import { useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
+import CreateReport from "./CreateReport";
 
 const ShiftReport = () => {
     const { getApi, loading } = useFetch(localhost);
@@ -12,21 +13,8 @@ const ShiftReport = () => {
     const [type, setType] = useState(null);
     useEffect(() => {
         const fetchData = async () => {
-            //const newData = await getApi("/ShiftReport");
-            setData([
-                {
-                    id: 1,
-                    employeeName: "ABC",
-                    shiftName: "Ca sáng",
-                    startTime: "07:00:00",
-                    endTime: "12:00:00",
-                    date: "2023-12-12",
-                    managerName: "ABC Manager",
-                    reason: "Làm bể cốc",
-                    handle: -100000,
-                    checked: false,
-                },
-            ]);
+            const newData = await getApi("/Violate");
+            setData(newData);
         };
         fetchData();
     }, []);
@@ -59,7 +47,7 @@ const ShiftReport = () => {
                         },
                     ]}
                 />
-                <Button>Create shift report</Button>
+                <CreateReport />
             </Flex>
 
             <Spin spinning={loading}>{type}</Spin>

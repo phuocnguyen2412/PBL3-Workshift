@@ -10,7 +10,7 @@ import {
     SafetyOutlined,
     CloseOutlined,
     HomeOutlined,
-    VideoCameraOutlined,
+    ScheduleOutlined,
     SmileOutlined,
     SolutionOutlined,
 } from "@ant-design/icons";
@@ -89,7 +89,7 @@ export const Employee = [
     },
     {
         key: "2",
-        icon: <VideoCameraOutlined />,
+        icon: <CalendarOutlined />,
         label: <Link to="./work_shift/shift_information">Work Shift</Link>,
     },
     {
@@ -104,7 +104,7 @@ export const Employee = [
     },
     {
         key: "6",
-        icon: <SolutionOutlined />,
+        icon: <ScheduleOutlined />,
         label: <Link to="./shift_checking">Shift checking</Link>,
     },
     {

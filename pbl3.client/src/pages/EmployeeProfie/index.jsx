@@ -5,6 +5,7 @@ import {
     SmileOutlined,
     SolutionOutlined,
     UserOutlined,
+    ScheduleOutlined
 } from "@ant-design/icons";
 import EmployeeSalaryHistory from "./EmployeeSalaryHistory";
 import EmployeeShiftReport from "./EmployeeShiftReport";
@@ -23,7 +24,7 @@ const EmployeeProfie = () => {
             key: "2",
             label: `Shift checking`,
             children: <EmployeeShiftChecking />,
-            icon: <SolutionOutlined />,
+            icon: <ScheduleOutlined />,
         },
         {
             key: "3",

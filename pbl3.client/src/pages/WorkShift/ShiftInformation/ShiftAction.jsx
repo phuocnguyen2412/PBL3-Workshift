@@ -10,7 +10,7 @@ ShiftAction.propTypes = {
 };
 export default function ShiftAction({ shift, setItems }) {
     const account = useContext(AccountContext);
-    const { loading, deleteApi, updateApi } = useFetch(localhost);
+    const { loading, deleteApi, postApi, updateApi } = useFetch(localhost);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const handleDelete = async (id) => {
@@ -42,7 +42,29 @@ export default function ShiftAction({ shift, setItems }) {
         setItems();
     };
     const handleUpdate = async () => {};
-    const handleCreate = async () => {};
+    const handleCreate = async () => {
+        try {
+            const data = {
+                employeeId: account.account.employeeId,
+                shiftInfoId: shift.Id,
+                checkInTime: null,
+                checkOutTime: null,
+            };
+            const res = await ("/Shift", data);
+            console.log(res);
+            apiNotification.success({
+                message: "Success!",
+                description: `${res.message}`,
+                placement: "topRight",
+            });
+        } catch (e) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${e.message}`,
+                placement: "topRight",
+            });
+        }
+    };
     return (
         <>
             {contextHolderNotification}

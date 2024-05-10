@@ -14,18 +14,16 @@ const WorkInDay = ({ date }) => {
                 const data = await getApi(
                     `/ShiftInfo/shifts-and-employees-by-date/${date}`
                 );
-                console.log(data);
-
-                if (!Array.isArray(data)) {
-                    setItems([]);
-                    throw new Error("không tìm thấy");
-                }
                 setItems(() =>
                     data.map((e, index) => {
                         return {
                             key: index,
                             label: (
-                                <h3>{`${e.shiftName}: ${e.startTime} - ${e.endTime} `}</h3>
+                                <h3>{`${e.shiftName}: ${e.startTime} - ${
+                                    e.endTime
+                                } ( ${
+                                    e.checked ? "Đã khóa" : "Đang mở"
+                                } ) `}</h3>
                             ),
                             children: (
                                 <TableEmployeePerShift
@@ -39,6 +37,7 @@ const WorkInDay = ({ date }) => {
                     })
                 );
             } catch (e) {
+                setItems([]);
                 console.log(e);
             }
         };
