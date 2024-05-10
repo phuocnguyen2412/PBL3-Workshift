@@ -65,27 +65,27 @@ namespace PBL3.Server.Repositories
             return shift;
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int id, string checkInTime)
+        public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int id, TimeSpan checkInTime)
         {
             var shift = await _context.Shifts.FindAsync(id);
             if (shift == null)
             {
                 return null;
             }
-            //shift.CheckInTime = checkInTime;
+            shift.CheckInTime = checkInTime;
             _context.Entry(shift).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, string checkOutTime)
+        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, TimeSpan checkOutTime)
         {
             var shift = await _context.Shifts.FindAsync(id);
             if (shift == null)
             {
                 return null;
             }
-            //shift.CheckOutTime = checkOutTime;
+            shift.CheckOutTime = checkOutTime;
             _context.Entry(shift).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);

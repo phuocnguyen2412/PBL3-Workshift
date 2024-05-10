@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240509105118_dáddssad")]
-    partial class dáddssad
+    [Migration("20240509230750_mydatabase")]
+    partial class mydatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,8 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("BonusSalaryHistory");
                 });
 
@@ -134,6 +136,8 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DutyId");
 
                     b.ToTable("Employee");
                 });
@@ -209,13 +213,16 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CheckInTime")
-                        .HasColumnType("DATE");
+                    b.Property<TimeSpan>("CheckInTime")
+                        .HasColumnType("TIME");
 
-                    b.Property<DateTime>("CheckOutTime")
-                        .HasColumnType("DATE");
+                    b.Property<TimeSpan>("CheckOutTime")
+                        .HasColumnType("TIME");
 
                     b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftInfoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -297,6 +304,28 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("PBL3.Server.Data.BonusSalaryHistory", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Duty", "Duty")
+                        .WithMany()
+                        .HasForeignKey("DutyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Duty");
+                });
+
             modelBuilder.Entity("PBL3.Server.Data.HourHistory", b =>
                 {
                     b.HasOne("PBL3.Server.Data.Employee", "Employee")
@@ -327,7 +356,15 @@ namespace PBL3.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("ShiftInfo");
                 });
 
             modelBuilder.Entity("PBL3.Server.Data.Violate", b =>
