@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -146,6 +147,23 @@ namespace PBL3.Server.Repositories
                 return null;
             }
             return shifts;
+        }
+
+        public async Task<List<DateTime>> GetWorkDatesForEmployeeAsync(int employeeId)
+        {
+            return await _context.ShiftInfos
+                .Where(shiftInfo => shiftInfo.ManagerId == employeeId)
+                .Select(shiftInfo => shiftInfo.Date)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        public async Task<List<ShiftInfoModel>> GetShiftsForManagerAsync(int managerId)
+        {
+            var shiftInfos = await _context.ShiftInfos
+                .Where(shiftInfo => shiftInfo.ManagerId == managerId)
+                .ToListAsync();
+            return _mapper.Map<List<ShiftInfoModel>>(shiftInfos);
         }
     }
 }
