@@ -63,7 +63,11 @@ namespace PBL3.Server.Controllers
             }
 
             var newShift = await _shiftRepo.AddShiftAsync(shift);
-            return CreatedAtAction(nameof(GetShiftByIdAsync), new { id = newShift.Id }, newShift);
+            if (newShift == null)
+            {
+                return BadRequest(new { message = "Failed to add shift information." });
+            }
+            return Ok(newShift);
         }
 
         [HttpPut("{id}")]

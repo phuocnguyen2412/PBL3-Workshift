@@ -54,7 +54,7 @@ namespace PBL3.Server.Repositories
 
             return _context.BonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
         }
-        public async Task<ActionResult> GetAllBonusSalaryAsync()
+        public async Task<object> GetAllBonusSalaryAsync()
         {
             var bonusSalaries = await _context.BonusSalaryHistories
                 .Join(_context.Employees, 
@@ -71,7 +71,7 @@ namespace PBL3.Server.Repositories
                       })
                 .ToListAsync();
 
-            return new OkObjectResult(bonusSalaries);
+            return bonusSalaries;
         }
         public async Task<bool> DeleteBonusSalaryAsync(int id)
         {

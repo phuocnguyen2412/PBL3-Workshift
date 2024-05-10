@@ -21,7 +21,14 @@ export default function EmployeeShiftChecking() {
             console.log(yourData);
             setData(yourData);
         };
-        fetchData();
+
+        try{
+            fetchData();
+        }catch(e){
+            console.log(e);
+        }
+        
+       
     }, []);
 
     const onSelect = (newValue) => {
@@ -32,6 +39,7 @@ export default function EmployeeShiftChecking() {
     };
 
     const getListData = (value) => {
+        console.log(data);
         let listData = [];
         data.forEach((shift) => {
             if (dayjs(shift.date).isSame(value, "day")) {

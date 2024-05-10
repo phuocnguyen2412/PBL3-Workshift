@@ -40,7 +40,12 @@ namespace PBL3.Server.Controllers
         public async Task<ActionResult<int>> AddDutyAsync(DutyModel dutyModel)
         {
             var id = await _dutyRepository.AddDutyAsync(dutyModel);
-            return CreatedAtAction(nameof(GetDutyByIdAsync), new { id = id }, dutyModel);
+
+            if (id == null)
+            {
+                return BadRequest(new { message = "Failed to add Duty information." });
+            }
+            return Ok(id);
         }
 
         [HttpPut]
