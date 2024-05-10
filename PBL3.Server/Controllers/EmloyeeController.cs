@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PBL3.Server.Data;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace PBL3.Server.Controllers
@@ -11,13 +11,11 @@ namespace PBL3.Server.Controllers
     [ApiController]
     public class EmployeeController : ControllerBase
     {
-        private readonly IEmployee _employeeRepo;
-        private readonly IAccount _accountRepo;
+        private readonly IEmployee _employeeRepository;
 
-        public EmployeeController(IEmployee employeeRepo, IAccount accountRepo)
+        public EmployeeController(IEmployee employeeRepository)
         {
-            _employeeRepo = employeeRepo;
-            _accountRepo = accountRepo;
+            _employeeRepository = employeeRepository;
         }
 
         [HttpGet]
@@ -25,104 +23,130 @@ namespace PBL3.Server.Controllers
         {
             try
             {
-                return await _employeeRepo.GetAllEmployeesAsync();
+                var employees = await _employeeRepository.GetAllEmployeesAsync();
+                if (employees == null)
+                {
+                    return NotFound("No employees found.");
+                }
+                return Ok(employees);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEmployeeByIdAsync(int id)
         {
             try
             {
-                var employee = await _employeeRepo.GetEmployeeByIdAsync(id);
+                var employee = await _employeeRepository.GetEmployeeByIdAsync(id);
                 if (employee == null)
                 {
-                    return NotFound();
+                    return NotFound($"Employee with ID {id} not found.");
                 }
-
-                return employee;
+                return Ok(employee);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
 
-        [HttpGet("GetAllEmployeesByStatusAsync")]
+        [HttpGet("status/{status}")]
         public async Task<ActionResult> GetAllEmployeesByStatusAsync(bool status)
         {
             try
             {
-                return await _employeeRepo.GetAllEmployeesByStatusAsync(status);
+                var employees = await _employeeRepository.GetAllEmployeesByStatusAsync(status);
+                if (employees == null)
+                {
+                    return NotFound("No employees found with the specified status.");
+                }
+                return Ok(employees);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmployeeModel>> AddEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<ActionResult<EmployeeModel>> AddEmployeeAsync(EmployeeModel employee)
         {
+            if (employee == null)
+            {
+                return BadRequest("Employee data is null.");
+            }
+
             try
             {
-                var addedEmployee = await _employeeRepo.AddEmployeeAsync(employeeModel);
-                if (addedEmployee != null)
-                {
-                    await _accountRepo.AddAccountAsync(employeeModel.Email, addedEmployee.Id);
-                    return Ok(employeeModel);
-                }
-                else
-                {
-                    return BadRequest("Failed to add Employee!");
-                }
+                var createdEmployee = await _employeeRepository.AddEmployeeAsync(employee);
+                return CreatedAtAction(nameof(GetEmployeeByIdAsync), new { id = createdEmployee.Id }, createdEmployee);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateEmployeeAsync(EmployeeModel employee)
+        public async Task<ActionResult<EmployeeModel>> UpdateEmployeeAsync(EmployeeModel employee)
         {
+            if (employee == null)
+            {
+                return BadRequest("Employee data is null.");
+            }
+
             try
             {
-                return await _employeeRepo.UpdateEmployeeAsync(employee);
+                var updatedEmployee = await _employeeRepository.UpdateEmployeeAsync(employee);
+                if (updatedEmployee == null)
+                {
+                    return NotFound($"Employee with ID {employee.Id} not found.");
+                }
+                return Ok(updatedEmployee);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteEmployeeAsync(int id)
+        public async Task<ActionResult<EmployeeModel>> DeleteEmployeeAsync(int id)
         {
             try
             {
-                return await _employeeRepo.DeleteEmployeeAsync(id);
+                var employee = await _employeeRepository.DeleteEmployeeAsync(id);
+                if (employee == null)
+                {
+                    return NotFound($"Employee with ID {id} not found.");
+                }
+                return Ok(employee);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
 
-        [HttpGet("SearchEmployeeByStringAsync")]
-        public async Task<ActionResult> SearchEmployeeByStringAsync(string searchString)
+        [HttpGet("search/{searchString}")]
+        public async Task<ActionResult<object>> SearchEmployeeByStringAsync(string searchString)
         {
             try
             {
-                return await _employeeRepo.SearchEmployeeByStringAsync(searchString);
+                var employees = await _employeeRepository.SearchEmployeeByStringAsync(searchString);
+                if (employees == null)
+                {
+                    return NotFound($"No employees found matching '{searchString}'.");
+                }
+                return Ok(employees);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
+                return StatusCode(500, $"Internal server error: {e.Message}");
             }
         }
     }
