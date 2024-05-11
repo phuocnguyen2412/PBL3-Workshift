@@ -91,7 +91,7 @@ namespace PBL3.Server.Repositories
                     s.EndTime,
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
-                }).FirstOrDefaultAsync();
+                }).ToListAsync();
 
             return violate;
         }

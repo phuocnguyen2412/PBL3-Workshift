@@ -2,11 +2,21 @@ import { Button, Card } from "antd";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import ReportContent from "./ReportContent";
-export default function CardItem({ data }) {
+CardItem.propTypes = {
+    data: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+};
+
+export default function CardItem({ data, fetchData }) {
     const [open, setOpen] = useState(false);
     return (
         <>
-            <ReportContent data={data} setOpen={setOpen} open={open} />
+            <ReportContent
+                data={data}
+                setOpen={setOpen}
+                open={open}
+                fetchData={fetchData}
+            />
 
             <Card
                 type="inner"
@@ -18,6 +28,3 @@ export default function CardItem({ data }) {
         </>
     );
 }
-CardItem.propTypes = {
-    data: PropTypes.object.isRequired,
-};

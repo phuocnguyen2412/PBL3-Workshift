@@ -16,14 +16,13 @@ const WorkInDay = ({ date }) => {
                 );
                 setItems(() =>
                     data.map((e, index) => {
-                    
                         return {
                             key: index,
                             label: (
                                 <h3>{`${e.shiftName}: ${e.startTime} - ${
                                     e.endTime
                                 } ( ${
-                                    e.checked ? "Đã khóa" : "Đang mở"
+                                    e.checked ? "Looked" : "Openning"
                                 } ) `}</h3>
                             ),
                             children: (

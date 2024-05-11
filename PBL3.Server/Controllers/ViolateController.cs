@@ -65,7 +65,7 @@ namespace PBL3.Server.Controllers
 
                 if (success)
                 {
-                    return Ok("Update successfully!");
+                    return Ok(new { Message = "Update successfully!" });
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(new { Message = ex.Message });
             }
         }
 

@@ -80,11 +80,11 @@ namespace PBL3.Server.Repositories
             return true;
         }
 
-        public async Task<object> GetBonusSalaryByIdAsync(int id)
+        public async Task<List<object>> GetBonusSalaryByIdAsync(int id)
         {
             var bonusSalary = await (from b in _context.BonusSalaryHistories
                                      join e in _context.Employees on b.EmployeeId equals e.Id
-                                     where b.Id == id
+                                     where e.Id == id
                                      select new
                                      {
                                          b.Id,
@@ -93,7 +93,7 @@ namespace PBL3.Server.Repositories
                                          DateTime = b.DateTime,
                                          TotalBonus = b.TotalBonus,
                                          Reason = b.Reason
-                                     }).FirstOrDefaultAsync();
+                                     }).ToListAsync<object>();
 
             return bonusSalary;
         }

@@ -8,7 +8,7 @@ namespace PBL3.Server.Interface
     {
         Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryModel request);
         Task<object> GetAllBonusSalaryAsync();
-        Task<object> GetBonusSalaryByIdAsync(int id);
+        Task<List<object>> GetBonusSalaryByIdAsync(int id);
         Task<bool> DeleteBonusSalaryAsync(int id);
     }
 }
