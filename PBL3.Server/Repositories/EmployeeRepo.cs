@@ -21,12 +21,12 @@ namespace PBL3.Server.Repositories
             _mapper = mapper;
         }
 
-        public async Task<EmployeeModel> AddEmployeeAsync(EmployeeModel employeeModel)
+        public async Task<Employee> AddEmployeeAsync(EmployeeModel employeeModel)
         {
             var employee = _mapper.Map<Employee>(employeeModel);
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
-            return employeeModel;
+            return employee;
         }
 
         public async Task<EmployeeModel> DeleteEmployeeAsync(int id)
