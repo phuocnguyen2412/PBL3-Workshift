@@ -1,5 +1,5 @@
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { Flex, Spin, Tabs } from "antd";
+import { Spin, Tabs } from "antd";
 import TableReport from "./TableReport";
 import KanbanReport from "./KanbanReport";
 import { useEffect, useState } from "react";

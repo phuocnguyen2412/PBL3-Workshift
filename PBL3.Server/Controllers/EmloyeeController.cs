@@ -12,9 +12,10 @@ namespace PBL3.Server.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepository;
-
+        
         public EmployeeController(IEmployee employeeRepository)
         {
+
             _employeeRepository = employeeRepository;
         }
 
