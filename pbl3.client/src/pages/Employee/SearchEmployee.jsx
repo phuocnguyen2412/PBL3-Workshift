@@ -1,16 +1,17 @@
-import Search from "antd/es/transfer/search";
 import useFetch from "../../custom hook/useFetch";
-import { notification } from "antd";
+
+import { notification, Input } from "antd";
+const { Search } = Input;
 import PropTypes from "prop-types";
+import localhost from "../../Services/localhost";
 const SearchEmployee = ({ setEmployee }) => {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const { getApi } = useFetch("https://localhost:7120/api");
+    const { getApi, loading } = useFetch(localhost);
     const handleSearch = async (value) => {
         try {
-            const data = await getApi(`/Employee/${value}`);
-            if (typeof data === "object") setEmployee([data]);
-            else setEmployee(data);
+            const data = await getApi(`/Employee/search/${value}`);
+            setEmployee(data);
             apiNotification.success({
                 message: "Thành công!",
                 description: `Hệ thống đã tìm được nhân viên ${value}`,
@@ -18,11 +19,10 @@ const SearchEmployee = ({ setEmployee }) => {
             });
         } catch (err) {
             apiNotification.error({
-                message: "Thất bại!",
-                description: `Không tồn tại nhân viên ${value}`,
+                message: "Error!",
+                description: `${err}`,
                 placement: "topRight",
             });
-            console.log(err);
         }
     };
     return (
@@ -30,10 +30,13 @@ const SearchEmployee = ({ setEmployee }) => {
             {contextHolderNotification}
             <Search
                 placeholder="input search text"
-                enterButton="Search"
-                size="large"
-                loading={false}
+                allowClear
                 onSearch={handleSearch}
+                size="large"
+                style={{
+                    marginBottom: "16px",
+                }}
+                loading={loading}
             />
         </>
     );

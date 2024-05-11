@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PBL3.Server.Migrations
 {
-    public partial class đasaa : Migration
+    public partial class V1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -193,7 +193,8 @@ namespace PBL3.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     ShiftInfoId = table.Column<int>(type: "int", nullable: false),
-                    Handle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Handle = table.Column<int>(type: "int", nullable: false),
                     Checked = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>

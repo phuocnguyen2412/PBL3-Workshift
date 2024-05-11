@@ -10,7 +10,6 @@ const EditEmployee = ({ record, setEmployee }) => {
 
     const cancelEdit = () => {
         setOpenEdit(false);
-        form.resetFields();
     };
 
     const handleClickBtn = async () => {

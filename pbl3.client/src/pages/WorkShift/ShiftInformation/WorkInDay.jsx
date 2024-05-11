@@ -16,7 +16,7 @@ const WorkInDay = ({ date }) => {
                 );
                 setItems(() =>
                     data.map((e, index) => {
-                        console.log(e);
+                    
                         return {
                             key: index,
                             label: (

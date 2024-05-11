@@ -4,7 +4,7 @@
 
 namespace PBL3.Server.Migrations
 {
-    public partial class dasd : Migration
+    public partial class V2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

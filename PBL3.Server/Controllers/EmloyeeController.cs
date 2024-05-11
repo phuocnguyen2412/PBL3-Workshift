@@ -12,10 +12,12 @@ namespace PBL3.Server.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepository;
+        private readonly IAccount _accountRepository;
 
-        public EmployeeController(IEmployee employeeRepository)
+        public EmployeeController(IEmployee employeeRepository, IAccount accountRepository)
         {
             _employeeRepository = employeeRepository;
+            _accountRepository = accountRepository;
         }
 
         [HttpGet]
@@ -26,13 +28,13 @@ namespace PBL3.Server.Controllers
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
                 if (employees == null)
                 {
-                    return NotFound("No employees found.");
+                    return NotFound(new { Message = "No employees found." });
                 }
                 return Ok(employees);
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
 
@@ -44,13 +46,13 @@ namespace PBL3.Server.Controllers
                 var employee = await _employeeRepository.GetEmployeeByIdAsync(id);
                 if (employee == null)
                 {
-                    return NotFound($"Employee with ID {id} not found.");
+                    return NotFound(new { Message = "No employees found." });
                 }
                 return Ok(employee);
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
 
@@ -62,13 +64,13 @@ namespace PBL3.Server.Controllers
                 var employees = await _employeeRepository.GetAllEmployeesByStatusAsync(status);
                 if (employees == null)
                 {
-                    return NotFound("No employees found with the specified status.");
+                    return NotFound(new { Message = "No employees found with the specified status." });
                 }
                 return Ok(employees);
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
 
@@ -77,17 +79,26 @@ namespace PBL3.Server.Controllers
         {
             if (employee == null)
             {
-                return BadRequest("Employee data is null.");
+                return BadRequest(new { Message = "Employee data is null." });
             }
 
             try
             {
                 var createdEmployee = await _employeeRepository.AddEmployeeAsync(employee);
-                return CreatedAtAction(nameof(GetEmployeeByIdAsync), new { id = createdEmployee.Id }, createdEmployee);
+                if (createdEmployee != null)
+                {
+                    await _accountRepository.AddAccountAsync(employee.Email, createdEmployee.Id);
+                    return Ok(createdEmployee);
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Failed to add Employee!" });
+                }
+                
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
 
@@ -96,7 +107,7 @@ namespace PBL3.Server.Controllers
         {
             if (employee == null)
             {
-                return BadRequest("Employee data is null.");
+                return BadRequest(new { Message = "Employee data is null." });
             }
 
             try
@@ -104,13 +115,13 @@ namespace PBL3.Server.Controllers
                 var updatedEmployee = await _employeeRepository.UpdateEmployeeAsync(employee);
                 if (updatedEmployee == null)
                 {
-                    return NotFound($"Employee with ID {employee.Id} not found.");
+                    return NotFound(new { Message = "No employees found." });
                 }
                 return Ok(updatedEmployee);
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
 
@@ -128,7 +139,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
 
@@ -140,13 +151,13 @@ namespace PBL3.Server.Controllers
                 var employees = await _employeeRepository.SearchEmployeeByStringAsync(searchString);
                 if (employees == null)
                 {
-                    return NotFound($"No employees found matching '{searchString}'.");
+                    return NotFound(new { Message = $"No employees found matching '{searchString}'." });
                 }
                 return Ok(employees);
             }
             catch (Exception e)
             {
-                return StatusCode(500, $"Internal server error: {e.Message}");
+                return StatusCode(500, new { Message = e.Message });
             }
         }
     }

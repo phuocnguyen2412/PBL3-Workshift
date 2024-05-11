@@ -23,19 +23,23 @@ namespace PBL3.Server.Controllers
         {
             if (string.IsNullOrEmpty(model.UserName)) 
             {
-                return BadRequest("Username cannot be empty!");
+                return BadRequest(new{ Message="Username cannot be empty!"});
             }
 
             if (string.IsNullOrEmpty(model.Password)) 
             {
-                return BadRequest("Password cannot be empty!");
+                return BadRequest(new{ Message="Password cannot be empty!"});
             }
 
             var account = await _accountRepo.GetAccountByUserNameAndPassword(model);
 
             if (account == null)
             {
-                return NotFound("UserName or Password is incorrect, please try again!");
+                
+                 
+                return NotFound(new{ Message="UserName or Password is incorrect, please try again!"});
+
+              
             }
 
             return Ok(account);
@@ -53,7 +57,7 @@ namespace PBL3.Server.Controllers
 
             if (account == null)
             {
-                return NotFound("Token is invalid!");
+                return NotFound(new{Message = "Token is invalid!"});
             }
 
             return Ok(account);
