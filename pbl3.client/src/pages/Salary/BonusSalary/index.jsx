@@ -28,7 +28,7 @@ const BonusSalary = () => {
                 items={[
                     {
                         key: "1",
-                        children: <TableBonus data={data} />,
+                        children: <TableBonus data={data} fetchData={fetchData}/>,
                         label: "List",
                         icon: <BarsOutlined />,
                     },

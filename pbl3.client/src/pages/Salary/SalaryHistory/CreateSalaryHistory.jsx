@@ -33,24 +33,26 @@ export default function CreateSalaryHistory() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await getApi("/Employee/status/true");
-            setListEmployee(() =>
-                response
-                    .map((e) => {
-                        return {
-                            label: e.fullName,
-                            value: e.id,
-                        };
-                    })
-                    .push({
-                        label: "Tất cả",
-                        value: 0,
-                    })
-            );
+
+            const data = response.map((e) => {
+                return {
+                    label: e.fullName,
+                    value: e.id,
+                };
+            });
+            data.push({
+                label: "All",
+                value: 0,
+            });
+            setListEmployee(data);
         };
         fetchData();
-    });
+    }, []);
+
     const handleSubmit = async (e) => {
         try {
+            e.startDate = e.startDate.format("YYYY-MM-DD");
+            e.endDate = e.endDate.format("YYYY-MM-DD");
             console.log(e);
         } catch (error) {
             apiNotification.error({
@@ -60,13 +62,19 @@ export default function CreateSalaryHistory() {
             });
         }
     };
+
     return (
         <>
             {contextHolderNotification}
             <Button type="primary" onClick={showDrawer}>
                 Open
             </Button>
-            <Drawer title="Basic Drawer" onClose={onClose} open={open}>
+            <Drawer
+                width={600}
+                title="Basic Drawer"
+                onClose={onClose}
+                open={open}
+            >
                 <Spin spinning={loading}>
                     <Form form={form} onFinish={handleSubmit}>
                         <Row gutter={16}>
@@ -87,15 +95,15 @@ export default function CreateSalaryHistory() {
                                         style={{
                                             width: "100%",
                                         }}
-                                        placeholder="Please select"
+                                        placeholder="Please select a name"
                                         options={listEmployee}
                                     />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="name"
-                                    label="Name"
+                                    name="startDate"
+                                    label="Start Date"
                                     rules={[
                                         {
                                             required: true,
@@ -103,13 +111,16 @@ export default function CreateSalaryHistory() {
                                         },
                                     ]}
                                 >
-                                    <TimePicker placeholder="Please enter user name" />
+                                    <TimePicker
+                                        style={{ width: "100%" }}
+                                        placeholder="Please enter user name"
+                                    />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="name"
-                                    label="Name"
+                                    name="endDate"
+                                    label="End date"
                                     rules={[
                                         {
                                             required: true,
@@ -117,10 +128,14 @@ export default function CreateSalaryHistory() {
                                         },
                                     ]}
                                 >
-                                    <TimePicker placeholder="Please enter user name" />
+                                    <TimePicker
+                                        style={{ width: "100%" }}
+                                        placeholder="Please enter user name"
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <Button htmlType="submit">Submit</Button>
                     </Form>
                 </Spin>
             </Drawer>

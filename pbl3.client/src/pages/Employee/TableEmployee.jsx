@@ -35,6 +35,7 @@ const TableEmployee = ({ data, setEmployee }) => {
         {
             title: "Duty",
             dataIndex: "dutyName",
+
             render: (_, record) => (
                 <>
                     {record.dutyName === "Admin" ? (
@@ -84,6 +85,8 @@ const TableEmployee = ({ data, setEmployee }) => {
             ),
         },
         {
+            align: "center",
+            width: "100px",
             title: "Change",
             dataIndex: "Change",
             render: (_, record) => (
@@ -91,6 +94,8 @@ const TableEmployee = ({ data, setEmployee }) => {
             ),
         },
         {
+            align: "center",
+            width: "100px",
             title: "Delete",
             dataIndex: "Delete",
             render: (_, record) => (

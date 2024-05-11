@@ -12,11 +12,13 @@ namespace PBL3.Server.Controllers
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepository;
-        
-        public EmployeeController(IEmployee employeeRepository)
+        private readonly IAccount _accountRepository;
+
+        public EmployeeController(IEmployee employeeRepository, IAccount accountRepository)
         {
 
             _employeeRepository = employeeRepository;
+            _accountRepository = accountRepository;
         }
 
         [HttpGet]
@@ -84,7 +86,16 @@ namespace PBL3.Server.Controllers
             try
             {
                 var createdEmployee = await _employeeRepository.AddEmployeeAsync(employee);
-                return Ok(createdEmployee);
+                if (createdEmployee != null)
+                {
+                    await _accountRepository.AddAccountAsync(employee.Email, createdEmployee.Id);
+                    return Ok(createdEmployee);
+                }
+                else
+                {
+                    return BadRequest(new { Message = "Failed to add Employee!" });
+                }
+                
             }
             catch (Exception e)
             {

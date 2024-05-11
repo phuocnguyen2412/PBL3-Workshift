@@ -1,21 +1,37 @@
-import { Button, Col, Form, Input, Row, Select, Spin } from "antd";
+import {
+    Button,
+    Col,
+    Form,
+    Input,
+    Row,
+    Select,
+    Spin,
+    notification,
+} from "antd";
 import { AccountContext } from "../../../Context/AccountContext";
 import { useContext, useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
-export default function ReportForm() {
+import PropTypes from "prop-types";
+
+ReportForm.propTypes = {
+    fetchData: PropTypes.func.isRequired,
+};
+export default function ReportForm({ fetchData }) {
+    
     const { getApi, postApi, loading } = useFetch(localhost);
     const account = useContext(AccountContext);
     const [employeeList, setEmployeeList] = useState([]);
     const [shiftList, setShiftList] = useState([]);
+    const [form] = Form.useForm();
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
 
     useEffect(() => {
         const fetchDataEmployee = async () => {
-            const response = await getApi(
-                "/Employee/GetAllEmployeesByStatusAsync?status=true"
-            );
+            const response = await getApi("/Employee/status/true");
             setEmployeeList(
                 response.map((item) => {
                     return {
@@ -55,15 +71,31 @@ export default function ReportForm() {
         (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
     const handleSubmitForm = async (e) => {
         try {
-            const response = await postApi("/Violate", e);
-            console.log(response);
+            const data = {
+                ...e,
+                checked: false,
+            };
+
+            const response = await postApi("/Violate", data);
+            apiNotification.success({
+                message: "Success!",
+                description: `You created a new report for ${response.employeeName}`,
+                placement: "topRight",
+            });
+            form.resetFields();
+            fetchData();
         } catch (err) {
-            console.log(err);
+            apiNotification.error({
+                message: "Error!",
+                description: `${err}`,
+                placement: "topRight",
+            });
         }
     };
     return (
         <Spin spinning={loading}>
-            <Form layout="vertical" onFinish={handleSubmitForm}>
+            {contextHolderNotification}
+            <Form layout="vertical" onFinish={handleSubmitForm} form={form}>
                 <Row gutter={16}>
                     <Col span={24}>
                         <Form.Item
@@ -87,7 +119,7 @@ export default function ReportForm() {
                     </Col>
                     <Col span={24}>
                         <Form.Item
-                            name="shiftId"
+                            name="shiftInfoId"
                             label="Shift name"
                             rules={[
                                 { required: true, message: "Please enter url" },

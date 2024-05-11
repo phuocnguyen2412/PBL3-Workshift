@@ -9,7 +9,6 @@ TableBonus.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
 export default function TableBonus({ data, fetchData }) {
-
     const [open, setOpen] = useState(false);
     const columns = [
         {
@@ -22,6 +21,7 @@ export default function TableBonus({ data, fetchData }) {
             title: "Date time",
             dataIndex: "dateTime",
             key: "date",
+
             render: (_, record) => (
                 <>
                     <span>
@@ -35,6 +35,7 @@ export default function TableBonus({ data, fetchData }) {
             title: "Total",
             key: "totalBonus",
             dataIndex: "totalBonus",
+            align: "center",
             render: (_, record) => (
                 <>
                     <span>{record.totalBonus.toLocaleString()}</span>
@@ -44,6 +45,8 @@ export default function TableBonus({ data, fetchData }) {
         {
             title: "Action",
             key: "action",
+            align: "center",
+            width: "40px",
             render: (_, record) => (
                 <>
                     <Button
@@ -60,6 +63,8 @@ export default function TableBonus({ data, fetchData }) {
         {
             title: "Delete",
             key: "delete",
+            align: "center",
+            width: "40px",
             render: (_, record) => (
                 <>
                     <DeleteBonus record={record} fetchData={fetchData} />
@@ -70,7 +75,7 @@ export default function TableBonus({ data, fetchData }) {
 
     return (
         <div>
-            <Table rowKey="id" dataSource={data} columns={columns} />
+            <Table bordered rowKey="id" dataSource={data} columns={columns} />
         </div>
     );
 }

@@ -23,10 +23,11 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftModel> AddShiftAsync(ShiftModel shiftModel)
         {
-            bool shiftExists = await (from s in _context.Shifts
-                                      where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
-                                      select s
-                                      ).AnyAsync();
+            bool shiftExists = await (
+                from s in _context.Shifts
+                where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
+                select s
+                ).AnyAsync();
             if (shiftExists)
             {
                 throw new InvalidOperationException("Employee is already assigned to this shift.");

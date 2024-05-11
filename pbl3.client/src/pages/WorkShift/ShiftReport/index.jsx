@@ -10,13 +10,12 @@ import CreateReport from "./CreateReport";
 const ShiftReport = () => {
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
-
+    const fetchData = async () => {
+        const newData = await getApi("/Violate");
+        setData(newData);
+    };
     useEffect(() => {
         try {
-            const fetchData = async () => {
-                const newData = await getApi("/Violate");
-                setData(newData);
-            };
             fetchData();
         } catch (error) {
             console.log(error);
@@ -30,7 +29,7 @@ const ShiftReport = () => {
                 items={[
                     {
                         key: "1",
-                        children: <TableReport data={data} />,
+                        children: <TableReport data={data} fetchData={fetchData} />,
                         label: "List",
                         icon: <BarsOutlined />,
                     },
@@ -41,7 +40,7 @@ const ShiftReport = () => {
                         icon: <AppstoreOutlined />,
                     },
                 ]}
-                tabBarExtraContent={<CreateReport />}
+                tabBarExtraContent={<CreateReport fetchData={fetchData} />}
             />
         </Spin>
     );

@@ -2,6 +2,7 @@ import { Button, notification } from "antd";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import PropTypes from "prop-types";
+import { DeleteOutlined } from "@ant-design/icons";
 
 DeleteBonus.propTypes = {
     record: PropTypes.object.isRequired,
@@ -36,13 +37,14 @@ export default function DeleteBonus({ record, fetchData }) {
         <>
             {contextHolderNotification}
             <Button
+                danger
+                shape="circle"
+                icon=<DeleteOutlined />
                 onClick={() => {
                     handleDeleteBonus(record.id);
                 }}
                 loading={loading}
-            >
-                Delet bonus
-            </Button>
+            />
         </>
     );
 }
