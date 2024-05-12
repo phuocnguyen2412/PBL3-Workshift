@@ -111,10 +111,10 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, int shiftInfoId, TimeSpan checkOutTime)
+        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int Employeeid, int shiftInfoId, TimeSpan checkOutTime)
         {
             var shift = await _context.Shifts.Include(s => s.ShiftInfo)
-                             .Where(s => s.Id == id && s.ShiftInfoId == shiftInfoId)
+                             .Where(s => s.EmployeeId == Employeeid && s.ShiftInfoId == shiftInfoId)
                              .FirstOrDefaultAsync();
 
             if (shift == null)
