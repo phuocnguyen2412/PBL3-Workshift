@@ -23,11 +23,22 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftModel> AddShiftAsync(ShiftModel shiftModel)
         {
+            var shiftInfo = await _context.ShiftInfos.FindAsync(shiftModel.ShiftInfoId);
+            if (shiftInfo == null)
+            {
+                throw new InvalidOperationException("ShiftInfo not found.");
+            }
+
+            if (shiftInfo.Checked)
+            {
+                throw new InvalidOperationException("Cannot register for the shift as the form is closed.");
+            }
+
             bool shiftExists = await (
                 from s in _context.Shifts
                 where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
                 select s
-                ).AnyAsync();
+            ).AnyAsync();
             if (shiftExists)
             {
                 throw new InvalidOperationException("Employee is already assigned to this shift.");
@@ -38,6 +49,7 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
+
 
 
         public async Task<ShiftModel> DeleteShiftAsync(int id)
@@ -69,11 +81,19 @@ namespace PBL3.Server.Repositories
             return shift;
         }
 
-        public async Task<ShiftModel> UpdateShiftAsync(ShiftModel shift)
+        public async Task<ShiftModel> UpdateShiftAsync(ShiftModel shiftModel)
         {
-            _context.Entry(shift).State = EntityState.Modified;
+            var shift = await _context.Shifts.FindAsync(shiftModel.Id);
+            if (shift == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(shiftModel, shift);
+
+            _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
-            return shift;
+            return _mapper.Map<ShiftModel>(shift);
         }
 
         public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int id, TimeSpan checkInTime)
@@ -83,23 +103,47 @@ namespace PBL3.Server.Repositories
             {
                 return null;
             }
+
             shift.CheckInTime = checkInTime;
-            _context.Entry(shift).State = EntityState.Modified;
+
+            _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, TimeSpan checkOutTime)
+        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, int shiftInfoId, TimeSpan checkOutTime)
         {
-            var shift = await _context.Shifts.FindAsync(id);
+            var shift = await _context.Shifts.Include(s => s.ShiftInfo)
+                             .Where(s => s.Id == id && s.ShiftInfoId == shiftInfoId)
+                             .FirstOrDefaultAsync();
+
             if (shift == null)
             {
                 return null;
             }
+
             shift.CheckOutTime = checkOutTime;
-            _context.Entry(shift).State = EntityState.Modified;
+
+            var totalHours = (checkOutTime - shift.CheckInTime).TotalHours;
+
+            var totalHoursFormatted = totalHours.ToString("0.##");
+
+            var hourHistory = new HourHistory
+            {
+                EmployeeId = shift.EmployeeId,
+                DateAt = shift.ShiftInfo.Date,
+                HoursPerDay = totalHoursFormatted
+            };
+
+            _context.HourHistories.Add(hourHistory);
             await _context.SaveChangesAsync();
+
+            _context.Shifts.Update(shift);
+            await _context.SaveChangesAsync();
+
             return _mapper.Map<ShiftModel>(shift);
         }
+
+
     }
 }

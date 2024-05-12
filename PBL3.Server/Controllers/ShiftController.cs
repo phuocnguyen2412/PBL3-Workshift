@@ -107,11 +107,11 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPut("{id}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, TimeSpan checkOutTime)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, int shiftInfoId, TimeSpan checkOutTime)
         {
             try
             {
-                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, checkOutTime);
+                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, shiftInfoId, checkOutTime);
                 if (updatedShift == null)
                 {
                     return NotFound(new { message = $"Shift with ID {id} not found." });
