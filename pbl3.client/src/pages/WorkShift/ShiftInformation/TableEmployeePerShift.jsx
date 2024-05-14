@@ -7,42 +7,11 @@ import { useContext } from "react";
 import { AccountContext } from "../../../Context/AccountContext";
 const TableEmployeePerShift = ({ shift, setItems }) => {
     const account = useContext(AccountContext);
-    const data = [
-        {
-            id: "1",
-            fullName: "Nguyen 1",
-            dutyName: "Quản lý",
-            typeOfEmployee: true,
-        },
-        {
-            id: "2",
-            fullName: "Nguyen 2 ",
-            dutyName: "Nhân viên",
-            typeOfEmployee: true,
-        },
-        {
-            id: "3",
-            fullName: "Nguyen 3",
-            dutyName: "Nhân viên",
-            typeOfEmployee: false,
-        },
-        {
-            id: "4",
-            fullName: "Nguyen 4",
-            dutyName: "Nhân viên",
-            typeOfEmployee: false,
-        },
-        {
-            id: "5",
-            fullName: "Nguyen 5",
-            dutyName: "Nhân viên",
-            typeOfEmployee: true,
-        },
-    ];
+
     return (
         <>
             <ShiftAction shift={shift} setItems={setItems} />
-            <Table rowKey="id" dataSource={data}>
+            <Table rowKey="id" dataSource={shift.employees}>
                 <Column title="Full name" dataIndex="fullName" key="fullName" />
                 <Column
                     title="Duty"

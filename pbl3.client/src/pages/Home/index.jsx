@@ -60,7 +60,6 @@ const Home = () => {
                     </Col>
                     <Col span={6}>
                         <Card bordered={false}>
-                            {" "}
                             <Statistic
                                 title="Others"
                                 value={others.length}
@@ -68,7 +67,51 @@ const Home = () => {
                                 formatter={formatter}
                                 prefix={<UserOutlined />}
                             />
-                        </Card>{" "}
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card bordered={false}>
+                            <Statistic
+                                title="Tổng số bonus trong tháng vừa rồi"
+                                value={others.length}
+                                precision={2}
+                                formatter={formatter}
+                                prefix={<UserOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card bordered={false}>
+                            <Statistic
+                                title="Tổng lương đã phát trong tháng vừa rồi "
+                                value={others.length}
+                                precision={2}
+                                formatter={formatter}
+                                prefix={<UserOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card bordered={false}>
+                            <Statistic
+                                title="Report chưa đọc"
+                                value={others.length}
+                                precision={2}
+                                formatter={formatter}
+                                prefix={<UserOutlined />}
+                            />
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card bordered={false}>
+                            <Statistic
+                                title="Others"
+                                value={others.length}
+                                precision={2}
+                                formatter={formatter}
+                                prefix={<UserOutlined />}
+                            />
+                        </Card>
                     </Col>
                 </Row>
             </Spin>

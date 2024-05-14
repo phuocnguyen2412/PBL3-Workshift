@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240510032831_đâsdas")]
-    partial class đâsdas
+    [Migration("20240511193135_V3")]
+    partial class V3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -137,6 +137,8 @@ namespace PBL3.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DutyId");
+
                     b.ToTable("Employee");
                 });
 
@@ -227,6 +229,8 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("ShiftInfoId");
+
                     b.ToTable("Shift");
                 });
 
@@ -276,7 +280,10 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Handle")
+                    b.Property<int>("Handle")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ShiftInfoId")
@@ -313,6 +320,17 @@ namespace PBL3.Server.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("PBL3.Server.Data.Employee", b =>
+                {
+                    b.HasOne("PBL3.Server.Data.Duty", "Duty")
+                        .WithMany()
+                        .HasForeignKey("DutyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Duty");
+                });
+
             modelBuilder.Entity("PBL3.Server.Data.HourHistory", b =>
                 {
                     b.HasOne("PBL3.Server.Data.Employee", "Employee")
@@ -345,7 +363,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
                         .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("ShiftInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

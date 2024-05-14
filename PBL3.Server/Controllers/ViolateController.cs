@@ -23,10 +23,22 @@ namespace PBL3.Server.Controllers
             return Ok(await _violateRepo.GetAllViolates());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("ById/{id}")]
         public async Task<ActionResult<Violate>> GetViolate(int id)
         {
             var violate = await _violateRepo.GetViolateById(id);
+            if (violate == null)
+            {
+                return NotFound();
+            }
+            return Ok(violate);
+        }
+
+
+        [HttpGet("ByemployeeId/{employeeid}")]
+        public async Task<ActionResult<Violate>> GetViolateByEmployeeId(int employeeid)
+        {
+            var violate = await _violateRepo.GetViolateByEmployeeId(employeeid);
             if (violate == null)
             {
                 return NotFound();
@@ -53,7 +65,7 @@ namespace PBL3.Server.Controllers
 
                 if (success)
                 {
-                    return Ok("Update successfully!");
+                    return Ok(new { Message = "Update successfully!" });
                 }
                 else
                 {
@@ -62,7 +74,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message); 
+                return BadRequest(new { Message = ex.Message });
             }
         }
 

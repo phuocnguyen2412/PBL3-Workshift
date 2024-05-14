@@ -22,7 +22,7 @@ const WorkInDay = ({ date }) => {
                                 <h3>{`${e.shiftName}: ${e.startTime} - ${
                                     e.endTime
                                 } ( ${
-                                    e.checked ? "Đã khóa" : "Đang mở"
+                                    e.checked ? "Looked" : "Openning"
                                 } ) `}</h3>
                             ),
                             children: (

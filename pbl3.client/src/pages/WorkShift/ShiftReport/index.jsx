@@ -1,57 +1,58 @@
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { Flex, Segmented, Spin } from "antd";
+import { Spin, Tabs } from "antd";
 import TableReport from "./TableReport";
 import KanbanReport from "./KanbanReport";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import CreateReport from "./CreateReport";
+import { AccountContext } from "../../../Context/AccountContext";
 
 const ShiftReport = () => {
+    const account = useContext(AccountContext);
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
-    const [type, setType] = useState(null);
+    const fetchData = async () => {
+        const newData = await getApi("/Violate");
+        setData(newData);
+    };
     useEffect(() => {
-        const fetchData = async () => {
-            const newData = await getApi("/Violate");
-            setData(newData);
-        };
-        fetchData();
+        try {
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
-    useEffect(() => {
-        if (data.length > 0) {
-            setType(<TableReport data={data} />);
-        }
-    }, [data]);
-
-    const onChangeSegmented = (e) => {
-        if (e === "List") setType(<TableReport data={data} />);
-        else setType(<KanbanReport data={data} />);
-    };
     return (
-        <>
-            <Flex justify="space-between">
-                <Segmented
-                    onChange={onChangeSegmented}
-                    options={[
-                        {
-                            label: "List",
-                            value: "List",
-                            icon: <BarsOutlined />,
-                        },
-                        {
-                            label: "Kanban",
-                            value: "Kanban",
-                            icon: <AppstoreOutlined />,
-                        },
-                    ]}
-                />
-                <CreateReport />
-            </Flex>
-
-            <Spin spinning={loading}>{type}</Spin>
-        </>
+        <Spin spinning={loading}>
+            <Tabs
+                defaultActiveKey="1"
+                items={[
+                    {
+                        key: "1",
+                        children: (
+                            <TableReport data={data} fetchData={fetchData} />
+                        ),
+                        label: "List",
+                        icon: <BarsOutlined />,
+                    },
+                    {
+                        key: "2",
+                        label: "Kanban",
+                        children: (
+                            <KanbanReport data={data} fetchData={fetchData} />
+                        ),
+                        icon: <AppstoreOutlined />,
+                    },
+                ]}
+                tabBarExtraContent={
+                    account.account.dutyName === "Quản lý" && (
+                        <CreateReport fetchData={fetchData} />
+                    )
+                }
+            />
+        </Spin>
     );
 };
 

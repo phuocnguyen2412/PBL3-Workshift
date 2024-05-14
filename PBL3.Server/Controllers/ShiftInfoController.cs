@@ -115,7 +115,6 @@ namespace PBL3.Server.Controllers
             catch (Exception e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
 
@@ -156,7 +155,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("workdates/{employeeId}")]
-        public async Task<ActionResult<List<DateTime>>> GetWorkDatesForEmployeeAsync(int employeeId)
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetWorkDatesForEmployeeAsync(int employeeId)
         {
             try
             {

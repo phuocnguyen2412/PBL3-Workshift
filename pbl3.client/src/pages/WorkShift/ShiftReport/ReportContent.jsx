@@ -1,11 +1,36 @@
-import { Badge, Descriptions, Modal, Tag } from "antd";
+import { Badge, Descriptions, Modal, Spin, Tag, notification } from "antd";
 import PropTypes from "prop-types";
+import useFetch from "../../../custom hook/useFetch";
+import localhost from "../../../Services/localhost";
 ReportContent.propTypes = {
     data: PropTypes.object.isRequired,
     setOpen: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };
-export default function ReportContent({ data, setOpen, open }) {
+export default function ReportContent({ data, setOpen, open, fetchData }) {
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
+
+    const { updateApi, loading } = useFetch(localhost);
+    const handleUpdateReport = async () => {
+        try {
+            await updateApi(`/Violate/${data.id}?isChecked=${!data.checked}`);
+
+            apiNotification.success({
+                message: "Success!",
+                description: `You updated report!`,
+                placement: "topRight",
+            });
+            fetchData();
+        } catch (error) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${error}`,
+                placement: "topRight",
+            });
+        }
+    };
     const items = [
         {
             key: "1",
@@ -64,18 +89,22 @@ export default function ReportContent({ data, setOpen, open }) {
         },
     ];
     return (
-        <Modal
-            open={open}
-            title="Chi tiết report"
-            onCancel={() => setOpen(false)}
-            okText="Xác nhận"
-            onOk={() => {
-                console.log("ok");
-                setOpen(false);
-            }}
-        >
-            {" "}
-            <Descriptions layout="vertical" bordered items={items} />
-        </Modal>
+        <>
+            {contextHolderNotification}
+            <Spin spinning={loading}>
+                <Modal
+                    open={open}
+                    title="Chi tiết report"
+                    onCancel={() => setOpen(false)}
+                    okText={data.checked ? "Hủy xác nhận" : "Xác nhận"}
+                    onOk={() => {
+                        handleUpdateReport();
+                        setOpen(false);
+                    }}
+                >
+                    <Descriptions layout="vertical" bordered items={items} />
+                </Modal>
+            </Spin>
+        </>
     );
 }

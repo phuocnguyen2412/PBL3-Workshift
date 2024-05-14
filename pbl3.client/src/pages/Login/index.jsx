@@ -34,14 +34,15 @@ function Login() {
                     JSON.stringify(values.remember)
                 );
             }
+
             localStorage.setItem("token", JSON.stringify(response.token));
             account.onChange(response);
             navigate("/home");
         } catch (err) {
             console.log(err);
             apiNotification.error({
-                message: "Thất bại!",
-                description: `Bạn đã nhập sai tài khoản hoặc mật khẩu`,
+                message: "Error!",
+                description: `${err}`,
                 placement: "topRight",
             });
         }
@@ -82,7 +83,7 @@ function Login() {
                     <Typography
                         style={{ fontSize: "30px", marginBottom: "12px" }}
                     >
-                        Đăng nhập
+                        Login
                     </Typography>
                     <Form.Item
                         name="userName"
@@ -94,6 +95,7 @@ function Login() {
                         ]}
                     >
                         <Input
+                            size="large"
                             prefix={
                                 <UserOutlined className="site-form-item-icon" />
                             }
@@ -110,6 +112,7 @@ function Login() {
                         ]}
                     >
                         <Input
+                            size="large"
                             prefix={
                                 <LockOutlined className="site-form-item-icon" />
                             }
@@ -146,7 +149,7 @@ function Login() {
                 </Form>
             </Col>
         </Row>
-    );  //                                                                                  
+    ); //
 }
 
 export default Login;

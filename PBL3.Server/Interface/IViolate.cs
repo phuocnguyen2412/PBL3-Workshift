@@ -10,7 +10,9 @@ namespace PBL3.Server.Interface
     {
         Task<object> GetAllViolates();
         Task<object> GetViolateById(int id);
+        Task<object> GetViolateByEmployeeId(int employeeid);
         Task<int> AddViolate(ViolateModel violatemodel);
         Task<bool> UpdateViolateChecked(int id, bool isChecked);
+
     }
 }

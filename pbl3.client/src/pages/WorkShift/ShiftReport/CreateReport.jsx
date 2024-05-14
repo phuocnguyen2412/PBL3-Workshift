@@ -3,8 +3,12 @@ import { Button, Drawer } from "antd";
 import ReportForm from "./ReportForm";
 import { PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-export default function CreateReport() {
+CreateReport.propTypes = {
+    fetchData: PropTypes.func.isRequired,
+};
+export default function CreateReport({ fetchData }) {
     const [open, setOpen] = useState(false);
 
     const showDrawer = () => {
@@ -31,7 +35,7 @@ export default function CreateReport() {
                     },
                 }}
             >
-                <ReportForm />
+                <ReportForm fetchData={fetchData} />
             </Drawer>
         </>
     );

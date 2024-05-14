@@ -227,6 +227,8 @@ namespace PBL3.Server.Migrations
 
                     b.HasIndex("EmployeeId");
 
+                    b.HasIndex("ShiftInfoId");
+
                     b.ToTable("Shift");
                 });
 
@@ -359,7 +361,7 @@ namespace PBL3.Server.Migrations
 
                     b.HasOne("PBL3.Server.Data.ShiftInfo", "ShiftInfo")
                         .WithMany()
-                        .HasForeignKey("EmployeeId")
+                        .HasForeignKey("ShiftInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

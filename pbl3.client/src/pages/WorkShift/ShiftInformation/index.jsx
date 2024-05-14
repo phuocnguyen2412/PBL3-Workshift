@@ -8,14 +8,16 @@ import {
     Modal,
     Spin,
 } from "antd";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import WorkInDay from "./WorkInDay";
 import AddShiftForm from "./AddShiftForm";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
+import { AccountContext } from "../../../Context/AccountContext";
 
 const ShiftInformation = () => {
+    const account = useContext(AccountContext);
     const [data, setData] = useState([]);
     const [value, setValue] = useState(() => dayjs());
     const [openModal, setOpenModal] = useState(false);
@@ -24,7 +26,7 @@ const ShiftInformation = () => {
     useEffect(() => {
         const fetchData = async () => {
             const yourData = await getApi("/ShiftInfo");
-            console.log(yourData);
+
             setData(yourData);
         };
         fetchData();
@@ -58,7 +60,6 @@ const ShiftInformation = () => {
                     item.type = "purple";
                 }
 
-                //console.log(item);
                 listData.push(item);
             }
         });
@@ -92,10 +93,14 @@ const ShiftInformation = () => {
                         "YYYY-MM-DD"
                     )}`}
                 />
-                <Button onClick={() => setOpenDrawer(true)}>Thêm ca làm</Button>
+                {account.account.dutyName === "Admin" && (
+                    <Button onClick={() => setOpenDrawer(true)}>
+                        Create a new work shift
+                    </Button>
+                )}
             </Flex>
             <Drawer
-                title="Create a new account"
+                title="Create a new work shift"
                 width={720}
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}

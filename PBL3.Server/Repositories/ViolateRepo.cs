@@ -21,53 +21,80 @@ namespace PBL3.Server.Repositories
 
         public async Task<object> GetAllViolates()
         {
-            var violates = await (from v in _context.Violates
-                                  join e in _context.Employees on v.EmployeeId equals e.Id
-                                  join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
-                                  join m in _context.Employees on s.ManagerId equals m.Id into managers
-                                  from manager in managers.DefaultIfEmpty()
-                                  select new
-                                  {
-                                      v.Id,
-                                      EmployeeName = e.FullName,
-                                      v.Handle,
-                                      v.Reason,
-                                      v.Checked,
-                                      s.ShiftName,
-                                      s.StartTime,
-                                      s.EndTime,
-                                      s.Date,
-                                      ManagerName = manager != null ? manager.FullName : "N/A"
-                                  }).ToListAsync();
+            var violates = await (
+                from v in _context.Violates
+                join e in _context.Employees on v.EmployeeId equals e.Id
+                join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
+                join m in _context.Employees on s.ManagerId equals m.Id into managers
+                from manager in managers.DefaultIfEmpty()
+                select new
+                {
+                    v.Id,
+                    EmployeeName = e.FullName,
+                    v.Handle,
+                    v.Reason,
+                    v.Checked,
+                    s.ShiftName,
+                    s.StartTime,
+                    s.EndTime,
+                    s.Date,
+                    ManagerName = manager != null ? manager.FullName : "N/A"
+                }).ToListAsync();
 
             return violates;
         }
 
         public async Task<object> GetViolateById(int id)
         {
-            var violate = await (from v in _context.Violates
-                                 join e in _context.Employees on v.EmployeeId equals e.Id
-                                 join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
-                                 join m in _context.Employees on s.ManagerId equals m.Id into managers
-                                 from manager in managers.DefaultIfEmpty()
-                                 where v.Id == id
-                                 select new
-                                 {
-                                     v.Id,
-                                     EmployeeName = e.FullName,
-                                     v.Handle,
-                                     v.Reason,
-                                     v.Checked,
-                                     s.ShiftName,
-                                     s.StartTime,
-                                     s.EndTime,
-                                     s.Date,
-                                     ManagerName = manager != null ? manager.FullName : "N/A"
-                                 }).FirstOrDefaultAsync();
+            var violate = await (
+                from v in _context.Violates
+                join e in _context.Employees on v.EmployeeId equals e.Id
+                join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
+                join m in _context.Employees on s.ManagerId equals m.Id into managers
+                from manager in managers.DefaultIfEmpty()
+                where v.Id == id
+                select new
+                {
+                    v.Id,
+                    EmployeeName = e.FullName,
+                    v.Handle,
+                    v.Reason,
+                    v.Checked,
+                    s.ShiftName,
+                    s.StartTime,
+                    s.EndTime,
+                    s.Date,
+                    ManagerName = manager != null ? manager.FullName : "N/A"
+                }).FirstOrDefaultAsync();
 
             return violate;
         }
 
+        public async Task<object> GetViolateByEmployeeId(int employeeid)
+        {
+            var violate = await (
+                from v in _context.Violates
+                join e in _context.Employees on v.EmployeeId equals e.Id
+                join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
+                join m in _context.Employees on s.ManagerId equals m.Id into managers
+                from manager in managers.DefaultIfEmpty()
+                where e.Id == employeeid
+                select new
+                {
+                    v.Id,
+                    EmployeeName = e.FullName,
+                    v.Handle,
+                    v.Reason,
+                    v.Checked,
+                    s.ShiftName,
+                    s.StartTime,
+                    s.EndTime,
+                    s.Date,
+                    ManagerName = manager != null ? manager.FullName : "N/A"
+                }).ToListAsync();
+
+            return violate;
+        }
 
         public async Task<int> AddViolate(ViolateModel violatemodel)
         {
@@ -92,7 +119,7 @@ namespace PBL3.Server.Repositories
             }
             catch (Exception)
             {
-               
+
                 return false;
             }
         }

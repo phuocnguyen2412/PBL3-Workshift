@@ -16,12 +16,17 @@ export default function EmployeeShiftChecking() {
     useEffect(() => {
         const fetchData = async () => {
             const yourData = await getApi(
-                `/ShiftInfo/${account.account.employeeId}`
+                `/ShiftInfo/workdates/${account.account.employeeId}`
             );
             console.log(yourData);
             setData(yourData);
         };
-        fetchData();
+
+        try {
+            fetchData();
+        } catch (e) {
+            console.log(e);
+        }
     }, []);
 
     const onSelect = (newValue) => {

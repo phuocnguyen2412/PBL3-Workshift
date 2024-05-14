@@ -63,7 +63,27 @@ namespace PBL3.Server.Controllers
             }
 
             var newShift = await _shiftRepo.AddShiftAsync(shift);
-            return CreatedAtAction(nameof(GetShiftByIdAsync), new { id = newShift.Id }, newShift);
+            if (newShift == null)
+            {
+                return BadRequest(new { message = "Failed to add shift information." });
+            }
+            return Ok(newShift);
+        }
+
+        [HttpPost("manager")]
+        public async Task<ActionResult<ShiftModel>> AddShiftForManagerAsync(ShiftModel shift)
+        {
+            if (shift == null)
+            {
+                return BadRequest(new { message = "Invalid shift information." });
+            }
+
+            var newShift = await _shiftRepo.AddShiftForManagerAsync(shift);
+            if (newShift == null)
+            {
+                return BadRequest(new { message = "Failed to add shift information." });
+            }
+            return Ok(newShift);
         }
 
         [HttpPut("{id}")]
@@ -103,11 +123,11 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPut("{id}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, TimeSpan checkOutTime)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, int shiftInfoId, TimeSpan checkOutTime)
         {
             try
             {
-                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, checkOutTime);
+                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, shiftInfoId, checkOutTime);
                 if (updatedShift == null)
                 {
                     return NotFound(new { message = $"Shift with ID {id} not found." });
@@ -131,6 +151,18 @@ namespace PBL3.Server.Controllers
             }
 
             return Ok(deletedShift);
+        }
+
+        [HttpDelete("{id}/manager")]
+        public async Task<ActionResult<bool>> DeleteShiftByManagerAsync(int id, int shiftInfoId)
+        {
+            var isDeleted = await _shiftRepo.DeleteShiftByManagerAsync(id, shiftInfoId);
+            if (!isDeleted)
+            {
+                return NotFound(new { message = $"Shift with ID {id} not found." });
+            }
+
+            return Ok(isDeleted);
         }
     }
 }
