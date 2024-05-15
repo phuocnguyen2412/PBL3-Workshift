@@ -95,12 +95,12 @@ const ShiftInformation = () => {
                 />
                 {account.account.dutyName === "Admin" && (
                     <Button onClick={() => setOpenDrawer(true)}>
-                        Create a new work shift
+                        Create a new meeting
                     </Button>
                 )}
             </Flex>
             <Drawer
-                title="Create a new work shift"
+                title="Create a new meeting"
                 width={720}
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}

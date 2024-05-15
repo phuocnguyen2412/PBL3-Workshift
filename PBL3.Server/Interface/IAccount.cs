@@ -10,5 +10,6 @@ namespace PBL3.Server.Interface
         Task<object> GetAccountByToken(TokenModel token);
         Task AddAccountAsync(string email, int employeeId);
         Task<bool> ChangePassword(ChangePasswordModel model);
+        Task<object> Author(string token, List<string> listDuty);
     }
 }

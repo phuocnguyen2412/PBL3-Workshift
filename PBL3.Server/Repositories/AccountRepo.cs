@@ -20,6 +20,18 @@ namespace PBL3.Server.Repositories
             _context = context;
             _mapper = mapper;
         }
+        public async Task<object> Author(string token, List<string> listDuty)
+        {
+            var result = (
+                from account in _context.Accounts
+                join employee in _context.Employees on account.EmployeeId equals employee.Id
+                join duty in _context.Duties on employee.DutyId equals duty.Id
+                where account.Token == token && listDuty.Contains(duty.DutyName)
+                select new { dutyName = duty.DutyName }
+            );
+
+            return result;
+        }
         public async Task AddAccountAsync(string email, int employeeId)
         {
             var hashedPassword = HashPassword(email);
