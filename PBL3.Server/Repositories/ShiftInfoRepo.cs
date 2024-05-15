@@ -141,7 +141,9 @@ namespace PBL3.Server.Repositories
                             EmployeeId = employee.Id,
                             employee.FullName,
                             duty.DutyName,
-                            employee.TypeOfEmployee
+                            employee.TypeOfEmployee,
+                            Shift.CheckInTime,
+                            Shift.CheckOutTime
                         }
                     ).ToList<object>()
                 }
