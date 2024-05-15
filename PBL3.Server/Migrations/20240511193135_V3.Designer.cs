@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PBL3.Server.Data;
 
@@ -11,9 +12,10 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240511193135_V3")]
+    partial class V3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,10 +64,7 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("Bonus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EmployeeId")
@@ -73,6 +72,9 @@ namespace PBL3.Server.Migrations
 
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalBonus")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -148,14 +150,14 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DateAt")
                         .HasColumnType("DATE");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<double>("HoursPerDay")
-                        .HasColumnType("float");
+                    b.Property<string>("HoursPerDay")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -187,11 +189,11 @@ namespace PBL3.Server.Migrations
                     b.Property<int>("TotalBonus")
                         .HasColumnType("int");
 
-                    b.Property<double>("TotalHours")
-                        .HasColumnType("float");
+                    b.Property<int>("TotalHours")
+                        .HasColumnType("int");
 
-                    b.Property<double>("TotalSalary")
-                        .HasColumnType("float");
+                    b.Property<int>("TotalSalary")
+                        .HasColumnType("int");
 
                     b.Property<int>("TotalViolate")
                         .HasColumnType("int");

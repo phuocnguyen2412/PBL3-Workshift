@@ -131,7 +131,8 @@ namespace PBL3.Server.Repositories
                                                       where shiftInfo.Id == Shift.ShiftInfoId
                                                       select new
                                                       {
-                                                          employee.Id,
+                                                          ShiftId = Shift.Id,
+                                                          EmployeeId = employee.Id,
                                                           employee.FullName,
                                                           duty.DutyName,
                                                           employee.TypeOfEmployee

@@ -7,14 +7,8 @@ namespace PBL3.Server.Models
     public class SalaryHistoryModel
     {
         public int Id { get; set; }
-        public int EmployeeId { get; set; }
-        public virtual Employee? Employee { get; set; }
+        public List<int> EmployeeIds { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int TotalHours { get; set; }
-        public int TotalBonus { get; set; }
-        public int TotalViolate { get; set; }
-        public int TotalSalary { get; set; }
-        public string? PaidDate { get; set; }
     }
 }

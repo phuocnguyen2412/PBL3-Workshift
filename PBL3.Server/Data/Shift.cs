@@ -9,7 +9,7 @@ namespace PBL3.Server.Data
         [Key]
         public int Id { get; set; }
         public int ShiftInfoId { get; set; }
-        [ForeignKey("EmployeeId")]
+        [ForeignKey("ShiftInfoId")]
         public virtual ShiftInfo? ShiftInfo { get; set; }
         public int EmployeeId { get; set; }
         [ForeignKey("EmployeeId")]

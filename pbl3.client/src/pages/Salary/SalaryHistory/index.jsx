@@ -1,5 +1,11 @@
+import CreateSalaryHistory from "./CreateSalaryHistory";
+
 const SalaryHistory = () => {
-    return <div>SalaryHistory</div>;
+    return (
+        <>
+            <CreateSalaryHistory />
+        </>
+    );
 };
 
 export default SalaryHistory;

@@ -24,6 +24,7 @@ export default function CreateBonusSalary({ reload }) {
         notification.useNotification();
     const [open, setOpen] = useState(false);
     const { getApi, loading, postApi } = useFetch(localhost);
+    const [form] = Form.useForm();
     const [employeeOptions, setEmployeeOptions] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -51,18 +52,34 @@ export default function CreateBonusSalary({ reload }) {
         setOpen(false);
     };
     const handleSubmit = async (e) => {
-        if (e.employeeIds.some((id) => id === 0) && e.employeeIds.length > 1) {
-            apiNotification.error({
-                message: "Thất bại!",
-                description: `Chỉ được chọn tất cả hoặc 1 số nhân viên`,
+        try {
+            if (
+                e.employeeIds.some((id) => id === 0) &&
+                e.employeeIds.length > 1
+            ) {
+                apiNotification.error({
+                    message: "Thất bại!",
+                    description: `Chỉ được chọn tất cả hoặc 1 số nhân viên`,
+                    placement: "bottomRight",
+                });
+                return;
+            }
+            e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
+            const response = await postApi("/BonusSalary/addforemployees", e);
+            apiNotification.success({
+                message: "Success!",
+                description: `${response.message}`,
                 placement: "bottomRight",
             });
-            return;
+            form.resetFields();
+            reload();
+        } catch (error) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${error.message}`,
+                placement: "bottomRight",
+            });
         }
-        e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
-        const response = await postApi("/BonusSalary/addforemployees", e);
-        console.log(response);
-        reload();
     };
     return (
         <>
@@ -84,7 +101,7 @@ export default function CreateBonusSalary({ reload }) {
                 }}
             >
                 <Spin spinning={loading}>
-                    <Form layout="vertical" onFinish={handleSubmit}>
+                    <Form layout="vertical" onFinish={handleSubmit} form={form}>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item

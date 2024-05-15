@@ -1,11 +1,13 @@
 import { Button, Card } from "antd";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import BonusContent from "./BonusContent";
 import DeleteBonus from "./DeleteBonus";
+import { AccountContext } from "../../../Context/AccountContext";
 
 export default function CardBonus({ data }) {
+    const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
     return (
         <>
@@ -16,7 +18,9 @@ export default function CardBonus({ data }) {
                 title={`Báo cáo ${data.fullName}`}
                 extra={
                     <>
-                        <DeleteBonus record={data} />
+                        {account.account.dutyName === "Admin " && (
+                            <DeleteBonus record={data} />
+                        )}
                         <Button onClick={() => setOpen(true)}>More</Button>
                     </>
                 }

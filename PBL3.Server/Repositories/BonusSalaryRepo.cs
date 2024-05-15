@@ -18,9 +18,9 @@ namespace PBL3.Server.Repositories
             _context = context;
         }
 
-        public async Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryModel request)
+        public async Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryModel model)
         {
-            if (request.EmployeeIds.Contains(0))
+            if (model.EmployeeIds.Contains(0))
             {
                 var allEmployeeIds = await _context.Employees.Select(e => e.Id).ToListAsync();
                 foreach (var employeeId in allEmployeeIds)
@@ -28,23 +28,23 @@ namespace PBL3.Server.Repositories
                     var newBonusSalary = new BonusSalaryHistory
                     {
                         EmployeeId = employeeId,
-                        TotalBonus = request.TotalBonus,
-                        DateTime = DateTime.Now,
-                        Reason = request.Reason
+                        Bonus = model.Bonus,
+                        Date = DateTime.Now,
+                        Reason = model.Reason
                     };
                     _context.BonusSalaryHistories.Add(newBonusSalary);
                 }
             }
             else
             {
-                foreach (var employeeId in request.EmployeeIds)
+                foreach (var employeeId in model.EmployeeIds)
                 {
                     var newBonusSalary = new BonusSalaryHistory
                     {
                         EmployeeId = employeeId,
-                        TotalBonus = request.TotalBonus,
-                        DateTime = DateTime.Now,
-                        Reason = request.Reason
+                        Bonus = model.Bonus,
+                        Date = DateTime.Now,
+                        Reason = model.Reason
                     };
                     _context.BonusSalaryHistories.Add(newBonusSalary);
                 }
@@ -63,8 +63,8 @@ namespace PBL3.Server.Repositories
                                          b.Id,
                                          EmployeeId = b.EmployeeId,
                                          FullName = e.FullName,
-                                         DateTime = b.DateTime,
-                                         TotalBonus = b.TotalBonus,
+                                         DateTime = b.Date,
+                                         TotalBonus = b.Bonus,
                                          Reason = b.Reason
                                      }).ToListAsync();
             return bonusSalary;
@@ -80,20 +80,20 @@ namespace PBL3.Server.Repositories
             return true;
         }
 
-        public async Task<object> GetBonusSalaryByIdAsync(int id)
+        public async Task<List<object>> GetBonusSalaryByIdAsync(int id)
         {
             var bonusSalary = await (from b in _context.BonusSalaryHistories
                                      join e in _context.Employees on b.EmployeeId equals e.Id
-                                     where b.Id == id
+                                     where e.Id == id
                                      select new
                                      {
                                          b.Id,
                                          EmployeeId = b.EmployeeId,
                                          FullName = e.FullName,
-                                         DateTime = b.DateTime,
-                                         TotalBonus = b.TotalBonus,
+                                         DateTime = b.Date,
+                                         TotalBonus = b.Bonus,
                                          Reason = b.Reason
-                                     }).FirstOrDefaultAsync();
+                                     }).ToListAsync<object>();
 
             return bonusSalary;
         }

@@ -29,7 +29,7 @@ namespace PBL3.Server.Repositories
             {
                 UserName = email,
                 Password = hashedPassword,
-                EmployeeId = employeeId,    
+                EmployeeId = employeeId,
                 Token = token
             };
 
@@ -40,13 +40,14 @@ namespace PBL3.Server.Repositories
         public async Task<object> GetAccountByUserNameAndPassword(AccountModel model)
         {
             var hashedPassword = HashPassword(model.Password);
-            var accountFound = await (from a in _context.Accounts
-                                      where model.UserName == a.UserName && hashedPassword == a.Password
-                                      select new
-                                      {
-                                          Token = a.Token,
-                                          AccountId = a.Id
-                                      }).FirstOrDefaultAsync();
+            var accountFound = await (
+                from a in _context.Accounts
+                where model.UserName == a.UserName && hashedPassword == a.Password
+                select new
+                {
+                    Token = a.Token,
+                    AccountId = a.Id
+                }).FirstOrDefaultAsync();
 
             if (accountFound != null)
             {
@@ -57,36 +58,38 @@ namespace PBL3.Server.Repositories
                 await _context.SaveChangesAsync();
             }
 
-            var result = from account in _context.Accounts
-                         join employee in _context.Employees on account.EmployeeId equals employee.Id
-                         join duty in _context.Duties on employee.DutyId equals duty.Id
-                         where account.UserName == model.UserName && account.Password == hashedPassword && employee.Status == true
-                         select new
-                         {
+            var result =
+                from account in _context.Accounts
+                join employee in _context.Employees on account.EmployeeId equals employee.Id
+                join duty in _context.Duties on employee.DutyId equals duty.Id
+                where account.UserName == model.UserName && account.Password == hashedPassword && employee.Status == true
+                select new
+                {
 
-                             Token = account.Token,
-                             fullName = employee.FullName,
-                             EmployeeId = employee.Id,
-                             dutyName = duty.DutyName,
-                             
-                         };
+                    Token = account.Token,
+                    fullName = employee.FullName,
+                    EmployeeId = employee.Id,
+                    dutyName = duty.DutyName,
+
+                };
             return await result.FirstOrDefaultAsync();
         }
 
         public async Task<object> GetAccountByToken(TokenModel token)
         {
-            var account = await (from a in _context.Accounts
-                                 join employee in _context.Employees on a.EmployeeId equals employee.Id
-                                 join duty in _context.Duties on employee.DutyId equals duty.Id
-                                 where a.Token == token.Token
-                                 select new
-                                 {
-                                     FullName = employee.FullName,
-                                     EmployeeId = employee.Id,
-                                     DutyName = duty.DutyName,
-                                     Token = a.Token, 
-                                     AccountId = a.Id
-                                 }).FirstOrDefaultAsync();
+            var account = await (
+                from a in _context.Accounts
+                join employee in _context.Employees on a.EmployeeId equals employee.Id
+                join duty in _context.Duties on employee.DutyId equals duty.Id
+                where a.Token == token.Token
+                select new
+                {
+                    FullName = employee.FullName,
+                    EmployeeId = employee.Id,
+                    DutyName = duty.DutyName,
+                    Token = a.Token,
+                    AccountId = a.Id
+                }).FirstOrDefaultAsync();
 
             if (account != null)
             {
@@ -105,14 +108,14 @@ namespace PBL3.Server.Repositories
                 };
 
                 return updatedAccount;
-                
+
             }
 
             return account;
         }
         private string GenerateToken()
         {
-            return Guid.NewGuid().ToString(); 
+            return Guid.NewGuid().ToString();
         }
 
         public async Task<bool> ChangePassword(ChangePasswordModel model)

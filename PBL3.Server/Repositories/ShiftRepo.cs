@@ -23,10 +23,22 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftModel> AddShiftAsync(ShiftModel shiftModel)
         {
-            bool shiftExists = await (from s in _context.Shifts
-                                      where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
-                                      select s
-                                      ).AnyAsync();
+            var shiftInfo = await _context.ShiftInfos.FindAsync(shiftModel.ShiftInfoId);
+            if (shiftInfo == null)
+            {
+                throw new InvalidOperationException("ShiftInfo not found.");
+            }
+
+            if (shiftInfo.Checked)
+            {
+                throw new InvalidOperationException("Cannot register for the shift as the form is closed.");
+            }
+
+            bool shiftExists = await (
+                from s in _context.Shifts
+                where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
+                select s
+            ).AnyAsync();
             if (shiftExists)
             {
                 throw new InvalidOperationException("Employee is already assigned to this shift.");
@@ -37,6 +49,38 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
+
+        public async Task<ShiftModel> AddShiftForManagerAsync(ShiftModel shiftModel)
+        {
+            var shiftInfo = await _context.ShiftInfos.FindAsync(shiftModel.ShiftInfoId);
+            if (shiftInfo == null)
+            {
+                throw new InvalidOperationException("ShiftInfo not found.");
+            }
+
+            if (shiftInfo.ManagerId != 0)
+            {
+                throw new InvalidOperationException("A manager is already assigned to this shift.");
+            }
+
+            bool managerShiftExists = await _context.Shifts.AnyAsync(s => s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId);
+            if (managerShiftExists)
+            {
+                throw new InvalidOperationException("Manager is already assigned to this shift.");
+            }
+
+            // Update the ManagerId in the ShiftInfo table
+            shiftInfo.ManagerId = shiftModel.EmployeeId;
+            _context.ShiftInfos.Update(shiftInfo);
+            await _context.SaveChangesAsync();
+
+            // Add the shift record for the manager
+            var shift = _mapper.Map<Shift>(shiftModel);
+            _context.Shifts.Add(shift);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ShiftModel>(shift);
+        }
+
 
 
         public async Task<ShiftModel> DeleteShiftAsync(int id)
@@ -51,6 +95,39 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
+
+        public async Task<bool> DeleteShiftByManagerAsync(int managerId, int shiftInfoId)
+        {
+            var shiftInfo = await _context.ShiftInfos.FindAsync(shiftInfoId);
+            if (shiftInfo == null || shiftInfo.ManagerId != managerId)
+            {
+                // ShiftInfo not found or the manager does not match
+                return false;
+            }
+
+            var shift = await 
+                        (from s in _context.Shifts
+                         where s.ShiftInfoId == shiftInfoId && s.EmployeeId == managerId
+                         select s
+                        ).FirstOrDefaultAsync();
+            if (shift == null)
+            {
+                // No shift found for this manager and ShiftInfo
+                return false;
+            }
+
+            // Delete the shift
+            _context.Shifts.Remove(shift);
+            await _context.SaveChangesAsync();
+
+            // Update the ShiftInfo to set ManagerId to 0, indicating no manager is assigned
+            shiftInfo.ManagerId = 0;
+            _context.ShiftInfos.Update(shiftInfo);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
 
         public async Task<object> GetAllShiftAsync()
         {
@@ -68,11 +145,19 @@ namespace PBL3.Server.Repositories
             return shift;
         }
 
-        public async Task<ShiftModel> UpdateShiftAsync(ShiftModel shift)
+        public async Task<ShiftModel> UpdateShiftAsync(ShiftModel shiftModel)
         {
-            _context.Entry(shift).State = EntityState.Modified;
+            var shift = await _context.Shifts.FindAsync(shiftModel.Id);
+            if (shift == null)
+            {
+                return null;
+            }
+
+            _mapper.Map(shiftModel, shift);
+
+            _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
-            return shift;
+            return _mapper.Map<ShiftModel>(shift);
         }
 
         public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int id, TimeSpan checkInTime)
@@ -82,23 +167,39 @@ namespace PBL3.Server.Repositories
             {
                 return null;
             }
+
             shift.CheckInTime = checkInTime;
-            _context.Entry(shift).State = EntityState.Modified;
+
+            _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, TimeSpan checkOutTime)
+        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int Employeeid, int shiftInfoId, TimeSpan checkOutTime)
         {
-            var shift = await _context.Shifts.FindAsync(id);
+            var shift = await _context.Shifts.Include(s => s.ShiftInfo)
+                             .Where(s => s.EmployeeId == Employeeid && s.ShiftInfoId == shiftInfoId)
+                             .FirstOrDefaultAsync();
             if (shift == null)
             {
                 return null;
             }
             shift.CheckOutTime = checkOutTime;
-            _context.Entry(shift).State = EntityState.Modified;
+            var totalHours = (checkOutTime - shift.CheckInTime).TotalHours;
+            var totalHoursFormatted = Convert.ToDouble(totalHours);
+            var hourHistory = new HourHistory
+            {
+                EmployeeId = shift.EmployeeId,
+                Date = shift.ShiftInfo.Date,
+                HoursPerDay = totalHoursFormatted
+            };
+            _context.HourHistories.Add(hourHistory);
+            await _context.SaveChangesAsync();
+            _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
+
+
     }
 }

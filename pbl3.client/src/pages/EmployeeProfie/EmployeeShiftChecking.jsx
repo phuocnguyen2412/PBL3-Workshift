@@ -16,19 +16,17 @@ export default function EmployeeShiftChecking() {
     useEffect(() => {
         const fetchData = async () => {
             const yourData = await getApi(
-                `/ShiftInfo/${account.account.employeeId}`
+                `/ShiftInfo/workdates/${account.account.employeeId}`
             );
             console.log(yourData);
             setData(yourData);
         };
 
-        try{
+        try {
             fetchData();
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
-        
-       
     }, []);
 
     const onSelect = (newValue) => {
@@ -39,7 +37,6 @@ export default function EmployeeShiftChecking() {
     };
 
     const getListData = (value) => {
-        console.log(data);
         let listData = [];
         data.forEach((shift) => {
             if (dayjs(shift.date).isSame(value, "day")) {

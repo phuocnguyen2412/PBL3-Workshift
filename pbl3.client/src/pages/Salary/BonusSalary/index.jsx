@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import CreateBonusSalary from "./CreateBonusSalary";
 import { AccountContext } from "../../../Context/AccountContext";
-import { Flex, Segmented, Spin } from "antd";
+import { Spin, Tabs } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
@@ -12,7 +12,7 @@ const BonusSalary = () => {
     const account = useContext(AccountContext);
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
-    const [type, setType] = useState(null);
+
     const fetchData = async () => {
         const response = await getApi("/BonusSalary");
         setData(response);
@@ -21,40 +21,31 @@ const BonusSalary = () => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        setType(<TableBonus data={data} fetchData={fetchData} />);
-    }, [data]);
-
-    const onChangeSegmented = (e) => {
-        if (e === "List")
-            setType(<TableBonus data={data} fetchData={fetchData} />);
-        else setType(<KanbanBonus data={data} />);
-    };
     return (
-        <>
-            <Flex justify="space-between">
-                <Segmented
-                    onChange={onChangeSegmented}
-                    options={[
-                        {
-                            label: "List",
-                            value: "List",
-                            icon: <BarsOutlined />,
-                        },
-                        {
-                            label: "Kanban",
-                            value: "Kanban",
-                            icon: <AppstoreOutlined />,
-                        },
-                    ]}
-                />
-                {account.account.dutyName === "Admin" && (
-                    <CreateBonusSalary reload={fetchData} />
-                )}
-            </Flex>
-
-            <Spin spinning={loading}>{type}</Spin>
-        </>
+        <Spin spinning={loading}>
+            <Tabs
+                defaultActiveKey="1"
+                items={[
+                    {
+                        key: "1",
+                        children: <TableBonus data={data} fetchData={fetchData}/>,
+                        label: "List",
+                        icon: <BarsOutlined />,
+                    },
+                    {
+                        key: "2",
+                        label: "Kanban",
+                        children: <KanbanBonus data={data} />,
+                        icon: <AppstoreOutlined />,
+                    },
+                ]}
+                tabBarExtraContent={
+                    account.account.dutyName === "Admin" && (
+                        <CreateBonusSalary reload={fetchData} />
+                    )
+                }
+            />
+        </Spin>
     );
 };
 

@@ -45,7 +45,7 @@ namespace PBL3.Server.Data
                 .HasColumnType("DATE");
 
             modelBuilder.Entity<HourHistory>()
-                .Property(m => m.DateAt)
+                .Property(m => m.Date)
                 .HasColumnType("DATE");
 
         }

@@ -1,17 +1,18 @@
 import { Button, Table } from "antd";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import BonusContent from "./BonusContent";
 import dayjs from "dayjs";
 import DeleteBonus from "./DeleteBonus";
+import { AccountContext } from "../../../Context/AccountContext";
 TableBonus.propTypes = {
     data: PropTypes.array.isRequired,
     fetchData: PropTypes.func.isRequired,
 };
 export default function TableBonus({ data, fetchData }) {
-
+    const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
-    const columns = [
+    let columns = [
         {
             title: "Employee",
             dataIndex: "fullName",
@@ -22,6 +23,7 @@ export default function TableBonus({ data, fetchData }) {
             title: "Date time",
             dataIndex: "dateTime",
             key: "date",
+
             render: (_, record) => (
                 <>
                     <span>
@@ -35,6 +37,7 @@ export default function TableBonus({ data, fetchData }) {
             title: "Total",
             key: "totalBonus",
             dataIndex: "totalBonus",
+            align: "center",
             render: (_, record) => (
                 <>
                     <span>{record.totalBonus.toLocaleString()}</span>
@@ -44,6 +47,8 @@ export default function TableBonus({ data, fetchData }) {
         {
             title: "Action",
             key: "action",
+            align: "center",
+            width: "40px",
             render: (_, record) => (
                 <>
                     <Button
@@ -60,17 +65,19 @@ export default function TableBonus({ data, fetchData }) {
         {
             title: "Delete",
             key: "delete",
+            align: "center",
+            width: "40px",
             render: (_, record) => (
-                <>
-                    <DeleteBonus record={record} fetchData={fetchData} />
-                </>
+                <DeleteBonus record={record} fetchData={fetchData} />
             ),
         },
     ];
-
+    if (account.account.dutyName !== "Admin") {
+        columns = columns.filter((column) => column.key !== "delete");
+    }
     return (
         <div>
-            <Table rowKey="id" dataSource={data} columns={columns} />
+            <Table bordered rowKey="id" dataSource={data} columns={columns} />
         </div>
     );
 }

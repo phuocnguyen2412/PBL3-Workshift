@@ -16,6 +16,7 @@ namespace PBL3.Server.Controllers
 
         public EmployeeController(IEmployee employeeRepository, IAccount accountRepository)
         {
+
             _employeeRepository = employeeRepository;
             _accountRepository = accountRepository;
         }

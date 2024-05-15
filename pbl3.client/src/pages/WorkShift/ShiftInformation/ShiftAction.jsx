@@ -9,11 +9,12 @@ ShiftAction.propTypes = {
     setItems: PropTypes.func.isRequired,
 };
 export default function ShiftAction({ shift, setItems }) {
+    console.log(shift);
     const account = useContext(AccountContext);
     const { loading, deleteApi, postApi, updateApi } = useFetch(localhost);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const handleDelete = async (id) => {
+    const handleDeleteShiftInfo = async (id) => {
         try {
             const response = await deleteApi(`/ShiftInfo`, id);
             console.log(response);
@@ -41,26 +42,73 @@ export default function ShiftAction({ shift, setItems }) {
         });
         setItems();
     };
-    const handleUpdate = async () => {};
-    const handleCreate = async () => {
+    const handleUpdate = async () => {
         try {
             const data = {
                 employeeId: account.account.employeeId,
-                shiftInfoId: shift.Id,
-                checkInTime: null,
-                checkOutTime: null,
+                shiftInfoId: shift.id,
+                checkInTime: "00:00:00",
+                checkOutTime: "00:00:00",
             };
-            const res = await ("/Shift", data);
+
+            const res = await postApi("/Shift", data);
             console.log(res);
             apiNotification.success({
                 message: "Success!",
                 description: `${res.message}`,
                 placement: "topRight",
             });
+            setItems();
         } catch (e) {
             apiNotification.error({
                 message: "Error!",
                 description: `${e.message}`,
+                placement: "topRight",
+            });
+        }
+    };
+    const handleCreate = async () => {
+        try {
+            const data = {
+                employeeId: account.account.employeeId,
+                shiftInfoId: shift.id,
+                checkInTime: "00:00:00",
+                checkOutTime: "00:00:00",
+            };
+
+            const res = await postApi("/Shift", data);
+
+            apiNotification.success({
+                message: "Success!",
+                description: `${res.message}`,
+                placement: "topRight",
+            });
+            setItems();
+        } catch (e) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${e.message}`,
+                placement: "topRight",
+            });
+        }
+    };
+    const handleDeleteShift = async () => {
+        try {
+            const data = shift.employees.find(
+                (e) => e.employeeId === account.account.employeeId
+            );
+            console.log(data);
+            await deleteApi("/Shift", data.shiftId);
+            apiNotification.success({
+                message: "Success!",
+                description: `Unregistration successful`,
+                placement: "topRight",
+            });
+            setItems();
+        } catch (error) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${error.message}`,
                 placement: "topRight",
             });
         }
@@ -76,7 +124,7 @@ export default function ShiftAction({ shift, setItems }) {
                             handleCheck(shift.id, shift.checked);
                         }}
                     >
-                        {shift.checked ? "Mở ca làm" : "Khóa ca làm"}
+                        {shift.checked ? "Open" : "Lock"}
                     </Button>
                 )}
                 {account.account.dutyName === "Admin" && (
@@ -85,19 +133,35 @@ export default function ShiftAction({ shift, setItems }) {
                         danger
                         loading={loading}
                         onClick={() => {
-                            handleDelete(shift.id);
+                            handleDeleteShiftInfo(shift.id);
                         }}
                     >
-                        Xóa ca làm
+                        Delete work shift
                     </Button>
                 )}
 
-                {account.account.dutyName === "Quản lý" && (
-                    <Button onClick={handleUpdate}>Đăng kí quản lý</Button>
-                )}
-                {account.account.dutyName === "Nhân viên" && (
-                    <Button onClick={handleCreate}>Đăng kí nhân viên</Button>
-                )}
+                {account.account.dutyName === "Quản lý" &&
+                    (shift.employees.some(
+                        (employee) =>
+                            employee.employeeId === account.account.employeeId
+                    ) ? (
+                        <Button onClick={handleDeleteShift}>
+                            UNREGISTRATION
+                        </Button>
+                    ) : (
+                        <Button onClick={handleUpdate}>REGISTRATION</Button>
+                    ))}
+                {account.account.dutyName === "Nhân viên" &&
+                    (shift.employees.some(
+                        (employee) =>
+                            employee.employeeId === account.account.employeeId
+                    ) ? (
+                        <Button onClick={handleDeleteShift}>
+                            UNREGISTRATION
+                        </Button>
+                    ) : (
+                        <Button onClick={handleCreate}>REGISTRATION</Button>
+                    ))}
             </Flex>
         </>
     );
