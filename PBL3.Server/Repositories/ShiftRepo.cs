@@ -217,7 +217,7 @@ namespace PBL3.Server.Repositories
             var hourHistory = new HourHistory
             {
                 EmployeeId = shift.EmployeeId,
-                DateAt = shift.Date,
+                Date = shift.Date,
                 HoursPerDay = totalHoursFormatted
             };
             _context.HourHistories.Add(hourHistory);
