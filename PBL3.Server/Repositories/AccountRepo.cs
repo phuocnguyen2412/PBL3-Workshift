@@ -28,7 +28,7 @@ namespace PBL3.Server.Repositories
                 join duty in _context.Duties on employee.DutyId equals duty.Id
                 where account.Token == token && listDuty.Contains(duty.DutyName)
                 select new { dutyName = duty.DutyName }
-            );
+            ).FirstOrDefaultAsync();
 
             return result;
         }

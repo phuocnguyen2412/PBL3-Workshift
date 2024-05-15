@@ -22,16 +22,17 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllEmployeesAsync(string token)
+        public async Task<ActionResult> GetAllEmployeesAsync()
         {
             try
             {
-                if (
-                    _accountRepository.Author(
-                        token,
-                        new List<string> { "Admin" }
-                    ) == null
-                ) return BadRequest(new { Message = "Bạn không có quyền sử dụng tính năng này" });
+                string token = HttpContext.Request.Headers["Authorization"].ToString();
+                var authResult = await _accountRepository.Author(token, new List<string> { "Admin" });
+                if (authResult == null)
+                {
+                    return BadRequest(new { Message = "Bạn không có quyền sử dụng tính năng này" });
+                }
+                
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
                 if (employees == null)
                 {
