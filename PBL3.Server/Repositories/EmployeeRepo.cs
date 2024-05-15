@@ -1,12 +1,12 @@
-﻿using PBL3.Server.Models;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using PBL3.Server.Interface;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -23,7 +23,6 @@ namespace PBL3.Server.Repositories
 
         public async Task<Employee> AddEmployeeAsync(EmployeeModel employeeModel)
         {
-            
             var employee = _mapper.Map<Employee>(employeeModel);
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
@@ -31,7 +30,7 @@ namespace PBL3.Server.Repositories
         }
 
         public async Task<EmployeeModel> DeleteEmployeeAsync(int id)
-        {   
+        {
             var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
@@ -45,7 +44,6 @@ namespace PBL3.Server.Repositories
         public async Task<object> GetAllEmployeesAsync()
         {
             var employees = await (
-
                 from e in _context.Employees
                 join a in _context.Duties on e.DutyId equals a.Id
                 select new
@@ -57,7 +55,9 @@ namespace PBL3.Server.Repositories
                     e.TypeOfEmployee,
                     e.CoefficientsSalary,
                     a.DutyName,
-                    e.Status
+                    e.Status,
+                    a.BasicSalary,
+                    dutyId = a.Id
                 }
             ).ToListAsync();
             return employees;
@@ -79,7 +79,8 @@ namespace PBL3.Server.Repositories
                     e.CoefficientsSalary,
                     a.DutyName,
                     e.Status
-                }).ToListAsync();
+                }
+            ).ToListAsync();
             return employees;
         }
 
@@ -87,8 +88,7 @@ namespace PBL3.Server.Repositories
         {
             var employee = await (
                 from e in _context.Employees
-                join a in _context.Duties
-                on e.DutyId equals a.Id
+                join a in _context.Duties on e.DutyId equals a.Id
                 where e.Id == id
                 select new
                 {
@@ -101,7 +101,8 @@ namespace PBL3.Server.Repositories
                     e.CoefficientsSalary,
                     a.DutyName,
                     e.Status
-                }).FirstOrDefaultAsync();
+                }
+            ).FirstOrDefaultAsync();
             return employee;
         }
 
@@ -133,7 +134,8 @@ namespace PBL3.Server.Repositories
                     e.CoefficientsSalary,
                     a.DutyName,
                     e.Status
-                }).ToListAsync();
+                }
+            ).ToListAsync();
             return employees;
         }
     }

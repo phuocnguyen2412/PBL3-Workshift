@@ -1,12 +1,12 @@
-﻿using PBL3.Server.Models;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using PBL3.Server.Interface;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -31,12 +31,15 @@ namespace PBL3.Server.Repositories
 
             if (shiftInfo.Checked)
             {
-                throw new InvalidOperationException("Cannot register for the shift as the form is closed.");
+                throw new InvalidOperationException(
+                    "Cannot register for the shift as the form is closed."
+                );
             }
 
             bool shiftExists = await (
                 from s in _context.Shifts
-                where s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
+                where
+                    s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
                 select s
             ).AnyAsync();
             if (shiftExists)
@@ -63,7 +66,9 @@ namespace PBL3.Server.Repositories
                 throw new InvalidOperationException("A manager is already assigned to this shift.");
             }
 
-            bool managerShiftExists = await _context.Shifts.AnyAsync(s => s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId);
+            bool managerShiftExists = await _context.Shifts.AnyAsync(s =>
+                s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
+            );
             if (managerShiftExists)
             {
                 throw new InvalidOperationException("Manager is already assigned to this shift.");
@@ -80,8 +85,6 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
-
-
 
         public async Task<ShiftModel> DeleteShiftAsync(int id)
         {
@@ -105,11 +108,11 @@ namespace PBL3.Server.Repositories
                 return false;
             }
 
-            var shift = await 
-                        (from s in _context.Shifts
-                         where s.ShiftInfoId == shiftInfoId && s.EmployeeId == managerId
-                         select s
-                        ).FirstOrDefaultAsync();
+            var shift = await (
+                from s in _context.Shifts
+                where s.ShiftInfoId == shiftInfoId && s.EmployeeId == managerId
+                select s
+            ).FirstOrDefaultAsync();
             if (shift == null)
             {
                 // No shift found for this manager and ShiftInfo
@@ -127,7 +130,6 @@ namespace PBL3.Server.Repositories
 
             return true;
         }
-
 
         public async Task<object> GetAllShiftAsync()
         {
@@ -175,11 +177,16 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int Employeeid, int shiftInfoId, TimeSpan checkOutTime)
+        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(
+            int Employeeid,
+            int shiftInfoId,
+            TimeSpan checkOutTime
+        )
         {
-            var shift = await _context.Shifts.Include(s => s.ShiftInfo)
-                             .Where(s => s.EmployeeId == Employeeid && s.ShiftInfoId == shiftInfoId)
-                             .FirstOrDefaultAsync();
+            var shift = await _context
+                .Shifts.Include(s => s.ShiftInfo)
+                .Where(s => s.EmployeeId == Employeeid && s.ShiftInfoId == shiftInfoId)
+                .FirstOrDefaultAsync();
 
             if (shift == null)
             {
@@ -207,7 +214,5 @@ namespace PBL3.Server.Repositories
 
             return _mapper.Map<ShiftModel>(shift);
         }
-
-
     }
 }

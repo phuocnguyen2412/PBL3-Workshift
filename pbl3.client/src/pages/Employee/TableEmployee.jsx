@@ -8,7 +8,7 @@ import DeleteEmployee from "./DeleteEmployee";
 import SearchEmployee from "./SearchEmployee";
 import EditEmployee from "./EditEmployee";
 import { Link } from "react-router-dom";
-import EmployeeProfie from "../EmployeeProfie";
+
 import localhost from "../../Services/localhost";
 import PropTypes from "prop-types";
 const TableEmployee = ({ data, setEmployee }) => {
@@ -21,10 +21,7 @@ const TableEmployee = ({ data, setEmployee }) => {
             render: (_, record) => {
                 return (
                     <>
-                        <Link
-                            to={`/Employee/${record.id}`}
-                            element=<EmployeeProfie />
-                        >
+                        <Link to={`/Employee/${record.id}`}>
                             {record.fullName}
                         </Link>
                     </>
