@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace PBL3.Server.Controllers
 {
@@ -25,23 +25,12 @@ namespace PBL3.Server.Controllers
             return await _dutyRepository.GetAllDutiesAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<DutyModel>> GetDutyByIdAsync(int id)
-        {
-            var duty = await _dutyRepository.GetDutyByIdAsync(id);
-            if (duty == null)
-            {
-                return NotFound();
-            }
-            return duty;
-        }
-
         [HttpPost]
-        public async Task<ActionResult<int>> AddDutyAsync(DutyModel dutyModel)
+        public async Task<ActionResult<DutyModel>> AddDutyAsync(DutyModel dutyModel)
         {
-           int id = await _dutyRepository.AddDutyAsync(dutyModel);
+            DutyModel id = await _dutyRepository.AddDutyAsync(dutyModel);
 
-            if (id == 0 )
+            if (id == null)
             {
                 return BadRequest(new { message = "Failed to add Duty information." });
             }

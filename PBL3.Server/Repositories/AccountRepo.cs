@@ -1,12 +1,12 @@
-﻿using PBL3.Server.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Interface;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Principal;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -20,6 +20,7 @@ namespace PBL3.Server.Repositories
             _context = context;
             _mapper = mapper;
         }
+
         public async Task AddAccountAsync(string email, int employeeId)
         {
             var hashedPassword = HashPassword(email);
@@ -43,11 +44,8 @@ namespace PBL3.Server.Repositories
             var accountFound = await (
                 from a in _context.Accounts
                 where model.UserName == a.UserName && hashedPassword == a.Password
-                select new
-                {
-                    Token = a.Token,
-                    AccountId = a.Id
-                }).FirstOrDefaultAsync();
+                select new { Token = a.Token, AccountId = a.Id }
+            ).FirstOrDefaultAsync();
 
             if (accountFound != null)
             {
@@ -62,15 +60,16 @@ namespace PBL3.Server.Repositories
                 from account in _context.Accounts
                 join employee in _context.Employees on account.EmployeeId equals employee.Id
                 join duty in _context.Duties on employee.DutyId equals duty.Id
-                where account.UserName == model.UserName && account.Password == hashedPassword && employee.Status == true
+                where
+                    account.UserName == model.UserName
+                    && account.Password == hashedPassword
+                    && employee.Status == true
                 select new
                 {
-
                     Token = account.Token,
                     fullName = employee.FullName,
                     EmployeeId = employee.Id,
                     dutyName = duty.DutyName,
-
                 };
             return await result.FirstOrDefaultAsync();
         }
@@ -89,7 +88,8 @@ namespace PBL3.Server.Repositories
                     DutyName = duty.DutyName,
                     Token = a.Token,
                     AccountId = a.Id
-                }).FirstOrDefaultAsync();
+                }
+            ).FirstOrDefaultAsync();
 
             if (account != null)
             {
@@ -108,11 +108,11 @@ namespace PBL3.Server.Repositories
                 };
 
                 return updatedAccount;
-
             }
 
             return account;
         }
+
         private string GenerateToken()
         {
             return Guid.NewGuid().ToString();
@@ -121,7 +121,9 @@ namespace PBL3.Server.Repositories
         public async Task<bool> ChangePassword(ChangePasswordModel model)
         {
             var hashedPassword = HashPassword(model.Password);
-            var account = await _context.Accounts.FirstOrDefaultAsync(acc => acc.EmployeeId == model.Id && acc.Password == hashedPassword);
+            var account = await _context.Accounts.FirstOrDefaultAsync(acc =>
+                acc.EmployeeId == model.Id && acc.Password == hashedPassword
+            );
             if (account != null)
             {
                 var newHashedPassword = HashPassword(model.newPassword);
@@ -141,6 +143,5 @@ namespace PBL3.Server.Repositories
             var hashedBytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
-
     }
 }

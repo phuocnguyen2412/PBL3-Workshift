@@ -23,8 +23,12 @@ export default function EditEmployeeForm({
     setEmployee,
     setOpenEdit,
 }) {
+    const employeeToEdit = {
+        ...record,
+        typeOfEmployee: record.typeOfEmployee ? "true" : "false",
+    };
     const [optionsDuty, setOptionsDuty] = useState([]);
-    const [employeeEdit, setEmployeeEdit] = useState({});
+
     const { getApi, updateApi, loading } = useFetch(localhost);
 
     const [api, contextHolder] = notification.useNotification();
@@ -59,21 +63,6 @@ export default function EditEmployeeForm({
     useEffect(() => {
         const fetchData = async () => {
             const dutyList = await getApi("/Duty");
-            const data = await getApi(`/Employee/${record.id}`);
-
-            console.log({
-                ...data,
-                typeOfEmployee: String(data.typeOfEmployee),
-                status: String(data.status),
-            });
-
-            setEmployeeEdit(() => {
-                return {
-                    ...data,
-                    typeOfEmployee: String(data.typeOfEmployee),
-                    status: String(data.status),
-                };
-            });
 
             setOptionsDuty(() =>
                 dutyList.map((item) => {
@@ -95,7 +84,7 @@ export default function EditEmployeeForm({
                     form={form}
                     layout="vertical"
                     onFinish={handleSubmitForm}
-                    initialValues={employeeEdit}
+                    initialValues={employeeToEdit}
                 >
                     <Row gutter={16}>
                         <Col span={12}>

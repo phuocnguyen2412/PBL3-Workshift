@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj": {}
+    "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\PBL3.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj": {
+    "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\PBL3.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
+        "projectUniqueName": "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\PBL3.Server.csproj",
         "projectName": "PBL3.Server",
-        "projectPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
-        "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\obj\\",
+        "projectPath": "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\PBL3.Server.csproj",
+        "packagesPath": "C:\\Users\\ttcenter\\.nuget\\packages\\",
+        "outputPath": "\\\\Mac\\Home\\Desktop\\PBL3-Workshift\\PBL3.Server\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Hi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\ttcenter\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
