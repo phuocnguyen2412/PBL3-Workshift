@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace PBL3.Server.Data
 {
@@ -11,6 +10,7 @@ namespace PBL3.Server.Data
         [Key]
         public int Id { get; set; }
         public int EmployeeId { get; set; }
+
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
         public DateTime StartDate { get; set; }

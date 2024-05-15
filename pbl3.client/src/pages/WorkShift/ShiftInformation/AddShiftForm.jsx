@@ -58,7 +58,7 @@ const AddShiftForm = ({ setData }) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please choose Shift name",
+                                        message: "please enter!",
                                     },
                                 ]}
                             >
@@ -72,7 +72,7 @@ const AddShiftForm = ({ setData }) => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter url",
+                                        message: "Please enter",
                                     },
                                 ]}
                             >

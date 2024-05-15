@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PBL3.Server.Repositories
 {
@@ -54,6 +54,7 @@ namespace PBL3.Server.Repositories
 
             return _context.BonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
         }
+
         public async Task<object> GetAllBonusSalaryAsync()
         {
             var bonusSalary = await (from b in _context.BonusSalaryHistories
@@ -69,6 +70,7 @@ namespace PBL3.Server.Repositories
                                      }).ToListAsync();
             return bonusSalary;
         }
+
         public async Task<bool> DeleteBonusSalaryAsync(int id)
         {
             var bonusSalary = await _context.BonusSalaryHistories.FindAsync(id);
@@ -82,18 +84,20 @@ namespace PBL3.Server.Repositories
 
         public async Task<List<object>> GetBonusSalaryByIdAsync(int id)
         {
-            var bonusSalary = await (from b in _context.BonusSalaryHistories
-                                     join e in _context.Employees on b.EmployeeId equals e.Id
-                                     where e.Id == id
-                                     select new
-                                     {
-                                         b.Id,
-                                         EmployeeId = b.EmployeeId,
-                                         FullName = e.FullName,
-                                         DateTime = b.Date,
-                                         TotalBonus = b.Bonus,
-                                         Reason = b.Reason
-                                     }).ToListAsync<object>();
+            var bonusSalary = await (
+                from b in _context.BonusSalaryHistories
+                join e in _context.Employees on b.EmployeeId equals e.Id
+                where e.Id == id
+                select new
+                {
+                    b.Id,
+                    EmployeeId = b.EmployeeId,
+                    FullName = e.FullName,
+                    DateTime = b.Date,
+                    TotalBonus = b.Bonus,
+                    Reason = b.Reason
+                }
+            ).ToListAsync<object>();
 
             return bonusSalary;
         }

@@ -26,6 +26,13 @@ namespace PBL3.Server.Controllers
         {
             try
             {
+                string token = HttpContext.Request.Headers["Authorization"].ToString();
+                var authResult = await _accountRepository.Author(token, new List<string> { "Admin" });
+                if (authResult == null)
+                {
+                    return BadRequest(new { Message = "Bạn không có quyền sử dụng tính năng này" });
+                }
+                
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
                 if (employees == null)
                 {
@@ -95,7 +102,7 @@ namespace PBL3.Server.Controllers
                 {
                     return BadRequest(new { Message = "Failed to add Employee!" });
                 }
-                
+
             }
             catch (Exception e)
             {

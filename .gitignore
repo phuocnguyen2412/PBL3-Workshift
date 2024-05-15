@@ -32,3 +32,4 @@ bin
 appsettings.json
 .fake
 .vs
+appsettings.json

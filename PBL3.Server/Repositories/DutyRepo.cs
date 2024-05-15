@@ -1,11 +1,11 @@
-﻿using PBL3.Server.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
-using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -26,18 +26,12 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<List<DutyModel>>(duties);
         }
 
-        public async Task<DutyModel> GetDutyByIdAsync(int id)
-        {
-            var duty = await _context.Duties!.FindAsync(id);
-            return _mapper.Map<DutyModel>(duty);
-        }
-
-        public async Task<int> AddDutyAsync(DutyModel dutyModel)
+        public async Task<DutyModel> AddDutyAsync(DutyModel dutyModel)
         {
             var duty = _mapper.Map<Duty>(dutyModel);
             _context.Duties!.Add(duty);
             await _context.SaveChangesAsync();
-            return duty.Id;
+            return _mapper.Map<DutyModel>(duty);
         }
 
         public async Task UpdateDutyAsync(DutyModel dutyModel)
