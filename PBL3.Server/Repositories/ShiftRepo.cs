@@ -210,21 +210,16 @@ namespace PBL3.Server.Repositories
             {
                 return null;
             }
-
          
 
-
             var totalHours = (checkOutTime - result.CheckInTime).TotalHours;
-
-            var totalHoursFormatted = totalHours.ToString("0.##");
-
+            var totalHoursFormatted = Convert.ToDouble(totalHours);
             var hourHistory = new HourHistory
             {
                 EmployeeId = shift.EmployeeId,
                 DateAt = shift.Date,
                 HoursPerDay = totalHoursFormatted
             };
-
             _context.HourHistories.Add(hourHistory);
             await _context.SaveChangesAsync();
 

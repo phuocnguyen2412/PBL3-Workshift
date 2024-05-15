@@ -15,10 +15,10 @@ namespace PBL3.Server.Data
         public virtual Employee? Employee { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int TotalHours { get; set; }
+        public double TotalHours { get; set; }
         public int TotalBonus { get; set; }
         public int TotalViolate { get; set; }
-        public int TotalSalary { get; set; }
+        public double TotalSalary { get; set; }
         public DateTime PaidDate { get; set; }
     }
 }

@@ -12,7 +12,7 @@ namespace PBL3.Server.Data
 
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
-        public string? HoursPerDay { get; set; }
-        public DateTime DateAt { get; set; }
+        public double HoursPerDay { get; set; }
+        public DateTime Date { get; set; }
     }
 }
