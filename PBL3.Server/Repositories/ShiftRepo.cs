@@ -164,22 +164,20 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int shiftId, int managerId)
         {
-            var shiftcheckid = await _context.Shifts.FindAsync(shiftId);
-            if (shiftcheckid == null || shiftcheckid.EmployeeId != managerId)
-            {
-                throw new Exception("Shift not found or manager is not assigned to this shift.");
-            }
             var shift = await _context.Shifts.FindAsync(shiftId);
             if (shift == null)
             {
                 return null;
             }
+
+            var shiftInfo = await _context.ShiftInfos.FindAsync(shift.ShiftInfoId);
+            if (shiftInfo == null || shiftInfo.ManagerId != managerId)
+            {
+                throw new Exception("Only the manager assigned to this shift can update the check-in time.");
+            }
+
             DateTime date = DateTime.Now;
-
-
-
             shift.CheckInTime = date;
-
 
             _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
@@ -188,52 +186,37 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int shiftId, int managerId)
         {
-            var shiftcheckid = await _context.Shifts.FindAsync(shiftId);
-            if (shiftcheckid == null || shiftcheckid.EmployeeId != managerId)
-            {
-                throw new Exception("Shift not found or manager is not assigned to this shift.");
-            }
-
-            DateTime date = DateTime.Now;
-            
-            var result = await _context.Shifts.FindAsync(shiftId);
-
-            result.CheckOutTime = date;
-
-
-            _context.Shifts.Update(result);
-            await _context.SaveChangesAsync();
-
-            var shift = await (
-                from s in _context.Shifts
-                join shiftInfo in _context.ShiftInfos on s.ShiftInfoId equals shiftInfo.Id
-                where s.Id == shiftId
-                select new
-                {
-                    s.CheckOutTime,
-                    s.EmployeeId,
-                    shiftInfo.Date
-                }
-            ).FirstOrDefaultAsync();
-            if (shift == null || result == null)
+            var shift = await _context.Shifts.FindAsync(shiftId);
+            if (shift == null)
             {
                 return null;
             }
-         
 
-            var totalHours = (date - result.CheckInTime).TotalHours;
+            var shiftInfo = await _context.ShiftInfos.FindAsync(shift.ShiftInfoId);
+            if (shiftInfo == null || shiftInfo.ManagerId != managerId)
+            {
+                throw new Exception("Only the manager assigned to this shift can update the check-out time.");
+            }
+
+            DateTime date = DateTime.Now;
+            shift.CheckOutTime = date;
+
+            _context.Shifts.Update(shift);
+            await _context.SaveChangesAsync();
+
+            var totalHours = (date - shift.CheckInTime).TotalHours;
             var totalHoursFormatted = Convert.ToDouble(totalHours);
             var hourHistory = new HourHistory
             {
                 EmployeeId = shift.EmployeeId,
-                Date = shift.Date,
+                Date = shiftInfo.Date,
                 HoursPerDay = totalHoursFormatted
             };
             _context.HourHistories.Add(hourHistory);
             await _context.SaveChangesAsync();
 
-
-            return _mapper.Map<ShiftModel>(result);
+            return _mapper.Map<ShiftModel>(shift);
         }
+
     }
 }

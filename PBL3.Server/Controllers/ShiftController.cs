@@ -116,10 +116,9 @@ namespace PBL3.Server.Controllers
             }
             catch (System.Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return BadRequest(new { message = e.Message });
             }
         }
-
 
         [HttpPut("{shiftId}/checkout")]
         public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int shiftId, int managerId)
@@ -135,9 +134,10 @@ namespace PBL3.Server.Controllers
             }
             catch (System.Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
+
 
 
         [HttpDelete("{id}")]
