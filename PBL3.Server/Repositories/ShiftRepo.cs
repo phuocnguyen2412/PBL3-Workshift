@@ -26,14 +26,12 @@ namespace PBL3.Server.Repositories
             var shiftInfo = await _context.ShiftInfos.FindAsync(shiftModel.ShiftInfoId);
             if (shiftInfo == null)
             {
-                throw new InvalidOperationException("ShiftInfo not found.");
+                throw new Exception("ShiftInfo not found.");
             }
 
             if (shiftInfo.Checked)
             {
-                throw new InvalidOperationException(
-                    "Cannot register for the shift as the form is closed."
-                );
+                throw new Exception("Cannot register for the shift as the form is closed.");
             }
 
             bool shiftExists = await (
@@ -44,7 +42,7 @@ namespace PBL3.Server.Repositories
             ).AnyAsync();
             if (shiftExists)
             {
-                throw new InvalidOperationException("Employee is already assigned to this shift.");
+                throw new Exception("Employee is already assigned to this shift.");
             }
 
             var shift = _mapper.Map<Shift>(shiftModel);
@@ -58,12 +56,12 @@ namespace PBL3.Server.Repositories
             var shiftInfo = await _context.ShiftInfos.FindAsync(shiftModel.ShiftInfoId);
             if (shiftInfo == null)
             {
-                throw new InvalidOperationException("ShiftInfo not found.");
+                throw new Exception("ShiftInfo not found.");
             }
 
             if (shiftInfo.ManagerId != 0)
             {
-                throw new InvalidOperationException("A manager is already assigned to this shift.");
+                throw new Exception("A manager is already assigned to this shift.");
             }
 
             bool managerShiftExists = await _context.Shifts.AnyAsync(s =>
@@ -71,7 +69,7 @@ namespace PBL3.Server.Repositories
             );
             if (managerShiftExists)
             {
-                throw new InvalidOperationException("Manager is already assigned to this shift.");
+                throw new Exception("Manager is already assigned to this shift.");
             }
 
             // Update the ManagerId in the ShiftInfo table
