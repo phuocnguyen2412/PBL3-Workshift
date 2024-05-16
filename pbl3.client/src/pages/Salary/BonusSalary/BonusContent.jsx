@@ -20,7 +20,7 @@ export default function BonusContent({ data, setOpen, open }) {
         },
         {
             key: "3",
-            label: "Start time",
+            label: "Total",
             children: data.totalBonus.toLocaleString(),
         },
         {

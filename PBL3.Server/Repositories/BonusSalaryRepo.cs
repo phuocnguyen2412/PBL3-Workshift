@@ -20,40 +20,29 @@ namespace PBL3.Server.Repositories
 
         public async Task<int> AddBonusSalaryForEmployeesAsync(BonusSalaryModel model)
         {
-            if (model.EmployeeIds.Contains(0))
+            var bonusSalaryHistories = new List<BonusSalaryHistory>();
+
+            var employeeIdsToProcess = model.EmployeeIds.Contains(0)
+                ? await _context.Employees.Select(e => e.Id).ToListAsync(): model.EmployeeIds;
+
+            foreach (var employeeId in employeeIdsToProcess)
             {
-                var allEmployeeIds = await _context.Employees.Select(e => e.Id).ToListAsync();
-                foreach (var employeeId in allEmployeeIds)
+                var newBonusSalary = new BonusSalaryHistory
                 {
-                    var newBonusSalary = new BonusSalaryHistory
-                    {
-                        EmployeeId = employeeId,
-                        Bonus = model.Bonus,
-                        Date = DateTime.Now,
-                        Reason = model.Reason
-                    };
-                    _context.BonusSalaryHistories.Add(newBonusSalary);
-                }
-            }
-            else
-            {
-                foreach (var employeeId in model.EmployeeIds)
-                {
-                    var newBonusSalary = new BonusSalaryHistory
-                    {
-                        EmployeeId = employeeId,
-                        Bonus = model.Bonus,
-                        Date = DateTime.Now,
-                        Reason = model.Reason
-                    };
-                    _context.BonusSalaryHistories.Add(newBonusSalary);
-                }
+                    EmployeeId = employeeId,
+                    Bonus = model.Bonus,
+                    Date = DateTime.Now,
+                    Reason = model.Reason
+                };
+                bonusSalaryHistories.Add(newBonusSalary);
+                _context.BonusSalaryHistories.Add(newBonusSalary);
             }
 
             await _context.SaveChangesAsync();
 
-            return _context.BonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
+            return bonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
         }
+
 
         public async Task<object> GetAllBonusSalaryAsync()
         {
