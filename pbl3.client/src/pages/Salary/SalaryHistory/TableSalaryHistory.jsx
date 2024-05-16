@@ -73,9 +73,9 @@ export default function TableSalaryHistory() {
         },
         {
             align: "center",
-            width: "100px",
+
             title: "detail",
-            dataIndex: "Delete",
+
             render: (_, record) => <DetailSalaryHistory record={record} />,
         },
     ];

@@ -15,7 +15,7 @@ export default function CardBonus({ data }) {
 
             <Card
                 type="inner"
-                title={`Báo cáo ${data.fullName}`}
+                title={`Bonus ${data.fullName}`}
                 extra={
                     <>
                         {account.account.dutyName === "Admin " && (
@@ -25,7 +25,7 @@ export default function CardBonus({ data }) {
                     </>
                 }
             >
-                {`Báo cáo ${dayjs(data.dateTime).format(
+                {`Bonus ${dayjs(data.dateTime).format(
                     "DD-MM-YYYY HH:mm:ss"
                 )}  `}
             </Card>

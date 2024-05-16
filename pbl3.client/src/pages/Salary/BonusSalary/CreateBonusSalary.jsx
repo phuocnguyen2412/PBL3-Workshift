@@ -147,7 +147,7 @@ export default function CreateBonusSalary({ reload }) {
 
                             <Col span={12}>
                                 <Form.Item
-                                    name="totalBonus"
+                                    name="bonus"
                                     label="Total bonus"
                                     rules={[
                                         {
