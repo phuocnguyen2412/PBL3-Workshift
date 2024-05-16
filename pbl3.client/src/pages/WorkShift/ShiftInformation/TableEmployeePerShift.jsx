@@ -9,11 +9,11 @@ import CheckinEmployee from "./CheckinEmployee";
 import CheckoutEmployee from "./CheckoutEmployee";
 const TableEmployeePerShift = ({ shift, setItems }) => {
     const account = useContext(AccountContext);
-
+    console.log(shift.employees);
     return (
         <>
             <ShiftAction shift={shift} setItems={setItems} />
-            <Table dataSource={shift.employees}>
+            <Table dataSource={shift.employees} rowKey="employeeId">
                 <Column title="Full name" dataIndex="fullName" key="fullName" />
                 <Column
                     title="Duty"
@@ -25,7 +25,7 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                                 <Tag bordered={false} color="red">
                                     {record.dutyName}
                                 </Tag>
-                            ) : record.dutyName === "Quản lý" ? (
+                            ) : record.dutyName === "Manager" ? (
                                 <Tag bordered={false} color="blue">
                                     {record.dutyName}
                                 </Tag>
@@ -70,7 +70,7 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                     />
                 )}
 
-                {account.account.dutyName === "Quản lý" && (
+                {account.account.dutyName === "Manager" && (
                     <Column
                         title="Check In"
                         key="checkIn"
@@ -84,7 +84,7 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                         )}
                     />
                 )}
-                {account.account.dutyName === "Quản lý" && (
+                {account.account.dutyName === "Manager" && (
                     <Column
                         title="Check Out"
                         key="checkOut"

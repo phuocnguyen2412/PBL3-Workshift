@@ -9,11 +9,12 @@ ShiftAction.propTypes = {
     setItems: PropTypes.func.isRequired,
 };
 export default function ShiftAction({ shift, setItems }) {
-    console.log(shift);
     const account = useContext(AccountContext);
+
     const { loading, deleteApi, postApi, updateApi } = useFetch(localhost);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
+
     const handleDeleteShiftInfo = async (id) => {
         try {
             const response = await deleteApi(`/ShiftInfo`, id);
@@ -33,8 +34,8 @@ export default function ShiftAction({ shift, setItems }) {
         }
     };
     const handleCheck = async (id, checked) => {
-        const response = await updateApi(`/ShiftInfo/${id}/${!checked}`);
-        console.log(response);
+        await updateApi(`/ShiftInfo/${id}/${!checked}`);
+
         apiNotification.success({
             message: "Thành công!",
             description: `Bạn đã chỉnh sửa thành công ${shift.shiftName}: ${shift.startTime} - ${shift.endTime}`,
@@ -42,62 +43,43 @@ export default function ShiftAction({ shift, setItems }) {
         });
         setItems();
     };
-    const handleUpdate = async () => {
+
+    const handleCreate = async () => {
         try {
+            if (shift.checked)
+                throw { message: "Work shift is checked! You can't submit" };
             const data = {
                 employeeId: account.account.employeeId,
                 shiftInfoId: shift.id,
-                checkInTime: "00:00:00",
-                checkOutTime: "00:00:00",
+                checkInTime: "2000-01-01T00:00:00.000Z",
+                checkOutTime: "2000-01-01T00:00:00.000Z",
             };
 
             const res = await postApi("/Shift", data);
             console.log(res);
             apiNotification.success({
                 message: "Success!",
-                description: `${res.message}`,
+                description: `Registration successful`,
                 placement: "topRight",
             });
             setItems();
         } catch (e) {
+            console.log(e);
             apiNotification.error({
                 message: "Error!",
-                description: `${e.message}`,
-                placement: "topRight",
-            });
-        }
-    };
-    const handleCreate = async () => {
-        try {
-            const data = {
-                employeeId: account.account.employeeId,
-                shiftInfoId: shift.id,
-                checkInTime: "00:00:00",
-                checkOutTime: "00:00:00",
-            };
-
-            const res = await postApi("/Shift", data);
-
-            apiNotification.success({
-                message: "Success!",
-                description: `${res.message}`,
-                placement: "topRight",
-            });
-            setItems();
-        } catch (e) {
-            apiNotification.error({
-                message: "Error!",
-                description: `${e.message}`,
+                description: `${e}`,
                 placement: "topRight",
             });
         }
     };
     const handleDeleteShift = async () => {
         try {
+            if (shift.check)
+                throw { message: "Work shift is checked! You can't out" };
             const data = shift.employees.find(
                 (e) => e.employeeId === account.account.employeeId
             );
-            console.log(data);
+
             await deleteApi("/Shift", data.shiftId);
             apiNotification.success({
                 message: "Success!",
@@ -106,6 +88,7 @@ export default function ShiftAction({ shift, setItems }) {
             });
             setItems();
         } catch (error) {
+            console.log(error);
             apiNotification.error({
                 message: "Error!",
                 description: `${error.message}`,
@@ -140,18 +123,8 @@ export default function ShiftAction({ shift, setItems }) {
                     </Button>
                 )}
 
-                {account.account.dutyName === "Quản lý" &&
-                    (shift.employees.some(
-                        (employee) =>
-                            employee.employeeId === account.account.employeeId
-                    ) ? (
-                        <Button onClick={handleDeleteShift}>
-                            UNREGISTRATION
-                        </Button>
-                    ) : (
-                        <Button onClick={handleUpdate}>REGISTRATION</Button>
-                    ))}
-                {account.account.dutyName === "Nhân viên" &&
+                {(account.account.dutyName === "Manager" ||
+                    account.account.dutyName === "Employee") &&
                     (shift.employees.some(
                         (employee) =>
                             employee.employeeId === account.account.employeeId

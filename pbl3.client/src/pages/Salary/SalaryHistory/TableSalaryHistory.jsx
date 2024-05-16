@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import { Spin, Table } from "antd";

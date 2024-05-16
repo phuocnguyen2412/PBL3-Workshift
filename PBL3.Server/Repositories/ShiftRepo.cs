@@ -35,10 +35,12 @@ namespace PBL3.Server.Repositories
             }
 
             // Get the DutyName of the employee
-            var dutyName = (from e in _context.Employees
-                            join d in _context.Duties on e.DutyId equals d.Id
-                            where e.Id == shiftModel.EmployeeId
-                            select d.DutyName).FirstOrDefault();
+            var dutyName = await (
+                from e in _context.Employees
+                join d in _context.Duties on e.DutyId equals d.Id
+                where e.Id == shiftModel.EmployeeId
+                select d.DutyName
+                ).FirstOrDefaultAsync();
             if (dutyName == "Manager")
             {
                 if (shiftInfo.ManagerId != 0)
@@ -61,10 +63,6 @@ namespace PBL3.Server.Repositories
             }
             else if (dutyName == "Employee")
             {
-                if (shiftInfo.Checked)
-                {
-                    throw new Exception("Cannot register for the shift as the form is closed.");
-                }
 
                 bool shiftExists = await (
                     from s in _context.Shifts
@@ -87,6 +85,7 @@ namespace PBL3.Server.Repositories
             }
 
             var shift = _mapper.Map<Shift>(shiftModel);
+           
             _context.Shifts.Add(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);

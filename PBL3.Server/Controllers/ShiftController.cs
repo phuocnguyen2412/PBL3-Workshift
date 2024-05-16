@@ -59,6 +59,7 @@ namespace PBL3.Server.Controllers
         {
             try
             {
+
                 if (shift == null)
                 {
                     return BadRequest(new { message = "Invalid shift information." });
@@ -73,7 +74,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(new { Message = e.Message });
+                return BadRequest(new { e.Message });
             }
         }
 
@@ -96,7 +97,7 @@ namespace PBL3.Server.Controllers
 
                 return Ok(updatedShift);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
@@ -153,7 +154,7 @@ namespace PBL3.Server.Controllers
 
                 return Ok(deletedShift);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
@@ -172,7 +173,7 @@ namespace PBL3.Server.Controllers
 
                 return Ok(isDeleted);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
