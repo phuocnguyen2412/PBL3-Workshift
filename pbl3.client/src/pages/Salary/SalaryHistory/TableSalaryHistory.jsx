@@ -21,6 +21,7 @@ export default function TableSalaryHistory() {
     useEffect(() => {
         fetchData();
     }, []);
+
     const columns = [
         {
             title: "Full Name",
@@ -81,7 +82,7 @@ export default function TableSalaryHistory() {
 
     return (
         <Spin spinning={loading}>
-            <Table dataSource={data} colunms={columns} rowKey="id" />
+            <Table dataSource={data} columns={columns} rowKey="id" />
         </Spin>
     );
 }
