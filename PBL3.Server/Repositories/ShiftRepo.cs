@@ -169,26 +169,20 @@ namespace PBL3.Server.Repositories
             }
             DateTime date = DateTime.Now;
 
-
-
             shift.CheckInTime = date;
-
 
             _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(
-         int shiftId
-        )
+        public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int shiftId)
         {
             DateTime date = DateTime.Now;
-            
+
             var result = await _context.Shifts.FindAsync(shiftId);
 
             result.CheckOutTime = date;
-
 
             _context.Shifts.Update(result);
             await _context.SaveChangesAsync();
@@ -208,9 +202,8 @@ namespace PBL3.Server.Repositories
             {
                 return null;
             }
-         
-
-            var totalHours = (date - result.CheckInTime).TotalHours;
+            TimeSpan a = date - result.CheckInTime;
+            var totalHours = a.TotalHours;
             var totalHoursFormatted = Convert.ToDouble(totalHours);
             var hourHistory = new HourHistory
             {
@@ -220,7 +213,6 @@ namespace PBL3.Server.Repositories
             };
             _context.HourHistories.Add(hourHistory);
             await _context.SaveChangesAsync();
-
 
             return _mapper.Map<ShiftModel>(result);
         }

@@ -16,7 +16,7 @@ namespace PBL3.Server.Data
 
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
-        public DateTime? CheckInTime { get; set; }
-        public DateTime? CheckOutTime { get; set; }
+        public DateTime CheckInTime { get; set; }
+        public DateTime CheckOutTime { get; set; }
     }
 }
