@@ -1,6 +1,6 @@
-﻿using PBL3.Server.Data;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+using PBL3.Server.Data;
 
 namespace PBL3.Server.Models
 {
@@ -8,8 +8,8 @@ namespace PBL3.Server.Models
     {
         public int Id { get; set; }
         public int ShiftInfoId { get; set; }
-        public int EmployeeId { get; set; } 
-        public DateTime CheckInTime { get; set; }
-        public DateTime CheckOutTime { get; set; }
+        public int EmployeeId { get; set; }
+        public DateTime? CheckInTime { get; set; }
+        public DateTime? CheckOutTime { get; set; }
     }
 }
