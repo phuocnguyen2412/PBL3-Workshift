@@ -4,7 +4,7 @@
 
 namespace PBL3.Server.Migrations
 {
-    public partial class V8 : Migration
+    public partial class V4 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

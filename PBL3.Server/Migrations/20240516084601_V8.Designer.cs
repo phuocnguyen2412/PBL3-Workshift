@@ -12,7 +12,7 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240516080656_V8")]
+    [Migration("20240516084601_V8")]
     partial class V8
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -213,11 +213,11 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<TimeSpan>("CheckInTime")
-                        .HasColumnType("TIME");
+                    b.Property<DateTime>("CheckInTime")
+                        .HasColumnType("DATE");
 
-                    b.Property<TimeSpan>("CheckOutTime")
-                        .HasColumnType("TIME");
+                    b.Property<DateTime>("CheckOutTime")
+                        .HasColumnType("DATE");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");

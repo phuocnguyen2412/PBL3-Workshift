@@ -57,50 +57,71 @@ namespace PBL3.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<ShiftModel>> AddShiftAsync(ShiftModel shift)
         {
-            if (shift == null)
+            try
             {
-                return BadRequest(new { message = "Invalid shift information." });
+                if (shift == null)
+                {
+                    return BadRequest(new { message = "Invalid shift information." });
+                }
+
+                var newShift = await _shiftRepo.AddShiftAsync(shift);
+                if (newShift == null)
+                {
+                    return BadRequest(new { message = "Failed to add shift information." });
+                }
+                return Ok(newShift);
+            }catch(Exception e)
+            {
+                return BadRequest(new {Message = e.Message});
             }
 
-            var newShift = await _shiftRepo.AddShiftAsync(shift);
-            if (newShift == null)
-            {
-                return BadRequest(new { message = "Failed to add shift information." });
-            }
-            return Ok(newShift);
         }
 
         [HttpPost("manager")]
         public async Task<ActionResult<ShiftModel>> AddShiftForManagerAsync(ShiftModel shift)
         {
-            if (shift == null)
+            try
             {
-                return BadRequest(new { message = "Invalid shift information." });
-            }
+                if (shift == null)
+                {
+                    return BadRequest(new { message = "Invalid shift information." });
+                }
 
-            var newShift = await _shiftRepo.AddShiftForManagerAsync(shift);
-            if (newShift == null)
-            {
-                return BadRequest(new { message = "Failed to add shift information." });
+                var newShift = await _shiftRepo.AddShiftForManagerAsync(shift);
+                if (newShift == null)
+                {
+                    return BadRequest(new { message = "Failed to add shift information." });
+                }
+                return Ok(newShift);
             }
-            return Ok(newShift);
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<ShiftModel>> UpdateShiftAsync(int id, ShiftModel shift)
         {
-            if (shift == null || id != shift.Id)
+            try
             {
-                return BadRequest(new { message = "Invalid shift information." });
-            }
+                if (shift == null || id != shift.Id)
+                {
+                    return BadRequest(new { message = "Invalid shift information." });
+                }
 
-            var updatedShift = await _shiftRepo.UpdateShiftAsync(shift);
-            if (updatedShift == null)
+                var updatedShift = await _shiftRepo.UpdateShiftAsync(shift);
+                if (updatedShift == null)
+                {
+                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                }
+
+                return Ok(updatedShift);
+            }
+            catch(Exception e)
             {
-                return NotFound(new { message = $"Shift with ID {id} not found." });
+                return BadRequest(new { message = e.Message });
             }
-
-            return Ok(updatedShift);
         }
 
         [HttpPut("{shiftId}/checkin")]
@@ -144,25 +165,39 @@ namespace PBL3.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ShiftModel>> DeleteShiftAsync(int id)
         {
-            var deletedShift = await _shiftRepo.DeleteShiftAsync(id);
-            if (deletedShift == null)
+            try
             {
-                return NotFound(new { message = $"Shift with ID {id} not found." });
-            }
+                var deletedShift = await _shiftRepo.DeleteShiftAsync(id);
+                if (deletedShift == null)
+                {
+                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                }
 
-            return Ok(deletedShift);
+                return Ok(deletedShift);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
 
         [HttpDelete("{id}/manager")]
         public async Task<ActionResult<bool>> DeleteShiftByManagerAsync(int id, int shiftInfoId)
         {
-            var isDeleted = await _shiftRepo.DeleteShiftByManagerAsync(id, shiftInfoId);
-            if (!isDeleted)
+            try
             {
-                return NotFound(new { message = $"Shift with ID {id} not found." });
-            }
+                var isDeleted = await _shiftRepo.DeleteShiftByManagerAsync(id, shiftInfoId);
+                if (!isDeleted)
+                {
+                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                }
 
-            return Ok(isDeleted);
+                return Ok(isDeleted);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
     }
 }
