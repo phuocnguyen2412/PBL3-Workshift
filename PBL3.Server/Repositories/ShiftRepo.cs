@@ -39,7 +39,6 @@ namespace PBL3.Server.Repositories
                             join d in _context.Duties on e.DutyId equals d.Id
                             where e.Id == shiftModel.EmployeeId
                             select d.DutyName).FirstOrDefault();
-
             if (dutyName == "Manager")
             {
                 if (shiftInfo.ManagerId != 0)
@@ -77,6 +76,14 @@ namespace PBL3.Server.Repositories
                 {
                     throw new Exception("Employee is already assigned to this shift.");
                 }
+            }
+            else if (dutyName == "Admin")
+            {
+                throw new Exception("Admin cannot be assigned to a shift.");
+            }
+            else
+            {
+                throw new Exception("Invalid DutyName.");
             }
 
             var shift = _mapper.Map<Shift>(shiftModel);
