@@ -61,7 +61,21 @@ export default function AdminDashboard({ collapsed }) {
     };
     return (
         <Sider trigger={null} collapsible collapsed={collapsed}>
-            <div className="demo-logo-vertical" />
+            <div
+                className="demo-logo-vertical"
+                style={{
+                    padding: "24px",
+                    backgroundColor: "white",
+                }}
+            >
+                <img
+                    style={{
+                        width: "80%",
+                    }}
+                    src="https://demo.1office.vn/packages/4x/style/packages/login/images/logo.svg"
+                    alt=""
+                />
+            </div>
             <Menu
                 onSelect={handleSelected}
                 openKeys={stateOpenKeys}

@@ -92,6 +92,7 @@ namespace PBL3.Server.Repositories
                 where e.Id == id
                 select new
                 {
+                    a.BasicSalary,
                     e.Id,
                     e.DutyId,
                     e.FullName,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function useFetch(baseUrl) {
-    const token = localStorage.getItem("token");
+    const token = JSON.stringify(localStorage.getItem("token"));
     const [loading, setLoading] = useState(false);
 
     function getApi(url) {

@@ -70,7 +70,9 @@ namespace PBL3.Server.Repositories
         public async Task<List<SalaryHistory>> AddSalaryHistory(SalaryHistoryModel model)
         {
             var newSalaryHistories = new List<SalaryHistory>();
-            foreach (var employeeId in model.EmployeeIds)
+            var employeeIdsToProcess = model.EmployeeIds != null && model.EmployeeIds.Any() && !model.EmployeeIds.Contains(0)
+             ? model.EmployeeIds : await _context.Employees.Select(e => e.Id).ToListAsync();
+            foreach (var employeeId in employeeIdsToProcess)
             {
                 var result = await (from e in _context.Employees join d in _context.Duties on e.DutyId equals d.Id
                                     where e.Id == employeeId
@@ -79,7 +81,6 @@ namespace PBL3.Server.Repositories
                                         e.CoefficientsSalary,
                                         d.BasicSalary,
                                     }).FirstOrDefaultAsync();
-
                 if (result != null)
                 {
                     var totalHours = await CalculateTotalHours(model.StartDate, model.EndDate, employeeId);

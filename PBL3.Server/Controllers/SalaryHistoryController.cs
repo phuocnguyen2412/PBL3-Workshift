@@ -32,11 +32,18 @@ namespace PBL3.Server.Controllers
         [HttpPost]
         public async Task<object> AddSalaryHistory(SalaryHistoryModel model)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            var addedSalaryHistory = await _salaryHistoryRepo.AddSalaryHistory(model);
-            return Ok(addedSalaryHistory);
+                var addedSalaryHistory = await _salaryHistoryRepo.AddSalaryHistory(model);
+                return Ok(addedSalaryHistory);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
 
