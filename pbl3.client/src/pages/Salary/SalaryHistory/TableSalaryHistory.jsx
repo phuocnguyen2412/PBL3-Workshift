@@ -12,7 +12,6 @@ export default function TableSalaryHistory() {
     const fetchData = async () => {
         try {
             const response = await getApi(`/SalaryHistory`);
-
             setData(response);
         } catch (e) {
             console.log(e);
