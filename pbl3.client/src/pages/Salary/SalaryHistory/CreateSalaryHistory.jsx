@@ -10,6 +10,7 @@ import {
     Button,
     Drawer,
     Select,
+    DatePicker,
 } from "antd";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
@@ -53,7 +54,14 @@ export default function CreateSalaryHistory() {
         try {
             e.startDate = e.startDate.format("YYYY-MM-DD");
             e.endDate = e.endDate.format("YYYY-MM-DD");
-            console.log(e);
+
+            const res = await postApi("/SalaryHistory", e);
+            console.log(res);
+            apiNotification.success({
+                message: "Success!",
+                description: `Successfully!`,
+                placement: "bottomRight",
+            });
         } catch (error) {
             apiNotification.error({
                 message: "Error!",
@@ -80,7 +88,7 @@ export default function CreateSalaryHistory() {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="name"
+                                    name="employeeIds"
                                     label="Name"
                                     rules={[
                                         {
@@ -111,7 +119,7 @@ export default function CreateSalaryHistory() {
                                         },
                                     ]}
                                 >
-                                    <TimePicker
+                                    <DatePicker
                                         style={{ width: "100%" }}
                                         placeholder="Please enter user name"
                                     />
@@ -128,7 +136,7 @@ export default function CreateSalaryHistory() {
                                         },
                                     ]}
                                 >
-                                    <TimePicker
+                                    <DatePicker
                                         style={{ width: "100%" }}
                                         placeholder="Please enter user name"
                                     />
