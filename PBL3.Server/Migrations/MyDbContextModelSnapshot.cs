@@ -212,10 +212,10 @@ namespace PBL3.Server.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CheckInTime")
-                        .HasColumnType("DATE");
+                        .HasColumnType("DATETIME");
 
                     b.Property<DateTime>("CheckOutTime")
-                        .HasColumnType("DATE");
+                        .HasColumnType("DATETIME");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");

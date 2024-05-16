@@ -95,8 +95,8 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalBonus = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Bonus = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -117,8 +117,8 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    HoursPerDay = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateAt = table.Column<DateTime>(type: "DATE", nullable: false)
+                    HoursPerDay = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "DATE", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -140,10 +140,10 @@ namespace PBL3.Server.Migrations
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     EndDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    TotalHours = table.Column<int>(type: "int", nullable: false),
+                    TotalHours = table.Column<double>(type: "float", nullable: false),
                     TotalBonus = table.Column<int>(type: "int", nullable: false),
                     TotalViolate = table.Column<int>(type: "int", nullable: false),
-                    TotalSalary = table.Column<int>(type: "int", nullable: false),
+                    TotalSalary = table.Column<double>(type: "float", nullable: false),
                     PaidDate = table.Column<DateTime>(type: "DATE", nullable: false)
                 },
                 constraints: table =>
@@ -165,8 +165,8 @@ namespace PBL3.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ShiftInfoId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    CheckInTime = table.Column<TimeSpan>(type: "TIME", nullable: false),
-                    CheckOutTime = table.Column<TimeSpan>(type: "TIME", nullable: false)
+                    CheckInTime = table.Column<DateTime>(type: "DATETIME", nullable: false),
+                    CheckOutTime = table.Column<DateTime>(type: "DATETIME", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -178,8 +178,8 @@ namespace PBL3.Server.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Shift_ShiftInfo_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_Shift_ShiftInfo_ShiftInfoId",
+                        column: x => x.ShiftInfoId,
                         principalTable: "ShiftInfo",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -243,6 +243,11 @@ namespace PBL3.Server.Migrations
                 name: "IX_Shift_EmployeeId",
                 table: "Shift",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shift_ShiftInfoId",
+                table: "Shift",
+                column: "ShiftInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Violate_EmployeeId",
