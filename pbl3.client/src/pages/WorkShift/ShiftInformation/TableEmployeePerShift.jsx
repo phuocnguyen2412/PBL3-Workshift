@@ -5,6 +5,8 @@ import ShiftAction from "./ShiftAction";
 import PropTypes from "prop-types";
 import { useContext } from "react";
 import { AccountContext } from "../../../Context/AccountContext";
+import CheckinEmployee from "./CheckinEmployee";
+import CheckoutEmployee from "./CheckoutEmployee";
 const TableEmployeePerShift = ({ shift, setItems }) => {
     const account = useContext(AccountContext);
 
@@ -60,6 +62,35 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                         render={(_, record) => (
                             <Space size="middle">
                                 <RemoveEmployee record={record} />
+                            </Space>
+                        )}
+                    />
+                )}
+
+                {account.account.dutyName === "Quản lý" && (
+                    <Column
+                        title="Check In"
+                        key="checkIn"
+                        render={(_, record) => (
+                            <Space size="middle">
+                                <CheckinEmployee
+                                    record={record}
+                                    setItems={setItems}
+                                />
+                            </Space>
+                        )}
+                    />
+                )}
+                {account.account.dutyName === "Quản lý" && (
+                    <Column
+                        title="Check Out"
+                        key="checkOut"
+                        render={(_, record) => (
+                            <Space size="middle">
+                                <CheckoutEmployee
+                                    record={record}
+                                    setItems={setItems}
+                                />
                             </Space>
                         )}
                     />

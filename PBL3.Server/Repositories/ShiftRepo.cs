@@ -160,15 +160,19 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int id, TimeSpan checkInTime)
+        public async Task<ShiftModel> UpdateShiftCheckInTimeAsync(int shiftId)
         {
-            var shift = await _context.Shifts.FindAsync(id);
+            var shift = await _context.Shifts.FindAsync(shiftId);
             if (shift == null)
             {
                 return null;
             }
+            DateTime date = DateTime.Now;
+        
+ 
 
-            shift.CheckInTime = checkInTime;
+            shift.CheckInTime = new TimeSpan(date.Hour, date.Minute, date.Second); 
+
 
             _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
@@ -176,41 +180,49 @@ namespace PBL3.Server.Repositories
         }
 
         public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(
-            int Employeeid,
-            int shiftInfoId,
-            TimeSpan checkOutTime
+         int shiftId
         )
         {
-            var shift = await _context
-                .Shifts.Include(s => s.ShiftInfo)
-                .Where(s => s.EmployeeId == Employeeid && s.ShiftInfoId == shiftInfoId)
-                .FirstOrDefaultAsync();
+            DateTime date = DateTime.Now;
+            TimeSpan checkOutTime = new TimeSpan(date.Hour, date.Minute, date.Second);
+            var result = await _context.Shifts.FindAsync(shiftId);
 
-            if (shift == null)
+            result.CheckOutTime = checkOutTime;
+
+
+            _context.Shifts.Update(result);
+            await _context.SaveChangesAsync();
+
+            var shift = await (
+                from s in _context.Shifts
+                join shiftInfo in _context.ShiftInfos on s.ShiftInfoId equals shiftInfo.Id
+                where s.Id == shiftId
+                select new
+                {
+                    s.CheckOutTime,
+                    s.EmployeeId,
+                    shiftInfo.Date
+                }
+            ).FirstOrDefaultAsync();
+            if (shift == null || result == null)
             {
                 return null;
             }
+         
 
-            shift.CheckOutTime = checkOutTime;
-
-            var totalHours = (checkOutTime - shift.CheckInTime).TotalHours;
-
-            var totalHoursFormatted = totalHours.ToString("0.##");
-
+            var totalHours = (checkOutTime - result.CheckInTime).TotalHours;
+            var totalHoursFormatted = Convert.ToDouble(totalHours);
             var hourHistory = new HourHistory
             {
                 EmployeeId = shift.EmployeeId,
-                DateAt = shift.ShiftInfo.Date,
+                Date = shift.Date,
                 HoursPerDay = totalHoursFormatted
             };
-
             _context.HourHistories.Add(hourHistory);
             await _context.SaveChangesAsync();
 
-            _context.Shifts.Update(shift);
-            await _context.SaveChangesAsync();
 
-            return _mapper.Map<ShiftModel>(shift);
+            return _mapper.Map<ShiftModel>(result);
         }
     }
 }

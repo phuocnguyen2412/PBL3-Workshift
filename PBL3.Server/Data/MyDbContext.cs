@@ -26,9 +26,13 @@ namespace PBL3.Server.Data
 
             modelBuilder.Entity<SalaryHistory>().Property(m => m.EndDate).HasColumnType("DATE");
 
-            modelBuilder.Entity<SalaryHistory>().Property(m => m.PaidDate).HasColumnType("DATE");
+            modelBuilder.Entity<SalaryHistory>()
+                .Property(m => m.PaidDate)
+                .HasColumnType("DATE");
 
-            modelBuilder.Entity<HourHistory>().Property(m => m.DateAt).HasColumnType("DATE");
+            modelBuilder.Entity<HourHistory>()
+                .Property(m => m.Date)
+                .HasColumnType("DATE");
         }
 
         #region

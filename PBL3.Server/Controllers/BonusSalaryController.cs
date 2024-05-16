@@ -27,10 +27,10 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost("addforemployees")]
-        public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryModel request)
+        public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryModel model)
         {
            
-            var id = await _bonusSalaryRepo.AddBonusSalaryForEmployeesAsync(request);
+            var id = await _bonusSalaryRepo.AddBonusSalaryForEmployeesAsync(model);
             if (id > 0)
             {
                 return Ok(new { Message = "Bonus salary added successfully" });

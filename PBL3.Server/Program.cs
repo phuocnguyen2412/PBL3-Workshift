@@ -26,6 +26,7 @@ builder.Services.AddScoped<IAccount, AccountRepo>();
 builder.Services.AddScoped<IBonusSalary, BonusSalaryRepo>();
 builder.Services.AddScoped<IViolate, ViolateRepo>();
 builder.Services.AddScoped<IShift, ShiftRepo>();
+builder.Services.AddScoped<ISalaryHistory,SalaryHistoryRepo>();
 
 var app = builder.Build();
 

@@ -124,15 +124,15 @@ namespace PBL3.Server.Controllers
             }
         }
 
-        [HttpPut("{id}/checkin")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int id, TimeSpan checkInTime)
+        [HttpPut("{shiftId}/checkin")]
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int shiftId)
         {
             try
             {
-                var updatedShift = await _shiftRepo.UpdateShiftCheckInTimeAsync(id, checkInTime);
+                var updatedShift = await _shiftRepo.UpdateShiftCheckInTimeAsync(shiftId);
                 if (updatedShift == null)
                 {
-                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                    return NotFound(new { message = $"Shift with ID {shiftId} not found." });
                 }
                 return Ok(updatedShift);
             }
@@ -143,21 +143,21 @@ namespace PBL3.Server.Controllers
         }
 
 
-        [HttpPut("{id}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, int shiftInfoId, TimeSpan checkOutTime)
+        [HttpPut("{shiftId}/checkout")]
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int shiftId)
         {
             try
             {
-                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(id, shiftInfoId, checkOutTime);
+                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(shiftId);
                 if (updatedShift == null)
                 {
-                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                    return NotFound(new { message = $"Shift with ID {shiftId} not found." });
                 }
-                return Ok(updatedShift);
+                return Ok(new { message = $"Update {shiftId} thanh cong." });
             }
             catch (System.Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = e.Message });
             }
         }
 

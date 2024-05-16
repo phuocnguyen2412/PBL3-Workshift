@@ -1,12 +1,19 @@
 import { useState } from "react";
 
 export default function useFetch(baseUrl) {
+    const token = JSON.stringify(localStorage.getItem("token"));
     const [loading, setLoading] = useState(false);
 
     function getApi(url) {
         setLoading(true);
         return new Promise((resolve, reject) => {
-            fetch(baseUrl + url)
+            fetch(baseUrl + url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `${token}`,
+                },
+            })
                 .then(async (response) => {
                     if (!response.ok) {
                         const errorData = await response.json();
@@ -36,6 +43,7 @@ export default function useFetch(baseUrl) {
             fetch(baseUrl + url, {
                 method: "post",
                 headers: {
+                    Authorization: `${token}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(body),
@@ -68,6 +76,7 @@ export default function useFetch(baseUrl) {
             fetch(baseUrl + url, {
                 method: "PUT",
                 headers: {
+                    Authorization: `${token}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(body),
@@ -100,6 +109,7 @@ export default function useFetch(baseUrl) {
             fetch(baseUrl + url + `/${id}`, {
                 method: "delete",
                 headers: {
+                    Authorization: `${token}`,
                     "Content-Type": "application/json",
                 },
             })
