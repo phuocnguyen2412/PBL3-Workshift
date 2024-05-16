@@ -1,21 +1,39 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Modal, Spin } from "antd";
+import { Button, Modal, Spin, notification } from "antd";
 import { useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import PropsType from "prop-types";
+import localhost from "../../../Services/localhost";
 
-const RemoveEmployee = ({ record }) => {
-    const { loading, deleteApi } = useFetch("");
+const RemoveEmployee = ({ record, setItems }) => {
+    const { loading, deleteApi } = useFetch(localhost);
     const [openDelete, setOpenDelete] = useState(false);
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
     const cancelDelete = () => {
         setOpenDelete(false);
     };
     const confirmDelete = async () => {
-        deleteApi();
-        setOpenDelete(false);
+        try {
+            deleteApi("/Shift", record.shiftId);
+            setOpenDelete(false);
+            apiNotification.success({
+                message: "Success!",
+                description: `You created a shift ${record.fullName}`,
+                placement: "topRight",
+            });
+            setItems();
+        } catch (e) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${e}`,
+                placement: "topRight",
+            });
+        }
     };
     return (
         <>
+            {contextHolderNotification}
             <Spin spinning={loading}>
                 <Modal
                     centered

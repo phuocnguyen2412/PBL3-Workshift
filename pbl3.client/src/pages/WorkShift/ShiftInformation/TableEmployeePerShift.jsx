@@ -13,7 +13,7 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
     return (
         <>
             <ShiftAction shift={shift} setItems={setItems} />
-            <Table rowKey="id" dataSource={shift.employees}>
+            <Table dataSource={shift.employees}>
                 <Column title="Full name" dataIndex="fullName" key="fullName" />
                 <Column
                     title="Duty"
@@ -61,7 +61,10 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                         key="action"
                         render={(_, record) => (
                             <Space size="middle">
-                                <RemoveEmployee record={record} />
+                                <RemoveEmployee
+                                    record={record}
+                                    setItems={setItems}
+                                />
                             </Space>
                         )}
                     />
