@@ -68,7 +68,7 @@ export default function TableSalaryHistory() {
             title: "Paid date",
             dataIndex: "paidDate",
             render: (_, record) => (
-                <span>{dayjs(record.endDate).format("DD/MM/YYYY HH:mm")}</span>
+                <span>{dayjs(record.endDate).format("DD/MM/YYYY")}</span>
             ),
         },
         {
@@ -76,7 +76,9 @@ export default function TableSalaryHistory() {
 
             title: "detail",
 
-            render: (_, record) => <DetailSalaryHistory record={record} />,
+            render: (_, record) => (
+                <DetailSalaryHistory record={record} fetchData={fetchData} />
+            ),
         },
     ];
 

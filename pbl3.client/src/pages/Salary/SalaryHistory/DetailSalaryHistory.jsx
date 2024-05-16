@@ -1,22 +1,42 @@
-import { Button, Descriptions, Modal, Tag } from "antd";
+import { Button, Descriptions, Modal, Tag, notification } from "antd";
 import dayjs from "dayjs";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import useFetch from "../../../custom hook/useFetch";
+import localhost from "../../../Services/localhost";
 
-export default function DetailSalaryHistory({ record }) {
+export default function DetailSalaryHistory({ record, fetchData }) {
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
-
+    const { updateApi } = useFetch(localhost);
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
     const showModal = () => {
         setOpen(true);
     };
-    const handleOk = () => {
-        setModalText("The modal will be closed after two seconds");
+    const handleOk = async () => {
         setConfirmLoading(true);
-        setTimeout(() => {
-            setOpen(false);
-            setConfirmLoading(false);
-        }, 2000);
+        try {
+            const response = await updateApi(
+                `/SalaryHistory/${record.salaryHistory}`,
+                {}
+            );
+
+            apiNotification.success({
+                message: "Success!",
+                description: `${response.messsage}`,
+                placement: "topRight",
+            });
+            fetchData();
+        } catch (error) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${error}`,
+                placement: "topRight",
+            });
+        }
+        setOpen(false);
+        setConfirmLoading(false);
     };
     const handleCancel = () => {
         console.log("Clicked cancel button");
@@ -28,12 +48,14 @@ export default function DetailSalaryHistory({ record }) {
             label: "Full name",
             children: (
                 <>
-                    <Link to={`/Employee/${record.id}`}>{record.fullName}</Link>
+                    <Link to={`/Employee/${record.employeeId}`}>
+                        {record.fullName}
+                    </Link>
                 </>
             ),
         },
         {
-            key: "2",
+            key: "1000",
             label: "Duty",
             children: (
                 <>
@@ -67,36 +89,36 @@ export default function DetailSalaryHistory({ record }) {
         {
             key: "10",
             label: "Start date",
-            children: dayjs(record.startDate).format("DD-MM-YYYY HH:mm:ss"),
+            children: dayjs(record.startDate).format("DD-MM-YYYY"),
         },
         {
             key: "11",
             label: "End date",
-            children: dayjs(record.endDate).format("DD-MM-YYYY HH:mm:ss"),
+            children: dayjs(record.endDate).format("DD-MM-YYYY"),
         },
         {
-            key: "3",
+            key: "totalHours3",
             label: "totalHours",
             children: record.totalHours.toLocaleString(),
         },
         {
-            key: "3",
+            key: "totalBonus",
             label: "totalBonus",
             children: record.totalBonus.toLocaleString(),
         },
 
         {
-            key: "3",
+            key: "totalViolate",
             label: "totalViolate",
             children: record.totalViolate.toLocaleString(),
         },
         {
-            key: "3",
+            key: "totalSalary",
             label: "totalSalary",
             children: record.totalSalary.toLocaleString(),
         },
         {
-            key: "4",
+            key: "Paid date",
             label: "Paid date",
             children: (
                 <>
@@ -104,9 +126,7 @@ export default function DetailSalaryHistory({ record }) {
                         <Tag color="red">Have not been paid</Tag>
                     ) : (
                         <Tag color="green">
-                            {dayjs(record.paidDate).format(
-                                "DD-MM-YYYY HH:mm:ss"
-                            )}{" "}
+                            {dayjs(record.paidDate).format("DD-MM-YYYY")}
                         </Tag>
                     )}
                 </>
@@ -115,6 +135,7 @@ export default function DetailSalaryHistory({ record }) {
     ];
     return (
         <>
+            {contextHolderNotification}
             <Button type="primary" onClick={showModal}>
                 Detail
             </Button>
