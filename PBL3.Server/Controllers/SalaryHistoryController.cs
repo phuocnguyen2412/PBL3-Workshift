@@ -17,13 +17,13 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllSalaryHistory()
+        public async Task<object> GetAllSalaryHistory()
         {
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistory();
             return Ok(salaryHistories);
         }
 
-        [HttpGet("{employeeId}")]
+        [HttpGet("{Id}")]
         public async Task<object> GetAllSalaryHistoryById(int Id)
         {
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
@@ -41,10 +41,17 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSalaryById(int id)
+        public async Task<ActionResult> UpdateSalaryById(int id)
         {
-            await _salaryHistoryRepo.UpdateSalaryById(id);
-            return Ok(new { Message = "Salary history updated successfully." });
+            try
+            {
+                await _salaryHistoryRepo.UpdateSalaryById(id);
+                return Ok(new { Message = "Salary history updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message); 
+            }
         }
     }
 }
