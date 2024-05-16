@@ -168,10 +168,10 @@ namespace PBL3.Server.Repositories
                 return null;
             }
             DateTime date = DateTime.Now;
-        
- 
 
-            shift.CheckInTime = new TimeSpan(date.Hour, date.Minute, date.Second); 
+
+
+            shift.CheckInTime = date;
 
 
             _context.Shifts.Update(shift);
@@ -184,10 +184,10 @@ namespace PBL3.Server.Repositories
         )
         {
             DateTime date = DateTime.Now;
-            TimeSpan checkOutTime = new TimeSpan(date.Hour, date.Minute, date.Second);
+            
             var result = await _context.Shifts.FindAsync(shiftId);
 
-            result.CheckOutTime = checkOutTime;
+            result.CheckOutTime = date;
 
 
             _context.Shifts.Update(result);
@@ -210,7 +210,7 @@ namespace PBL3.Server.Repositories
             }
          
 
-            var totalHours = (checkOutTime - result.CheckInTime).TotalHours;
+            var totalHours = (date - result.CheckInTime).TotalHours;
             var totalHoursFormatted = Convert.ToDouble(totalHours);
             var hourHistory = new HourHistory
             {
