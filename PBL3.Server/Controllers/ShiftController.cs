@@ -125,7 +125,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut("{id}/checkin")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int id, DateTime checkInTime)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int id, TimeSpan checkInTime)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPut("{id}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, int shiftInfoId, DateTime checkOutTime)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int id, int shiftInfoId, TimeSpan checkOutTime)
         {
             try
             {
