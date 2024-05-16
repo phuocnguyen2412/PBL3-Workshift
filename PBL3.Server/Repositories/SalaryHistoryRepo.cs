@@ -22,13 +22,47 @@ namespace PBL3.Server.Repositories
 
         public async Task<object> GetAllSalaryHistory()
         {
-            var salaryHistories = await _context.SalaryHistories.ToListAsync();
+            var salaryHistories = await (from sh in _context.SalaryHistories join e in _context.Employees on sh.EmployeeId equals e.Id
+                                        join d in _context.Duties on e.DutyId equals d.Id
+                                        select new
+                                        {
+                                            e.Id,
+                                            e.FullName,
+                                            d.DutyName,
+                                            d.BasicSalary,
+                                            e.CoefficientsSalary,
+                                            sh.StartDate,
+                                            sh.EndDate,
+                                            sh.TotalHours,
+                                            sh.TotalBonus,
+                                            sh.TotalViolate,
+                                            sh.TotalSalary,
+                                            sh.PaidDate
+                                        }).ToListAsync();
             return salaryHistories;
         }
 
         public async Task<object> GetAllSalaryHistoryById(int Id)
         {
-            var salaryHistories = await _context.SalaryHistories.Where(sh => sh.Id == Id).ToListAsync();
+            var salaryHistories = await (from sh in _context.SalaryHistories
+                                         join e in _context.Employees on sh.EmployeeId equals e.Id
+                                         join d in _context.Duties on e.DutyId equals d.Id
+                                         where sh.Id == Id
+                                         select new
+                                         {
+                                             e.Id,
+                                             e.FullName,
+                                             d.DutyName,
+                                             d.BasicSalary,
+                                             e.CoefficientsSalary,
+                                             sh.StartDate,
+                                             sh.EndDate,
+                                             sh.TotalHours,
+                                             sh.TotalBonus,
+                                             sh.TotalViolate,
+                                             sh.TotalSalary,
+                                             sh.PaidDate
+                                         }).ToListAsync();
 
             return salaryHistories;
         }
@@ -36,16 +70,17 @@ namespace PBL3.Server.Repositories
         public async Task<List<SalaryHistory>> AddSalaryHistory(SalaryHistoryModel model)
         {
             var newSalaryHistories = new List<SalaryHistory>();
-            foreach (var employeeId in model.EmployeeIds)
+            var employeeIdsToProcess = model.EmployeeIds != null && model.EmployeeIds.Any() && !model.EmployeeIds.Contains(0)
+             ? model.EmployeeIds : await _context.Employees.Select(e => e.Id).ToListAsync();
+            foreach (var employeeId in employeeIdsToProcess)
             {
                 var result = await (from e in _context.Employees join d in _context.Duties on e.DutyId equals d.Id
                                     where e.Id == employeeId
                                     select new
-                                    {
+                                    {   
                                         e.CoefficientsSalary,
                                         d.BasicSalary,
                                     }).FirstOrDefaultAsync();
-
                 if (result != null)
                 {
                     var totalHours = await CalculateTotalHours(model.StartDate, model.EndDate, employeeId);
