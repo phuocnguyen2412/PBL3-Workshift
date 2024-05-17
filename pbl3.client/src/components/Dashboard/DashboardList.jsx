@@ -81,7 +81,7 @@ export const AdminList = [
         label: <Link to="/login">Logout</Link>,
     },
 ];
-export const Employee = [
+export const Manager = [
     {
         key: "1",
         icon: <UserOutlined />,
@@ -93,24 +93,31 @@ export const Employee = [
         label: <Link to="./work_shift/shift_information">Work Shift</Link>,
     },
     {
-        key: "4",
-        icon: <SmileOutlined />,
-        label: <Link to="./bonus_salary">Bonus salary</Link>,
-    },
-    {
-        key: "5",
-        icon: <DollarOutlined />,
-        label: <Link to="./salary_history">Salary history</Link>,
-    },
-    {
-        key: "6",
-        icon: <ScheduleOutlined />,
-        label: <Link to="./shift_checking">Shift checking</Link>,
-    },
-    {
         key: "7",
         icon: <SolutionOutlined />,
-        label: <Link to="./shift_report">Shift reports</Link>,
+        label: <Link to="./work_shift/shift_report">Shift reports</Link>,
+    },
+    {
+        key: "/change-password",
+        icon: <SafetyOutlined />,
+        label: <Link to="/change-password">Change Password</Link>,
+    },
+    {
+        key: "/login",
+        icon: <CloseOutlined />,
+        label: <Link to="/login">Logout</Link>,
+    },
+];
+export const Employee = [
+    {
+        key: "1",
+        icon: <UserOutlined />,
+        label: <Link to="./home/">Home</Link>,
+    },
+    {
+        key: "2",
+        icon: <CalendarOutlined />,
+        label: <Link to="./work_shift/shift_information">Work Shift</Link>,
     },
     {
         key: "/change-password",

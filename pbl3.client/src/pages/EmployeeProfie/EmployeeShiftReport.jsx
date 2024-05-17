@@ -6,17 +6,16 @@ import KanbanReport from "../WorkShift/ShiftReport/KanbanReport";
 import { Spin, Tabs } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 import CreateReport from "../WorkShift/ShiftReport/CreateReport";
-import { AccountContext } from "../../Context/AccountContext";
+
+import { useParams } from "react-router-dom";
 
 export default function EmployeeShiftReport() {
-    const account = useContext(AccountContext);
+    const { id } = useParams();
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
 
     const fetchData = async () => {
-        const newData = await getApi(
-            `/Violate/ByemployeeId/${account.account.employeeId}`
-        );
+        const newData = await getApi(`/Violate/ByemployeeId/${id}`);
         setData(newData);
     };
 

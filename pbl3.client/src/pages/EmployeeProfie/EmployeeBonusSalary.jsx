@@ -5,20 +5,19 @@ import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
 import TableBonus from "../Salary/BonusSalary/TableBonus";
 import KanbanBonus from "../Salary/BonusSalary/KanbanBonus";
-import CreateBonusSalary from "../Salary/BonusSalary/CreateBonusSalary";
-import { AccountContext } from "../../Context/AccountContext";
+
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
+import { useParams } from "react-router-dom";
 
 export default function EmployeeBonusSalary() {
-    const account = useContext(AccountContext);
+    const { id } = useParams();
+
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
     const [type, setType] = useState(null);
     const fetchData = async () => {
-        const response = await getApi(
-            `/BonusSalary/${account.account.employeeId}`
-        );
+        const response = await getApi(`/BonusSalary/${id}`);
         setData(response);
     };
     useEffect(() => {
@@ -52,9 +51,6 @@ export default function EmployeeBonusSalary() {
                         },
                     ]}
                 />
-                {account.account.dutyName === "Admin" && (
-                    <CreateBonusSalary reload={fetchData} />
-                )}
             </Flex>
 
             <Spin spinning={loading}>{type}</Spin>

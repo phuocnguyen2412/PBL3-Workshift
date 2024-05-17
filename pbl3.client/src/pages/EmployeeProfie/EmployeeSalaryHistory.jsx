@@ -1,17 +1,23 @@
 import dayjs from "dayjs";
 import DetailSalaryHistory from "../Salary/SalaryHistory/DetailSalaryHistory";
 import useFetch from "../../custom hook/useFetch";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Spin, Table } from "antd";
 import localhost from "../../Services/localhost";
+import { AccountContext } from "../../Context/AccountContext";
 
 const EmployeeSalaryHistory = () => {
+    const { id } = useParams();
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
     const fetchData = async () => {
         try {
-            const response = await getApi(`/SalaryHistory`);
+            console.log(`/SalaryHistory/EmployeeId?EmployeeId=${id}`);
+            const response = await getApi(
+                `/SalaryHistory/EmployeeId?EmployeeId=${id}`
+            );
+            console.log(response);
             setData(response);
         } catch (e) {
             console.log(e);
@@ -74,7 +80,7 @@ const EmployeeSalaryHistory = () => {
         {
             align: "center",
 
-            title: "detail",
+            title: "Detail",
 
             render: (_, record) => (
                 <DetailSalaryHistory record={record} fetchData={fetchData} />

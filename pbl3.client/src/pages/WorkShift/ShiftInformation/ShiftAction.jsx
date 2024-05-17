@@ -81,6 +81,7 @@ export default function ShiftAction({ shift, setItems }) {
             );
 
             await deleteApi("/Shift", data.shiftId);
+
             apiNotification.success({
                 message: "Success!",
                 description: `Unregistration successful`,
