@@ -29,6 +29,12 @@ namespace PBL3.Server.Controllers
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
             return Ok(salaryHistories);
         }
+        [HttpGet("{EmployeeId}")]
+        public async Task<object> GetAllSalaryHistoryByEmployeeId(int Id)
+        {
+            var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryByEmployeeId(Id);
+            return Ok(salaryHistories);
+        }
         [HttpPost]
         public async Task<object> AddSalaryHistory(SalaryHistoryModel model)
         {

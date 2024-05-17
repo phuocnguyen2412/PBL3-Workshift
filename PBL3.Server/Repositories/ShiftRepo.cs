@@ -182,13 +182,10 @@ namespace PBL3.Server.Repositories
         public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(
          int shiftId
         )
-        {
-            DateTime date = DateTime.Now;
-            
+        {       
             var result = await _context.Shifts.FindAsync(shiftId);
 
-            result.CheckOutTime = date;
-
+            result.CheckOutTime = DateTime.Now;
 
             _context.Shifts.Update(result);
             await _context.SaveChangesAsync();
@@ -210,7 +207,7 @@ namespace PBL3.Server.Repositories
             }
          
 
-            var totalHours = (date - result.CheckInTime).TotalHours;
+            var totalHours = (result.CheckOutTime - result.CheckInTime).TotalHours;
             var totalHoursFormatted = Convert.ToDouble(totalHours);
             var hourHistory = new HourHistory
             {

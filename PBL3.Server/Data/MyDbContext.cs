@@ -18,9 +18,9 @@ namespace PBL3.Server.Data
 
             modelBuilder.Entity<ShiftInfo>().Property(m => m.EndTime).HasColumnType("TIME");
 
-            modelBuilder.Entity<Shift>().Property(m => m.CheckInTime).HasColumnType("DATE");
+            modelBuilder.Entity<Shift>().Property(m => m.CheckInTime).HasColumnType("DATETIME");
 
-            modelBuilder.Entity<Shift>().Property(m => m.CheckOutTime).HasColumnType("DATE");
+            modelBuilder.Entity<Shift>().Property(m => m.CheckOutTime).HasColumnType("DATETIME");
 
             modelBuilder.Entity<SalaryHistory>().Property(m => m.StartDate).HasColumnType("DATE");
 
