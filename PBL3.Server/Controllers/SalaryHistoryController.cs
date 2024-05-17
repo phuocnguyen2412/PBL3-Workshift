@@ -48,7 +48,7 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return BadRequest(ex);
             }
         }
 
@@ -63,8 +63,9 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message); 
-            }
+             
+                return BadRequest(ex); 
+            } 
         }
     }
 }

@@ -14,30 +14,25 @@ function MainLayout() {
     const [collapsed, setCollapsed] = useState(false);
     const account = useContext(AccountContext);
     const navigate = useNavigate();
-    useEffect(() => {
-        const login = async () => {
-            if (Object.keys(account.account).length === 0) {
-                try {
-                    if (localStorage.getItem("token")) {
-                        const data = await postApi("/Account/LoginByToken", {
-                            token: JSON.parse(localStorage.getItem("token")),
-                        });
+    const login = async () => {
+        try {
+            if (localStorage.getItem("token")) {
+                const data = await postApi("/Account/LoginByToken", {
+                    token: JSON.parse(localStorage.getItem("token")),
+                });
 
-                        account.onChange(data);
-                        localStorage.removeItem("token");
-                        localStorage.setItem(
-                            "token",
-                            JSON.stringify(data.token)
-                        );
-                    } else {
-                        navigate("/login");
-                    }
-                } catch (e) {
-                    navigate("/login");
-                    console.log(e);
-                }
+                account.onChange(data);
+                localStorage.removeItem("token");
+                localStorage.setItem("token", JSON.stringify(data.token));
+            } else {
+                navigate("/login");
             }
-        };
+        } catch (e) {
+            navigate("/login");
+            console.log(e);
+        }
+    };
+    useEffect(() => {
         login();
     }, []);
 
@@ -50,6 +45,7 @@ function MainLayout() {
             <Layout
                 style={{
                     height: "100vh",
+                    overflow: "hidden",
                 }}
             >
                 <AdminDashboard

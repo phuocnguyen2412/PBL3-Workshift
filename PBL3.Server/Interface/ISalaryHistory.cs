@@ -7,6 +7,7 @@ namespace PBL3.Server.Interface
     {
         Task<object> GetAllSalaryHistory();
         Task<object> GetAllSalaryHistoryById(int Id);
+        Task<object> GetAllSalaryHistoryByEmployeeId(int Id);
         Task<List<SalaryHistory>> AddSalaryHistory(SalaryHistoryModel model);
         Task UpdateSalaryById(int id);
 

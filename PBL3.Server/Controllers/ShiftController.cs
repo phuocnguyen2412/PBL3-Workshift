@@ -59,6 +59,7 @@ namespace PBL3.Server.Controllers
         {
             try
             {
+
                 if (shift == null)
                 {
                     return BadRequest(new { message = "Invalid shift information." });
@@ -70,35 +71,13 @@ namespace PBL3.Server.Controllers
                     return BadRequest(new { message = "Failed to add shift information." });
                 }
                 return Ok(newShift);
-            }catch(Exception e)
-            {
-                return BadRequest(new {Message = e.Message});
-            }
-
-        }
-
-        [HttpPost("manager")]
-        public async Task<ActionResult<ShiftModel>> AddShiftForManagerAsync(ShiftModel shift)
-        {
-            try
-            {
-                if (shift == null)
-                {
-                    return BadRequest(new { message = "Invalid shift information." });
-                }
-
-                var newShift = await _shiftRepo.AddShiftForManagerAsync(shift);
-                if (newShift == null)
-                {
-                    return BadRequest(new { message = "Failed to add shift information." });
-                }
-                return Ok(newShift);
             }
             catch (Exception e)
             {
-                return BadRequest(new { message = e.Message });
+                return BadRequest(new { e.Message });
             }
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult<ShiftModel>> UpdateShiftAsync(int id, ShiftModel shift)
@@ -118,18 +97,18 @@ namespace PBL3.Server.Controllers
 
                 return Ok(updatedShift);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
         }
 
         [HttpPut("{shiftId}/checkin")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int shiftId)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int shiftId, int managerId)
         {
             try
             {
-                var updatedShift = await _shiftRepo.UpdateShiftCheckInTimeAsync(shiftId);
+                var updatedShift = await _shiftRepo.UpdateShiftCheckInTimeAsync(shiftId, managerId);
                 if (updatedShift == null)
                 {
                     return NotFound(new { message = $"Shift with ID {shiftId} not found." });
@@ -138,17 +117,16 @@ namespace PBL3.Server.Controllers
             }
             catch (System.Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return BadRequest(new { message = e.Message });
             }
         }
 
-
         [HttpPut("{shiftId}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int shiftId)
+        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int shiftId, int managerId)
         {
             try
             {
-                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(shiftId);
+                var updatedShift = await _shiftRepo.UpdateShiftCheckOutTimeAsync(shiftId, managerId);
                 if (updatedShift == null)
                 {
                     return NotFound(new { message = $"Shift with ID {shiftId} not found." });
@@ -157,9 +135,10 @@ namespace PBL3.Server.Controllers
             }
             catch (System.Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Message = e.Message });
+                return BadRequest(new { message = e.Message });
             }
         }
+
 
 
         [HttpDelete("{id}")]
@@ -175,7 +154,7 @@ namespace PBL3.Server.Controllers
 
                 return Ok(deletedShift);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }
@@ -194,7 +173,7 @@ namespace PBL3.Server.Controllers
 
                 return Ok(isDeleted);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }

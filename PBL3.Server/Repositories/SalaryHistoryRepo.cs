@@ -66,6 +66,30 @@ namespace PBL3.Server.Repositories
 
             return salaryHistories;
         }
+        public async Task<object> GetAllSalaryHistoryByEmployeeId(int Id)
+        {
+            var salaryHistories = await (from sh in _context.SalaryHistories
+                                         join e in _context.Employees on sh.EmployeeId equals e.Id
+                                         join d in _context.Duties on e.DutyId equals d.Id
+                                         where e.Id == Id
+                                         select new
+                                         {
+                                             e.Id,
+                                             e.FullName,
+                                             d.DutyName,
+                                             d.BasicSalary,
+                                             e.CoefficientsSalary,
+                                             sh.StartDate,
+                                             sh.EndDate,
+                                             sh.TotalHours,
+                                             sh.TotalBonus,
+                                             sh.TotalViolate,
+                                             sh.TotalSalary,
+                                             sh.PaidDate
+                                         }).ToListAsync();
+
+            return salaryHistories;
+        }
 
         public async Task<List<SalaryHistory>> AddSalaryHistory(SalaryHistoryModel model)
         {

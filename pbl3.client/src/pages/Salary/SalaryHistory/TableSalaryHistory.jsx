@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import { Spin, Table } from "antd";
@@ -12,7 +12,6 @@ export default function TableSalaryHistory() {
     const fetchData = async () => {
         try {
             const response = await getApi(`/SalaryHistory`);
-
             setData(response);
         } catch (e) {
             console.log(e);
@@ -22,6 +21,7 @@ export default function TableSalaryHistory() {
     useEffect(() => {
         fetchData();
     }, []);
+
     const columns = [
         {
             title: "Full Name",
@@ -68,21 +68,23 @@ export default function TableSalaryHistory() {
             title: "Paid date",
             dataIndex: "paidDate",
             render: (_, record) => (
-                <span>{dayjs(record.endDate).format("DD/MM/YYYY HH:mm")}</span>
+                <span>{dayjs(record.endDate).format("DD/MM/YYYY")}</span>
             ),
         },
         {
             align: "center",
-            width: "100px",
+
             title: "detail",
-            dataIndex: "Delete",
-            render: (_, record) => <DetailSalaryHistory record={record} />,
+
+            render: (_, record) => (
+                <DetailSalaryHistory record={record} fetchData={fetchData} />
+            ),
         },
     ];
 
     return (
         <Spin spinning={loading}>
-            <Table dataSource={data} colunms={columns} rowKey="id" />
+            <Table dataSource={data} columns={columns} rowKey="id" />
         </Spin>
     );
 }
