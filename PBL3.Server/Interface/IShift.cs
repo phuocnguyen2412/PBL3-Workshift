@@ -14,7 +14,7 @@ namespace PBL3.Server.Interface
         public Task<ShiftModel> UpdateShiftAsync(ShiftModel shift);
         public Task<ShiftModel> UpdateShiftCheckInTimeAsync(int id, int managerId);
         public Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int id, int managerId);
-        public Task<ShiftModel> DeleteShiftAsync(int shiftId);
+        public Task<bool> DeleteShiftAsync(int shiftId);
 
     }
 }
