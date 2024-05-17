@@ -16,9 +16,10 @@ export default function CheckoutEmployee({ record, setItems }) {
     const handleUpdateCheckoutTime = async () => {
         try {
             const response = await updateApi(
-                `/Shift/${record.shiftId}/checkotut?ManagerId=${account.account.employeeId}`
+                `/Shift/${record.shiftId}/checkotut?ManagerId=${account.account.employeeId}`,
+                {}
             );
-            console.log(response);
+
             apiNotification.success({
                 message: "Error!",
                 description: `Checkout ${record.fullName} successfully `,

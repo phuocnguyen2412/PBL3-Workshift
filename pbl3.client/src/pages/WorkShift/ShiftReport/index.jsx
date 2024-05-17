@@ -17,7 +17,9 @@ const ShiftReport = () => {
         if (account.account.dutyName === "Admin")
             newData = await getApi("/Violate");
         else if (account.account.dutyName === "Manager")
-            newData = await getApi("/Violate");
+            newData = await getApi(
+                `/Violate/ByManagerId/${account.account.employeeId}`
+            );
         setData(newData);
     };
     useEffect(() => {

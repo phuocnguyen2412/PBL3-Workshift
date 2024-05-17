@@ -184,7 +184,7 @@ namespace PBL3.Server.Repositories
                 from v in _context.Violates
                 join si in _context.ShiftInfos on v.ShiftInfoId equals si.Id
                 join e in _context.Employees on v.EmployeeId equals e.Id
-                where e.Id == employeeId && si.Date >= startDate && si.Date <= endDate
+                where e.Id == employeeId && si.Date >= startDate && si.Date <= endDate && v.Checked == true
                 select v.Handle
             ).SumAsync();
 
