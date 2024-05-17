@@ -8,13 +8,33 @@ CheckinEmployee.propTypes = {
     record: PropTypes.object.isRequired,
     setItems: PropTypes.func.isRequired,
 };
-export default function CheckinEmployee({ record, setItems }) {
+export default function CheckinEmployee({ shift, record, setItems }) {
     const account = useContext(AccountContext);
     const { updateApi } = useFetch(localhost);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
+    function timeStringToDate(timeString) {
+        // Lấy thời gian hiện tại
+        let date = new Date();
+
+        // Tách giờ, phút và giây từ chuỗi thời gian
+        let timeParts = timeString.split(":");
+        let hours = parseInt(timeParts[0], 10);
+        let minutes = parseInt(timeParts[1], 10);
+        let seconds = parseInt(timeParts[2], 10);
+
+        // Thiết lập giờ, phút, giây cho đối tượng Date
+        date.setHours(hours, minutes, seconds, 0);
+
+        return date;
+    }
     const handleUpdateCheckinTime = async () => {
         try {
+            let specificTime = timeStringToDate(shift.startTime);
+
+            // Lấy thời gian hiện tại
+            let now = new Date();
+            if (now < specificTime) throw "Can't checkin before start time";
             const response = await updateApi(
                 `/Shift/${record.shiftId}/checkin?ManagerId=${account.account.employeeId}`
             );

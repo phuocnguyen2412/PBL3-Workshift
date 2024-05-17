@@ -1,13 +1,16 @@
 import { useRoutes } from "react-router-dom";
 
-import { AccountProvider } from "./Context/AccountContext";
+import { AccountContext, AccountProvider } from "./Context/AccountContext";
 
 import routes from "./routes";
+import { useContext } from "react";
 
 function App() {
-    const routeList = useRoutes(routes);
+    const account = useContext(AccountContext);
 
-    return <AccountProvider>{routeList}</AccountProvider>;
+    let routeList = useRoutes(routes);
+
+    return <>{routeList}</>;
 }
 
 export default App;

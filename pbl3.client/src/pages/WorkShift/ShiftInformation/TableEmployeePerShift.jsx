@@ -9,7 +9,7 @@ import CheckinEmployee from "./CheckinEmployee";
 import CheckoutEmployee from "./CheckoutEmployee";
 const TableEmployeePerShift = ({ shift, setItems }) => {
     const account = useContext(AccountContext);
-    console.log(shift.employees);
+    console.log(shift);
     return (
         <>
             <ShiftAction shift={shift} setItems={setItems} />
@@ -79,6 +79,7 @@ const TableEmployeePerShift = ({ shift, setItems }) => {
                                 <CheckinEmployee
                                     record={record}
                                     setItems={setItems}
+                                    shift={shift}
                                 />
                             </Space>
                         )}
