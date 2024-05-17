@@ -19,6 +19,6 @@ namespace PBL3.Server.Data
         public int TotalBonus { get; set; }
         public int TotalViolate { get; set; }
         public double TotalSalary { get; set; }
-        public DateTime PaidDate { get; set; }
+        public DateTime? PaidDate { get; set; }
     }
 }

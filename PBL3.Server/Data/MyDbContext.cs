@@ -25,7 +25,7 @@ namespace PBL3.Server.Data
             modelBuilder.Entity<SalaryHistory>().Property(m => m.StartDate).HasColumnType("DATE");
 
             modelBuilder.Entity<SalaryHistory>().Property(m => m.EndDate).HasColumnType("DATE");
-
+    
             modelBuilder.Entity<SalaryHistory>()
                 .Property(m => m.PaidDate)
                 .HasColumnType("DATE");

@@ -23,13 +23,13 @@ namespace PBL3.Server.Controllers
             return Ok(salaryHistories);
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("Id")]
         public async Task<object> GetAllSalaryHistoryById(int Id)
         {
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
             return Ok(salaryHistories);
         }
-        [HttpGet("{EmployeeId}")]
+        [HttpGet("EmployeeId")]
         public async Task<object> GetAllSalaryHistoryByEmployeeId(int Id)
         {
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryByEmployeeId(Id);
