@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -92,14 +93,14 @@ namespace PBL3.Server.Repositories
         }
 
 
-        public async Task<ShiftModel> DeleteShiftAsync(int shiftId)
+        public async Task<bool> DeleteShiftAsync(int shiftId)
         {
             var shiftDetails = await (
                 from s in _context.Shifts
                 join e in _context.Employees on s.EmployeeId equals e.Id
                 join d in _context.Duties on e.DutyId equals d.Id
                 join si in _context.ShiftInfos on s.ShiftInfoId equals si.Id
-                //where s.Id == shiftId
+                where s.Id == shiftId
                 select new
                 {
                     s.ShiftInfoId,
@@ -125,16 +126,14 @@ namespace PBL3.Server.Repositories
                 var shiftInfo = await _context.ShiftInfos.FindAsync(shiftDetails.ShiftInfoId);
                 shiftInfo.ManagerId = 0;
                 _context.ShiftInfos.Update(shiftInfo);
-                await _context.SaveChangesAsync();
-           
-            }
-            else if(shiftDetails.DutyName == "Employee")
-            {
                 _context.Shifts.Remove(shiftToDelete);
                 await _context.SaveChangesAsync();
+                return true;
+           
             }
-            return _mapper.Map<ShiftModel>(shiftToDelete);
-
+            _context.Shifts.Remove(shiftToDelete);
+            await _context.SaveChangesAsync();
+            return false;
         }
 
 
@@ -184,6 +183,16 @@ namespace PBL3.Server.Repositories
                 throw new Exception("Only the manager assigned to this shift can update the check-in time.");
             }
 
+            TimeSpan checkInTime = shiftInfo.StartTime;
+            if (checkInTime < shiftInfo.StartTime)
+            {
+                throw new Exception("Check-in time cannot be earlier than start time.");
+            }
+            else if(checkInTime > shiftInfo.EndTime)
+            {
+                throw new Exception("Check-in time cannot be later than end time.");
+            }
+
             DateTime date = DateTime.Now;
             shift.CheckInTime = date;
 
@@ -209,9 +218,9 @@ namespace PBL3.Server.Repositories
                 throw new Exception("Only the manager assigned to this shift can update the check-out time.");
             }
 
-            TimeSpan checkInTime = shift.CheckInTime.TimeOfDay;
+            TimeSpan checkOutTime = shift.CheckOutTime.TimeOfDay;
 
-            if(checkInTime < shiftInfo.StartTime)
+            if(checkOutTime < shiftInfo.EndTime)
             {
                 throw new Exception("Check-out time cannot be earlier than check-in time.");
             }
