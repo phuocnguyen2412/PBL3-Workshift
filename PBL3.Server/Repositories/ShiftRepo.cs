@@ -92,50 +92,52 @@ namespace PBL3.Server.Repositories
         }
 
 
-        public async Task<ShiftModel> DeleteShiftAsync(int id)
+        public async Task<ShiftModel> DeleteShiftAsync(int shiftId)
         {
-            var shift = await _context.Shifts.FindAsync(id);
-            if (shift == null)
-            {
-                return null;
-            }
-
-            _context.Shifts.Remove(shift);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<ShiftModel>(shift);
-        }
-
-        public async Task<bool> DeleteShiftByManagerAsync(int managerId, int shiftInfoId)
-        {
-            var shiftInfo = await _context.ShiftInfos.FindAsync(shiftInfoId);
-            if (shiftInfo == null || shiftInfo.ManagerId != managerId)
-            {
-                // ShiftInfo not found or the manager does not match
-                return false;
-            }
-
-            var shift = await (
+            var shiftDetails = await (
                 from s in _context.Shifts
-                where s.ShiftInfoId == shiftInfoId && s.EmployeeId == managerId
-                select s
+                join e in _context.Employees on s.EmployeeId equals e.Id
+                join d in _context.Duties on e.DutyId equals d.Id
+                join si in _context.ShiftInfos on s.ShiftInfoId equals si.Id
+                //where s.Id == shiftId
+                select new
+                {
+                    s.ShiftInfoId,
+                    d.DutyName,
+                    si.ManagerId
+                }
             ).FirstOrDefaultAsync();
-            if (shift == null)
+
+            if (shiftDetails == null)
             {
-                // No shift found for this manager and ShiftInfo
-                return false;
+                throw new Exception("Shift not found.");
             }
 
-            // Delete the shift
-            _context.Shifts.Remove(shift);
-            await _context.SaveChangesAsync();
+            var shiftToDelete = await _context.Shifts.FindAsync(shiftId);
+            if (shiftToDelete == null)
+            {
+                throw new Exception("Shift to delete not found.");
+            }
 
-            // Update the ShiftInfo to set ManagerId to 0, indicating no manager is assigned
-            shiftInfo.ManagerId = 0;
-            _context.ShiftInfos.Update(shiftInfo);
-            await _context.SaveChangesAsync();
+            if (shiftDetails.DutyName == "Manager")
+            {
 
-            return true;
+                var shiftInfo = await _context.ShiftInfos.FindAsync(shiftDetails.ShiftInfoId);
+                shiftInfo.ManagerId = 0;
+                _context.ShiftInfos.Update(shiftInfo);
+                await _context.SaveChangesAsync();
+           
+            }
+            else if(shiftDetails.DutyName == "Employee")
+            {
+                _context.Shifts.Remove(shiftToDelete);
+                await _context.SaveChangesAsync();
+            }
+            return _mapper.Map<ShiftModel>(shiftToDelete);
+
         }
+
+
 
         public async Task<object> GetAllShiftAsync()
         {
@@ -205,6 +207,13 @@ namespace PBL3.Server.Repositories
             if (shiftInfo == null || shiftInfo.ManagerId != managerId)
             {
                 throw new Exception("Only the manager assigned to this shift can update the check-out time.");
+            }
+
+            TimeSpan checkInTime = shift.CheckInTime.TimeOfDay;
+
+            if(checkInTime < shiftInfo.StartTime)
+            {
+                throw new Exception("Check-out time cannot be earlier than check-in time.");
             }
 
             DateTime date = DateTime.Now;

@@ -141,39 +141,19 @@ namespace PBL3.Server.Controllers
 
 
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ShiftModel>> DeleteShiftAsync(int id)
+        [HttpDelete("delete")]
+        public async Task<ActionResult<ShiftModel>> DeleteShiftAsync(int shiftId)
         {
             try
             {
-                var deletedShift = await _shiftRepo.DeleteShiftAsync(id);
+                var deletedShift = await _shiftRepo.DeleteShiftAsync(shiftId);
                 if (deletedShift == null)
                 {
-                    return NotFound(new { message = $"Shift with ID {id} not found." });
+                    return NotFound(new { message = $"Shift with ID {shiftId} not found." });
                 }
-
                 return Ok(deletedShift);
             }
-            catch (Exception e)
-            {
-                return BadRequest(new { message = e.Message });
-            }
-        }
-
-        [HttpDelete("{id}/manager")]
-        public async Task<ActionResult<bool>> DeleteShiftByManagerAsync(int id, int shiftInfoId)
-        {
-            try
-            {
-                var isDeleted = await _shiftRepo.DeleteShiftByManagerAsync(id, shiftInfoId);
-                if (!isDeleted)
-                {
-                    return NotFound(new { message = $"Shift with ID {id} not found." });
-                }
-
-                return Ok(isDeleted);
-            }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 return BadRequest(new { message = e.Message });
             }

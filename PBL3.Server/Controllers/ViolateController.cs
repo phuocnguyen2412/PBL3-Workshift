@@ -35,6 +35,17 @@ namespace PBL3.Server.Controllers
         }
 
 
+        [HttpGet("ByManagerId/{managerid}")]
+        public async Task<ActionResult<Violate>> GetViolateByManagerId(int managerid)
+        {
+            var violate = await _violateRepo.GetViolateByManagerId(managerid);
+            if (violate == null)
+            {
+                return NotFound();
+            }
+            return Ok(violate);
+        }
+
         [HttpGet("ByemployeeId/{employeeid}")]
         public async Task<ActionResult<Violate>> GetViolateByEmployeeId(int employeeid)
         {
@@ -47,13 +58,17 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ViolateModel>> PostViolate(ViolateModel violatemodel)
+        public async Task<ActionResult> PostViolate(ViolateModel violatemodel)
         {
-            violatemodel.Checked = false;
-
-            var createdViolateId = await _violateRepo.AddViolate(violatemodel);
-            var createdViolate = await _violateRepo.GetViolateById(createdViolateId);
-            return CreatedAtAction(nameof(GetViolate), new { id = createdViolateId }, createdViolate);
+            try
+            {
+                var createdViolateId = await _violateRepo.AddViolate(violatemodel);
+                return Ok(createdViolateId);
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
