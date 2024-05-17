@@ -11,6 +11,5 @@ namespace PBL3.Server.Models
         public int ShiftInfoId { get; set; }
         public string? Reason { get; set; }
         public int Handle { get; set; }
-        public bool Checked { get; set; }
     }
 }

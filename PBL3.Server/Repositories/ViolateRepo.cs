@@ -95,14 +95,54 @@ namespace PBL3.Server.Repositories
 
             return violate;
         }
-
-        public async Task<int> AddViolate(ViolateModel violatemodel)
+        public async Task<object> GetViolateByManagerId(int managerid)
         {
-            var violate = _mapper.Map<Violate>(violatemodel);
-            _context.Violates.Add(violate);
-            await _context.SaveChangesAsync();
-            return violate.Id;
+            var violate = await (
+                from v in _context.Violates
+                join e in _context.Employees on v.EmployeeId equals e.Id
+                join s in _context.ShiftInfos on v.ShiftInfoId equals s.Id
+                join m in _context.Employees on s.ManagerId equals m.Id into managers
+                from manager in managers.DefaultIfEmpty()
+                where s.ManagerId == managerid
+                select new
+                {
+                    v.Id,
+                    EmployeeName = e.FullName,
+                    v.Handle,
+                    v.Reason,
+                    v.Checked,
+                    s.ShiftName,
+                    s.StartTime,
+                    s.EndTime,
+                    s.Date,
+                    ManagerName = manager != null ? manager.FullName : "N/A"
+                }).ToListAsync();
+
+            return violate;
         }
+
+        public async Task<Violate> AddViolate(ViolateModel model)
+        {
+            var violates = await (
+                               from si in _context.ShiftInfos 
+                               join s in _context.Shifts on si.Id equals s.ShiftInfoId
+                               where si.Id == model.ShiftInfoId
+                               select new { s.EmployeeId }
+                               ).ToListAsync();
+
+            if (violates.Any(v => v.EmployeeId == model.EmployeeId))
+            {
+                var violate = _mapper.Map<Violate>(model);
+                _context.Violates.Add(violate);
+                await _context.SaveChangesAsync();
+                return violate;
+            }
+            else
+            {
+                throw new Exception("This employee does not exist during the shift!");
+            }
+        }
+
 
         public async Task<bool> UpdateViolateChecked(int id, bool isChecked)
         {
