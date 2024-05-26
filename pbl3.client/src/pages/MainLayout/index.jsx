@@ -95,7 +95,7 @@ function MainLayout() {
                             heigt: "100%",
                             background: colorBgContainer,
                             borderRadius: borderRadiusLG,
-                            overflow: "hiddnen",
+                            overflow: "auto",
                         }}
                     >
                         <Outlet />
