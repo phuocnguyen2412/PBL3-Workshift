@@ -22,71 +22,75 @@ namespace PBL3.Server.Repositories
 
         public async Task<object> GetAllSalaryHistory()
         {
-            var salaryHistories = await (from sh in _context.SalaryHistories join e in _context.Employees on sh.EmployeeId equals e.Id
-                                        join d in _context.Duties on e.DutyId equals d.Id
-                                        select new
-                                        {
-                                            e.Id,
-                                            e.FullName,
-                                            d.DutyName,
-                                            d.BasicSalary,
-                                            e.CoefficientsSalary,
-                                            sh.StartDate,
-                                            sh.EndDate,
-                                            sh.TotalHours,
-                                            sh.TotalBonus,
-                                            sh.TotalViolate,
-                                            sh.TotalSalary,
-                                            sh.PaidDate
-                                        }).ToListAsync();
+            var salaryHistories = await (
+                from sh in _context.SalaryHistories
+                join e in _context.Employees on sh.EmployeeId equals e.Id
+                join d in _context.Duties on e.DutyId equals d.Id
+                select new
+                {
+                    e.Id,
+                    e.FullName,
+                    d.DutyName,
+                    d.BasicSalary,
+                    e.CoefficientsSalary,
+                    sh.StartDate,
+                    sh.EndDate,
+                    sh.TotalHours,
+                    sh.TotalBonus,
+                    sh.TotalViolate,
+                    sh.TotalSalary,
+                    sh.PaidDate
+                }).ToListAsync();
             return salaryHistories;
         }
 
         public async Task<object> GetAllSalaryHistoryById(int Id)
         {
-            var salaryHistories = await (from sh in _context.SalaryHistories
-                                         join e in _context.Employees on sh.EmployeeId equals e.Id
-                                         join d in _context.Duties on e.DutyId equals d.Id
-                                         where sh.Id == Id
-                                         select new
-                                         {
-                                             e.Id,
-                                             e.FullName,
-                                             d.DutyName,
-                                             d.BasicSalary,
-                                             e.CoefficientsSalary,
-                                             sh.StartDate,
-                                             sh.EndDate,
-                                             sh.TotalHours,
-                                             sh.TotalBonus,
-                                             sh.TotalViolate,
-                                             sh.TotalSalary,
-                                             sh.PaidDate
-                                         }).ToListAsync();
+            var salaryHistories = await (
+                from sh in _context.SalaryHistories
+                join e in _context.Employees on sh.EmployeeId equals e.Id
+                join d in _context.Duties on e.DutyId equals d.Id
+                where sh.Id == Id
+                select new
+                {
+                    e.Id,
+                    e.FullName,
+                    d.DutyName,
+                    d.BasicSalary,
+                    e.CoefficientsSalary,
+                    sh.StartDate,
+                    sh.EndDate,
+                    sh.TotalHours,
+                    sh.TotalBonus,
+                    sh.TotalViolate,
+                    sh.TotalSalary,
+                    sh.PaidDate
+                }).ToListAsync();
 
             return salaryHistories;
         }
         public async Task<object> GetAllSalaryHistoryByEmployeeId(int Id)
         {
-            var salaryHistories = await (from sh in _context.SalaryHistories
-                                         join e in _context.Employees on sh.EmployeeId equals e.Id
-                                         join d in _context.Duties on e.DutyId equals d.Id
-                                         where e.Id == Id
-                                         select new
-                                         {
-                                             e.Id,
-                                             e.FullName,
-                                             d.DutyName,
-                                             d.BasicSalary,
-                                             e.CoefficientsSalary,
-                                             sh.StartDate,
-                                             sh.EndDate,
-                                             sh.TotalHours,
-                                             sh.TotalBonus,
-                                             sh.TotalViolate,
-                                             sh.TotalSalary,
-                                             sh.PaidDate
-                                         }).ToListAsync();
+            var salaryHistories = await (
+                from sh in _context.SalaryHistories
+                join e in _context.Employees on sh.EmployeeId equals e.Id
+                join d in _context.Duties on e.DutyId equals d.Id
+                where e.Id == Id
+                select new
+                {
+                    e.Id,
+                    e.FullName,
+                    d.DutyName,
+                    d.BasicSalary,
+                    e.CoefficientsSalary,
+                    sh.StartDate,
+                    sh.EndDate,
+                    sh.TotalHours,
+                    sh.TotalBonus,
+                    sh.TotalViolate,
+                    sh.TotalSalary,
+                    sh.PaidDate
+                }).ToListAsync();
 
             return salaryHistories;
         }
@@ -98,13 +102,15 @@ namespace PBL3.Server.Repositories
              ? model.EmployeeIds : await _context.Employees.Select(e => e.Id).ToListAsync();
             foreach (var employeeId in employeeIdsToProcess)
             {
-                var result = await (from e in _context.Employees join d in _context.Duties on e.DutyId equals d.Id
-                                    where e.Id == employeeId
-                                    select new
-                                    {   
-                                        e.CoefficientsSalary,
-                                        d.BasicSalary,
-                                    }).FirstOrDefaultAsync();
+                var result = await (
+                    from e in _context.Employees
+                    join d in _context.Duties on e.DutyId equals d.Id
+                    where e.Id == employeeId
+                    select new
+                    {
+                        e.CoefficientsSalary,
+                        d.BasicSalary,
+                    }).FirstOrDefaultAsync();
                 if (result != null)
                 {
                     var totalHours = await CalculateTotalHours(model.StartDate, model.EndDate, employeeId);
@@ -169,7 +175,6 @@ namespace PBL3.Server.Repositories
             if (salaryHistory != null)
             {
                 salaryHistory.PaidDate = DateTime.Now;
-
                 await _context.SaveChangesAsync();
             }
         }

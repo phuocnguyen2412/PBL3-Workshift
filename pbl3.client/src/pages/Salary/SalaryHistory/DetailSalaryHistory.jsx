@@ -1,9 +1,14 @@
 import { Button, Descriptions, Modal, Tag, notification } from "antd";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
+import PropTypes from "prop-types";
+DetailSalaryHistory.propTypes = {
+    record: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+};
 
 export default function DetailSalaryHistory({ record, fetchData }) {
     const [open, setOpen] = useState(false);
@@ -17,10 +22,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
     const handleOk = async () => {
         setConfirmLoading(true);
         try {
-            const response = await updateApi(
-                `/SalaryHistory/${record.salaryHistory}`,
-                {}
-            );
+            const response = await updateApi(`/SalaryHistory/${record.id}`, {});
 
             apiNotification.success({
                 message: "Success!",
