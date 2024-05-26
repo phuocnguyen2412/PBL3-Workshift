@@ -183,24 +183,20 @@ namespace PBL3.Server.Repositories
                 throw new Exception("Only the manager assigned to this shift can update the check-in time.");
             }
 
-            TimeSpan checkInTime = shiftInfo.StartTime;
-            if (checkInTime < shiftInfo.StartTime)
+            DateTime date = DateTime.Now;
+            TimeSpan checkInTime = date.TimeOfDay;
+
+            if (checkInTime < shiftInfo.StartTime || checkInTime > shiftInfo.EndTime)
             {
-                throw new Exception("Check-in time cannot be earlier than start time.");
-            }
-            else if(checkInTime > shiftInfo.EndTime)
-            {
-                throw new Exception("Check-in time cannot be later than end time.");
+                throw new Exception("Check-in time must be within the shift time.");
             }
 
-            DateTime date = DateTime.Now;
             shift.CheckInTime = date;
 
             _context.Shifts.Update(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
-
 
         public async Task<ShiftModel> UpdateShiftCheckOutTimeAsync(int shiftId, int managerId)
         {
@@ -210,22 +206,25 @@ namespace PBL3.Server.Repositories
                 return null;
             }
 
-
-
             var shiftInfo = await _context.ShiftInfos.FindAsync(shift.ShiftInfoId);
             if (shiftInfo == null || shiftInfo.ManagerId != managerId)
             {
                 throw new Exception("Only the manager assigned to this shift can update the check-out time.");
             }
 
-            TimeSpan checkOutTime = shift.CheckOutTime.TimeOfDay;
-
-            if(checkOutTime < shiftInfo.EndTime)
+            if (shift.CheckInTime == null || shift.CheckInTime == DateTime.MinValue)
             {
-                throw new Exception("Check-out time cannot be earlier than check-in time.");
+                throw new Exception("Employee must check-in before checking out.");
             }
 
             DateTime date = DateTime.Now;
+            TimeSpan checkOutTime = date.TimeOfDay;
+
+            if (checkOutTime < shiftInfo.EndTime || checkOutTime > shiftInfo.EndTime.Add(TimeSpan.FromMinutes(5)))
+            {
+                throw new Exception("Check-out time must be within 5 minutes after the end time.");
+            }
+
             shift.CheckOutTime = date;
 
             _context.Shifts.Update(shift);
@@ -243,6 +242,33 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
 
             return _mapper.Map<ShiftModel>(shift);
+        }
+
+        public async Task<List<ShiftModel>> GetAllShiftByEmployeeIdAsync(int employeeId)
+        {
+            var shifts = await (
+                from s in _context.Shifts
+                join si in _context.ShiftInfos on s.ShiftInfoId equals si.Id
+                join e in _context.Employees on si.ManagerId equals e.Id
+                where s.EmployeeId == employeeId
+                select new
+                {
+                    Id = s.Id,
+                    EmployeeId = s.EmployeeId,
+                    ShiftInfoId = s.ShiftInfoId,
+                    CheckInTime = s.CheckInTime,
+                    CheckOutTime = s.CheckOutTime,
+                    ShiftInfoName = si.ShiftName,
+                    StartTime = si.StartTime,
+                    EndTime = si.EndTime,
+                    Date = si.Date,
+                    ManagerName = e.FullName,
+                    TotalHours = (s.CheckOutTime != null && s.CheckInTime != null)
+                       ? Convert.ToDouble((s.CheckOutTime - s.CheckInTime).TotalHours)
+                       : 0
+                }).ToListAsync();
+
+            return _mapper.Map<List<ShiftModel>>(shifts);
         }
 
     }
