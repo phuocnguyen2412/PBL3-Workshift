@@ -41,7 +41,7 @@ namespace PBL3.Server.Repositories
                 join d in _context.Duties on e.DutyId equals d.Id
                 where e.Id == shiftModel.EmployeeId
                 select d.DutyName
-                ).FirstOrDefaultAsync();
+            ).FirstOrDefaultAsync();
             if (dutyName == "Manager")
             {
                 if (shiftInfo.ManagerId != 0)
@@ -64,11 +64,11 @@ namespace PBL3.Server.Repositories
             }
             else if (dutyName == "Employee")
             {
-
                 bool shiftExists = await (
                     from s in _context.Shifts
                     where
-                        s.ShiftInfoId == shiftModel.ShiftInfoId && s.EmployeeId == shiftModel.EmployeeId
+                        s.ShiftInfoId == shiftModel.ShiftInfoId
+                        && s.EmployeeId == shiftModel.EmployeeId
                     select s
                 ).AnyAsync();
                 if (shiftExists)
@@ -86,12 +86,11 @@ namespace PBL3.Server.Repositories
             }
 
             var shift = _mapper.Map<Shift>(shiftModel);
-           
+
             _context.Shifts.Add(shift);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftModel>(shift);
         }
-
 
         public async Task<bool> DeleteShiftAsync(int shiftId)
         {
@@ -122,21 +121,17 @@ namespace PBL3.Server.Repositories
 
             if (shiftDetails.DutyName == "Manager")
             {
-
                 var shiftInfo = await _context.ShiftInfos.FindAsync(shiftDetails.ShiftInfoId);
                 shiftInfo.ManagerId = 0;
                 _context.ShiftInfos.Update(shiftInfo);
                 _context.Shifts.Remove(shiftToDelete);
                 await _context.SaveChangesAsync();
                 return true;
-           
             }
             _context.Shifts.Remove(shiftToDelete);
             await _context.SaveChangesAsync();
             return false;
         }
-
-
 
         public async Task<object> GetAllShiftAsync()
         {
@@ -180,7 +175,9 @@ namespace PBL3.Server.Repositories
             var shiftInfo = await _context.ShiftInfos.FindAsync(shift.ShiftInfoId);
             if (shiftInfo == null || shiftInfo.ManagerId != managerId)
             {
-                throw new Exception("Only the manager assigned to this shift can update the check-in time.");
+                throw new Exception(
+                    "Only the manager assigned to this shift can update the check-in time."
+                );
             }
 
             DateTime date = DateTime.Now;
@@ -209,7 +206,9 @@ namespace PBL3.Server.Repositories
             var shiftInfo = await _context.ShiftInfos.FindAsync(shift.ShiftInfoId);
             if (shiftInfo == null || shiftInfo.ManagerId != managerId)
             {
-                throw new Exception("Only the manager assigned to this shift can update the check-out time.");
+                throw new Exception(
+                    "Only the manager assigned to this shift can update the check-out time."
+                );
             }
 
             if (shift.CheckInTime == null || shift.CheckInTime == DateTime.MinValue)

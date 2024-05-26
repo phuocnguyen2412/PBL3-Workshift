@@ -13,7 +13,13 @@ const ShiftReport = () => {
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
     const fetchData = async () => {
-        const newData = await getApi("/Violate");
+        let newData = await getApi("/Violate");
+        if (account.account.dutyName === "Admin")
+            newData = await getApi("/Violate");
+        else if (account.account.dutyName === "Manager")
+            newData = await getApi(
+                `/Violate/ByManagerId/${account.account.employeeId}`
+            );
         setData(newData);
     };
     useEffect(() => {
@@ -47,7 +53,7 @@ const ShiftReport = () => {
                     },
                 ]}
                 tabBarExtraContent={
-                    account.account.dutyName === "Quản lý" && (
+                    account.account.dutyName === "Manager" && (
                         <CreateReport fetchData={fetchData} />
                     )
                 }

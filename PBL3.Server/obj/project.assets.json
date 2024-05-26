@@ -2500,32 +2500,51 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
+    "/Users/ttcenter/.nuget/packages/": {}
+=======
     "C:\\Users\\Hi\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+>>>>>>> refs/remotes/origin/main
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
+      "projectUniqueName": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
+      "projectName": "PBL3.Server",
+      "projectPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
+      "packagesPath": "/Users/ttcenter/.nuget/packages/",
+      "outputPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/obj/",
+=======
       "projectUniqueName": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj",
       "projectName": "PBL3.Server",
       "projectPath": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj",
       "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\obj\\",
+>>>>>>> refs/remotes/origin/main
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
+        "/Users/ttcenter/.nuget/NuGet/NuGet.Config"
+=======
         "C:\\Users\\Hi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+>>>>>>> refs/remotes/origin/main
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+<<<<<<< HEAD
+=======
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "C:\\Program Files\\dotnet\\library-packs": {},
+>>>>>>> refs/remotes/origin/main
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2589,6 +2608,23 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+<<<<<<< HEAD
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.26, 6.0.26]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
+            "version": "[6.0.26, 6.0.26]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.26, 6.0.26]"
+          }
+        ],
+=======
+>>>>>>> refs/remotes/origin/main
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -2597,7 +2633,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/RuntimeIdentifierGraph.json"
+=======
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+>>>>>>> refs/remotes/origin/main
       }
     }
   }

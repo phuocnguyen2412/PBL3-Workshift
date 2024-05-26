@@ -1,25 +1,16 @@
 import { useRoutes } from "react-router-dom";
 
-import { AccountProvider } from "./Context/AccountContext";
+import { AccountContext, AccountProvider } from "./Context/AccountContext";
 
 import routes from "./routes";
-import { ConfigProvider, theme } from "antd";
-import { useState } from "react";
+import { useContext } from "react";
 
 function App() {
-    const routeList = useRoutes(routes);
-    const [darkMode, setDarkMode] = useState(true);
-    return (
-        <ConfigProvider
-            theme={{
-                algorithm: darkMode
-                    ? theme.darkAlgorithm
-                    : theme.compactAlgorithm,
-            }}
-        >
-            <AccountProvider>{routeList}</AccountProvider>
-        </ConfigProvider>
-    );
+    const account = useContext(AccountContext);
+
+    let routeList = useRoutes(routes);
+
+    return <>{routeList}</>;
 }
 
 export default App;

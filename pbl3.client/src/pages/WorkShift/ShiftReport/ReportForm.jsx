@@ -20,7 +20,6 @@ ReportForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
 export default function ReportForm({ fetchData }) {
-    
     const { getApi, postApi, loading } = useFetch(localhost);
     const account = useContext(AccountContext);
     const [employeeList, setEmployeeList] = useState([]);
@@ -77,9 +76,10 @@ export default function ReportForm({ fetchData }) {
             };
 
             const response = await postApi("/Violate", data);
+            console.log(response);
             apiNotification.success({
                 message: "Success!",
-                description: `You created a new report for ${response.employeeName}`,
+                description: `You created a new report`,
                 placement: "topRight",
             });
             form.resetFields();
