@@ -5,9 +5,10 @@ import localhost from "../../Services/localhost";
 import { AccountContext } from "../../Context/AccountContext";
 import { Alert, Badge, Calendar, Flex, Modal, Spin } from "antd";
 import WorkInDay from "../WorkShift/ShiftInformation/WorkInDay";
+import { useParams } from "react-router-dom";
 
 export default function EmployeeShiftChecking() {
-    const account = useContext(AccountContext);
+    const { id } = useParams();
     const [data, setData] = useState([]);
     const [value, setValue] = useState(() => dayjs());
     const [openModal, setOpenModal] = useState(false);
@@ -15,9 +16,7 @@ export default function EmployeeShiftChecking() {
     const { getApi, loading } = useFetch(localhost);
     useEffect(() => {
         const fetchData = async () => {
-            const yourData = await getApi(
-                `/ShiftInfo/workdates/${account.account.employeeId}`
-            );
+            const yourData = await getApi(`/ShiftInfo/workdates/${id}`);
             console.log(yourData);
             setData(yourData);
         };

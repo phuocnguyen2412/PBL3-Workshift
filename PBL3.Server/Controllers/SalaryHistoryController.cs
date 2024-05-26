@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
-using System.Threading.Tasks;
 
 namespace PBL3.Server.Controllers
 {
@@ -29,12 +29,16 @@ namespace PBL3.Server.Controllers
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
             return Ok(salaryHistories);
         }
+
         [HttpGet("EmployeeId")]
-        public async Task<object> GetAllSalaryHistoryByEmployeeId(int Id)
+        public async Task<object> GetAllSalaryHistoryByEmployeeId(int EmployeeId)
         {
-            var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryByEmployeeId(Id);
+            var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryByEmployeeId(
+                EmployeeId
+            );
             return Ok(salaryHistories);
         }
+
         [HttpPost]
         public async Task<object> AddSalaryHistory(SalaryHistoryModel model)
         {
@@ -52,7 +56,6 @@ namespace PBL3.Server.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateSalaryById(int id)
         {
@@ -63,9 +66,8 @@ namespace PBL3.Server.Controllers
             }
             catch (Exception ex)
             {
-             
-                return BadRequest(ex); 
-            } 
+                return BadRequest(ex);
+            }
         }
     }
 }

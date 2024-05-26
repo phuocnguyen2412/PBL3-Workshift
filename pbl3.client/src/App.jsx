@@ -1,6 +1,6 @@
 import { useRoutes } from "react-router-dom";
 
-import { AccountProvider } from "./Context/AccountContext";
+import {  AccountProvider } from "./Context/AccountContext";
 
 import routes from "./routes";
 

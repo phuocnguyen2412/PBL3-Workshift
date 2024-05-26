@@ -23,7 +23,8 @@ namespace PBL3.Server.Repositories
             var bonusSalaryHistories = new List<BonusSalaryHistory>();
 
             var employeeIdsToProcess = model.EmployeeIds.Contains(0)
-                ? await _context.Employees.Select(e => e.Id).ToListAsync(): model.EmployeeIds;
+                ? await _context.Employees.Select(e => e.Id).ToListAsync()
+                : model.EmployeeIds;
 
             foreach (var employeeId in employeeIdsToProcess)
             {
@@ -43,20 +44,21 @@ namespace PBL3.Server.Repositories
             return bonusSalaryHistories.FirstOrDefault()?.Id ?? 0;
         }
 
-
         public async Task<object> GetAllBonusSalaryAsync()
         {
-            var bonusSalary = await (from b in _context.BonusSalaryHistories
-                                     join e in _context.Employees on b.EmployeeId equals e.Id
-                                     select new
-                                     {
-                                         b.Id,
-                                         EmployeeId = b.EmployeeId,
-                                         FullName = e.FullName,
-                                         DateTime = b.Date,
-                                         TotalBonus = b.Bonus,
-                                         Reason = b.Reason
-                                     }).ToListAsync();
+            var bonusSalary = await (
+                from b in _context.BonusSalaryHistories
+                join e in _context.Employees on b.EmployeeId equals e.Id
+                select new
+                {
+                    b.Id,
+                    EmployeeId = b.EmployeeId,
+                    FullName = e.FullName,
+                    DateTime = b.Date,
+                    TotalBonus = b.Bonus,
+                    Reason = b.Reason
+                }
+            ).ToListAsync();
             return bonusSalary;
         }
 

@@ -1,6 +1,6 @@
 import { Layout, Menu, theme } from "antd";
 
-import { AdminList, Employee } from "./DashboardList";
+import { AdminList, Employee, Manager } from "./DashboardList";
 import { useContext, useState } from "react";
 const { Sider } = Layout;
 import { AccountContext } from "../../Context/AccountContext";
@@ -87,7 +87,11 @@ export default function AdminDashboard({ collapsed }) {
                 theme="light"
                 mode="inline"
                 items={
-                    account.account.dutyName === "Admin" ? AdminList : Employee
+                    account.account.dutyName === "Admin"
+                        ? AdminList
+                        : account.account.dutyName === "Manager"
+                        ? Manager
+                        : Employee
                 }
                 style={{
                     height: "100%",

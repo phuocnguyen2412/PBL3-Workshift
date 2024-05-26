@@ -37,7 +37,7 @@ export default function useFetch(baseUrl) {
         });
     }
 
-    function postApi(url, body) {
+    function postApi(url, body = {}) {
         setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url, {
@@ -70,7 +70,7 @@ export default function useFetch(baseUrl) {
                 });
         });
     }
-    function updateApi(url, body) {
+    function updateApi(url, body = {}) {
         setLoading(true);
         return new Promise((resolve, reject) => {
             fetch(baseUrl + url, {
@@ -82,6 +82,7 @@ export default function useFetch(baseUrl) {
                 body: JSON.stringify(body),
             })
                 .then(async (response) => {
+                    console.log(response);
                     if (!response.ok) {
                         const errorData = await response.json();
                         return reject(errorData.message || "Server error");
@@ -103,10 +104,10 @@ export default function useFetch(baseUrl) {
                 });
         });
     }
-    function deleteApi(url, id) {
+    function deleteApi(url, id = "") {
         setLoading(true);
         return new Promise((resolve, reject) => {
-            fetch(baseUrl + url + `/${id}`, {
+            fetch(baseUrl + url + `${id}`, {
                 method: "delete",
                 headers: {
                     Authorization: `${token}`,

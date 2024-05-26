@@ -79,8 +79,11 @@ export default function ShiftAction({ shift, setItems }) {
             const data = shift.employees.find(
                 (e) => e.employeeId === account.account.employeeId
             );
-
-            await deleteApi("/Shift", data.shiftId);
+            console.log(data);
+            const response = await deleteApi(
+                `/Shift/delete?shiftId=${data.shiftId}`
+            );
+            console.log(response);
             apiNotification.success({
                 message: "Success!",
                 description: `Unregistration successful`,
