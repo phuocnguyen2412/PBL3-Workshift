@@ -131,7 +131,7 @@ namespace PBL3.Server.Controllers
                 {
                     return NotFound(new { message = $"Shift with ID {shiftId} not found." });
                 }
-                return Ok(new { message = $"Update {shiftId} thanh cong." });
+                return Ok(updatedShift);
             }
             catch (System.Exception e)
             {
@@ -166,5 +166,24 @@ namespace PBL3.Server.Controllers
                 return BadRequest(new { message = e.Message });
             }
         }
+
+        [HttpGet("employee/{employeeId}")]
+        public async Task<ActionResult<List<ShiftModel>>> GetAllShiftByEmployeeIdAsync(int employeeId)
+        {
+            try
+            {
+                var shift = await _shiftRepo.GetAllShiftByEmployeeIdAsync(employeeId);
+                if (shift == null)
+                {
+                    return NotFound(new { message = $"Shift with employee ID {employeeId} not found." });
+                }
+                return Ok(shift);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
     }
 }
