@@ -243,7 +243,8 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftModel>(shift);
         }
 
-        public async Task<List<ShiftModel>> GetAllShiftByEmployeeIdAsync(int employeeId)
+
+        public async Task<object> GetAllShiftByEmployeeIdAsync(int employeeId)
         {
             var shifts = await (
                 from s in _context.Shifts
@@ -262,13 +263,22 @@ namespace PBL3.Server.Repositories
                     EndTime = si.EndTime,
                     Date = si.Date,
                     ManagerName = e.FullName,
-                    TotalHours = (s.CheckOutTime != null && s.CheckInTime != null)
-                       ? Convert.ToDouble((s.CheckOutTime - s.CheckInTime).TotalHours)
-                       : 0
+                    TotalHours = CalculateTotalHours(s.CheckInTime, s.CheckOutTime)
                 }).ToListAsync();
+            return shifts;
 
-            return _mapper.Map<List<ShiftModel>>(shifts);
         }
+
+        private static double CalculateTotalHours(DateTime? checkInTime, DateTime? checkOutTime)
+        {
+            TimeSpan? totalTimeSpan = null;
+            if (checkInTime != null && checkOutTime != null)
+            {
+                totalTimeSpan = checkOutTime - checkInTime;
+            }
+            return totalTimeSpan.HasValue ? Convert.ToDouble(totalTimeSpan.Value.TotalHours) : 0;
+        }
+
 
     }
 }
