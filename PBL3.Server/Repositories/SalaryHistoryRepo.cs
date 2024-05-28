@@ -28,7 +28,7 @@ namespace PBL3.Server.Repositories
                 join d in _context.Duties on e.DutyId equals d.Id
                 select new
                 {
-                    e.Id,
+                    sh.Id,
                     e.FullName,
                     d.DutyName,
                     d.BasicSalary,
@@ -224,7 +224,6 @@ namespace PBL3.Server.Repositories
             if (salaryHistory != null)
             {
                 salaryHistory.PaidDate = DateTime.Now;
-
                 await _context.SaveChangesAsync();
             }
         }
