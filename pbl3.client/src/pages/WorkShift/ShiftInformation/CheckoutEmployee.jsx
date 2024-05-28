@@ -25,6 +25,7 @@ export default function CheckoutEmployee({ record, setItems }) {
 
     const handleOk = async () => {
         await handleUpdateCheckoutTime();
+
         setIsModalOpen(false);
     };
 
@@ -38,7 +39,7 @@ export default function CheckoutEmployee({ record, setItems }) {
 
     const handleUpdateCheckoutTime = async () => {
         try {
-            const response = await updateApi(
+            await updateApi(
                 `/Shift/${record.shiftId}/checkout?managerId=${account.account.employeeId}`
             );
 
@@ -49,12 +50,12 @@ export default function CheckoutEmployee({ record, setItems }) {
             });
             setItems();
         } catch (error) {
-            setIsChecked(false);
             apiNotification.error({
                 message: "Error!",
                 description: `${error}`,
                 placement: "topRight",
             });
+            setIsChecked(false);
         }
     };
 

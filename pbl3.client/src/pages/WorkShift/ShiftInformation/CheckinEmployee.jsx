@@ -40,7 +40,7 @@ export default function CheckinEmployee({ shift, record, setItems }) {
             // Lấy thời gian hiện tại
             let now = new Date();
             if (now < specificTime) throw "Can't checkin before start time";
-            const response = await updateApi(
+            await updateApi(
                 `/Shift/${record.shiftId}/checkin?ManagerId=${account.account.employeeId}`
             );
             apiNotification.success({

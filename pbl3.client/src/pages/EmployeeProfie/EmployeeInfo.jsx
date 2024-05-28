@@ -1,19 +1,36 @@
-import { Badge, Col, Descriptions, Image, Row, Spin, Tag } from "antd";
+import {
+    Badge,
+    Button,
+    Col,
+    Descriptions,
+    Image,
+    Result,
+    Row,
+    Spin,
+    Tag,
+} from "antd";
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
 const EmployeeInfo = () => {
     const { getApi, loading } = useFetch(localhost);
     const params = useParams();
     const [employee, setEmployee] = useState({});
-    useEffect(() => {
-        const fetchData = async () => {
+    const [error, setError] = useState(false);
+    const naviagte = useNavigate();
+    const fetchData = async () => {
+        try {
             const data = await getApi(`/Employee/${params.id}`);
 
             setEmployee(data);
-        };
+        } catch (e) {
+            setError(true);
+        }
+    };
+
+    useEffect(() => {
         fetchData();
     }, []);
     const items = [
@@ -94,24 +111,42 @@ const EmployeeInfo = () => {
         },
     ];
     return (
-        <Spin spinning={loading}>
-            <Row gutter={24} align="middle">
-                <Col span={8}>
-                    <Image
-                        width="100%"
-                        src="https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
-                    />
-                </Col>
-                <Col span={16}>
-                    <Descriptions
-                        layout="vertical"
-                        title={`Employee Information`}
-                        bordered
-                        items={items}
-                    />
-                </Col>
-            </Row>
-        </Spin>
+        <>
+            {error ? (
+                <Result
+                    status="404"
+                    title="404"
+                    subTitle="Sorry, the employee's page you visited does not exist."
+                    extra={
+                        <Button
+                            type="primary"
+                            onClick={() => naviagte("/home")}
+                        >
+                            Back Home
+                        </Button>
+                    }
+                />
+            ) : (
+                <Spin spinning={loading}>
+                    <Row gutter={24} align="middle">
+                        <Col span={8}>
+                            <Image
+                                width="100%"
+                                src="https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg"
+                            />
+                        </Col>
+                        <Col span={16}>
+                            <Descriptions
+                                layout="vertical"
+                                title={`Employee Information`}
+                                bordered
+                                items={items}
+                            />
+                        </Col>
+                    </Row>
+                </Spin>
+            )}
+        </>
     );
 };
 

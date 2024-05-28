@@ -1,16 +1,18 @@
 import { Button, Descriptions, Modal, Tag, notification } from "antd";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import PropTypes from "prop-types";
+import { AccountContext } from "../../../Context/AccountContext";
 DetailSalaryHistory.propTypes = {
     record: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
 };
 
 export default function DetailSalaryHistory({ record, fetchData }) {
+    const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const { updateApi } = useFetch(localhost);
@@ -22,6 +24,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
     const handleOk = async () => {
         setConfirmLoading(true);
         try {
+            if (account.account.dutyName !== "Admin") return;
             const response = await updateApi(`/SalaryHistory/${record.id}`, {});
 
             apiNotification.success({

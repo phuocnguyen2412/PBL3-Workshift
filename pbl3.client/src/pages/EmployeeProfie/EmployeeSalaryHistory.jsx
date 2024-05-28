@@ -1,11 +1,10 @@
 import dayjs from "dayjs";
 import DetailSalaryHistory from "../Salary/SalaryHistory/DetailSalaryHistory";
 import useFetch from "../../custom hook/useFetch";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Spin, Table } from "antd";
 import localhost from "../../Services/localhost";
-import { AccountContext } from "../../Context/AccountContext";
 
 const EmployeeSalaryHistory = () => {
     const { id } = useParams();

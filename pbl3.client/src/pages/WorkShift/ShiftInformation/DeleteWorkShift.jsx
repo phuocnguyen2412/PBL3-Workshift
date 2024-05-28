@@ -1,5 +1,5 @@
 import { Button, Modal, notification } from "antd";
-import React, { useState } from "react";
+import { useState } from "react";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
 import PropTypes from "prop-types";

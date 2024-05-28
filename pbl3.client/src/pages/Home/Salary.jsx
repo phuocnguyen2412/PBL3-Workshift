@@ -84,22 +84,26 @@ export default function Salary() {
     ];
 
     return (
-        <Row gutter={16}>
-            <Col span={24}>
-                <Spin spinning={loading}>
-                    <Alert
-                        message="You haven't paid "
-                        description=<Table
-                            dataSource={data}
-                            columns={columns}
-                            rowKey="id"
-                        />
-                        type="warning"
-                        showIcon
-                        closable
-                    />
-                </Spin>
-            </Col>
-        </Row>
+        <>
+            {data.length > 0 && (
+                <Row gutter={16}>
+                    <Col span={24}>
+                        <Spin spinning={loading}>
+                            <Alert
+                                message="You haven't paid "
+                                description=<Table
+                                    dataSource={data}
+                                    columns={columns}
+                                    rowKey="id"
+                                />
+                                type="warning"
+                                showIcon
+                                closable
+                            />
+                        </Spin>
+                    </Col>
+                </Row>
+            )}
+        </>
     );
 }

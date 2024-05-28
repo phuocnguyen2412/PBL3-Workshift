@@ -48,18 +48,16 @@ const ShiftInformation = () => {
                 };
 
                 const timeStart = dayjs(shift.startTime, "HH:mm:ss");
-
-                if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss"))) {
-                    item.type = "black";
-                } else if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss"))) {
-                    item.type = "yellow";
-                }
-                if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
-                    item.type === "orange";
-                else {
-                    item.type = "purple";
-                }
-
+                const setTime = () => {
+                    if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss")))
+                        return "black";
+                    if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss")))
+                        return "yellow";
+                    if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
+                        return "orange";
+                    return "purple";
+                };
+                item.type = setTime();
                 listData.push(item);
             }
         });
