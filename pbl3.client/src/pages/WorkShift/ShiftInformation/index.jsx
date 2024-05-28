@@ -87,7 +87,11 @@ const ShiftInformation = () => {
 
     return (
         <div style={{ overflow: "hidden" }}>
-            <Flex justify="space-between" align="center">
+            <Flex
+                justify="space-between"
+                align="center"
+                style={{ marginBottom: "16px" }}
+            >
                 <Alert
                     message={`You selected date: ${value?.format(
                         "YYYY-MM-DD"
@@ -95,12 +99,12 @@ const ShiftInformation = () => {
                 />
                 {account.account.dutyName === "Admin" && (
                     <Button onClick={() => setOpenDrawer(true)}>
-                        Create a new meeting
+                        Create a work shift
                     </Button>
                 )}
             </Flex>
             <Drawer
-                title="Create a new meeting"
+                title="Create a work shift"
                 width={720}
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}
@@ -121,7 +125,11 @@ const ShiftInformation = () => {
                 width={1000}
                 footer={null}
             >
-                <WorkInDay date={value?.format("YYYY-MM-DD")} />
+                <WorkInDay
+                    date={value?.format("YYYY-MM-DD")}
+                    openModal={openModal}
+                    onClose={() => setOpenModal(!openModal)}
+                />
             </Modal>
             <Spin spinning={loading}>
                 <Calendar

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AccountContext } from "../../Context/AccountContext";
-import { Alert, Button, Spin, Table } from "antd";
+import { Alert, Button, Col, Row, Spin, Table } from "antd";
 import ReportContent from "../WorkShift/ShiftReport/ReportContent";
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
@@ -12,7 +12,16 @@ export default function Reports() {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);
     const fetchData = async () => {
-        const data = await getApi("/Violate");
+        let data;
+
+        if (account.account.dutyName === "Admin")
+            data = await getApi("/Violate");
+        else {
+            data = await getApi(
+                `/Violate/ByemployeeId/${account.account.employeeId}`
+            );
+        }
+
         setData(() => data.filter((e) => e.checked === false));
     };
     useEffect(() => {
@@ -69,24 +78,32 @@ export default function Reports() {
     ];
 
     return (
-        <Spin spinning={loading}>
-            {data.length > 0 && (
-                <Alert
-                    message={`Your shop had ${
-                        data.length === 1
-                            ? `1 report`
-                            : `${data.length} reports`
-                    }  that haven't been reviewed`}
-                    description=<Table
-                        rowKey="id"
-                        dataSource={data}
-                        columns={columns}
-                    />
-                    type="info"
-                    showIcon
-                    closable
-                />
-            )}
-        </Spin>
+        <Row gutter={16} style={{ marginBottom: "12px" }}>
+            <Col span={24}>
+                <Spin spinning={loading}>
+                    {data.length > 0 && (
+                        <Alert
+                            message={`${
+                                account.account.dutyName === "Admin"
+                                    ? "Your shop"
+                                    : "You"
+                            } had ${
+                                data.length === 1
+                                    ? `1 report`
+                                    : `${data.length} reports`
+                            }  that haven't been reviewed`}
+                            description=<Table
+                                rowKey="id"
+                                dataSource={data}
+                                columns={columns}
+                            />
+                            type="info"
+                            showIcon
+                            closable
+                        />
+                    )}
+                </Spin>
+            </Col>
+        </Row>
     );
 }

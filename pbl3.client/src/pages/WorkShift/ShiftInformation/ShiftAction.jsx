@@ -4,6 +4,7 @@ import { AccountContext } from "../../../Context/AccountContext";
 import PropTypes from "prop-types";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
+import DeleteWorkShift from "./DeleteWorkShift";
 ShiftAction.propTypes = {
     shift: PropTypes.object.isRequired,
     setItems: PropTypes.func.isRequired,
@@ -15,20 +16,29 @@ export default function ShiftAction({ shift, setItems }) {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
 
-    const handleDeleteShiftInfo = async (id) => {
+    const handleDeleteShift = async () => {
         try {
-            const response = await deleteApi(`/ShiftInfo`, id);
+            if (shift.check)
+                throw { message: "Work shift is checked! You can't out" };
+            const data = shift.employees.find(
+                (e) => e.employeeId === account.account.employeeId
+            );
+            console.log(data);
+            const response = await deleteApi(
+                `/Shift/delete?shiftId=${data.shiftId}`
+            );
             console.log(response);
             apiNotification.success({
-                message: "Thành công!",
-                description: `Bạn đã xóa thành công ${shift.shiftName}: ${shift.startTime} - ${shift.endTime}`,
+                message: "Success!",
+                description: `Unregistration successful`,
                 placement: "topRight",
             });
             setItems();
-        } catch (e) {
+        } catch (error) {
+            console.log(error);
             apiNotification.error({
-                message: "Thất bại!",
-                description: `${e.message}`,
+                message: "Error!",
+                description: `${error.message}`,
                 placement: "topRight",
             });
         }
@@ -72,33 +82,7 @@ export default function ShiftAction({ shift, setItems }) {
             });
         }
     };
-    const handleDeleteShift = async () => {
-        try {
-            if (shift.check)
-                throw { message: "Work shift is checked! You can't out" };
-            const data = shift.employees.find(
-                (e) => e.employeeId === account.account.employeeId
-            );
-            console.log(data);
-            const response = await deleteApi(
-                `/Shift/delete?shiftId=${data.shiftId}`
-            );
-            console.log(response);
-            apiNotification.success({
-                message: "Success!",
-                description: `Unregistration successful`,
-                placement: "topRight",
-            });
-            setItems();
-        } catch (error) {
-            console.log(error);
-            apiNotification.error({
-                message: "Error!",
-                description: `${error.message}`,
-                placement: "topRight",
-            });
-        }
-    };
+
     return (
         <>
             {contextHolderNotification}
@@ -114,16 +98,7 @@ export default function ShiftAction({ shift, setItems }) {
                     </Button>
                 )}
                 {account.account.dutyName === "Admin" && (
-                    <Button
-                        style={{ marginLeft: "16px" }}
-                        danger
-                        loading={loading}
-                        onClick={() => {
-                            handleDeleteShiftInfo(shift.id);
-                        }}
-                    >
-                        Delete work shift
-                    </Button>
+                    <DeleteWorkShift shift={shift} setItems={setItems} />
                 )}
 
                 {(account.account.dutyName === "Manager" ||

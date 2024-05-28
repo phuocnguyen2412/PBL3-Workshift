@@ -1,33 +1,38 @@
-import { Checkbox, notification } from "antd";
+import { Checkbox, Modal, notification } from "antd";
 import useFetch from "../../../custom hook/useFetch.js";
 import localhost from "../../../Services/localhost.js";
 import PropTypes from "prop-types";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountContext.jsx";
 CheckinEmployee.propTypes = {
+    shift: PropTypes.object.isRequired,
     record: PropTypes.object.isRequired,
     setItems: PropTypes.func.isRequired,
 };
+
+function timeStringToDate(timeString) {
+    let date = new Date();
+
+    let timeParts = timeString.split(":");
+    let hours = parseInt(timeParts[0], 10);
+    let minutes = parseInt(timeParts[1], 10);
+    let seconds = parseInt(timeParts[2], 10);
+
+    date.setHours(hours, minutes, seconds, 0);
+
+    return date;
+}
+
 export default function CheckinEmployee({ shift, record, setItems }) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isChecked, setIsChecked] = useState(
+        record.checkInTime !== "2000-01-01T00:00:00"
+    );
     const account = useContext(AccountContext);
     const { updateApi } = useFetch(localhost);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    function timeStringToDate(timeString) {
-        // Lấy thời gian hiện tại
-        let date = new Date();
 
-        // Tách giờ, phút và giây từ chuỗi thời gian
-        let timeParts = timeString.split(":");
-        let hours = parseInt(timeParts[0], 10);
-        let minutes = parseInt(timeParts[1], 10);
-        let seconds = parseInt(timeParts[2], 10);
-
-        // Thiết lập giờ, phút, giây cho đối tượng Date
-        date.setHours(hours, minutes, seconds, 0);
-
-        return date;
-    }
     const handleUpdateCheckinTime = async () => {
         try {
             let specificTime = timeStringToDate(shift.startTime);
@@ -43,9 +48,10 @@ export default function CheckinEmployee({ shift, record, setItems }) {
                 description: `Checkin ${record.fullName} successfully `,
                 placement: "topRight",
             });
-            console.log(response);
+            setIsChecked(() => true);
             setItems();
         } catch (error) {
+            setIsChecked(false);
             apiNotification.error({
                 message: "Error!",
                 description: `${error}`,
@@ -53,14 +59,39 @@ export default function CheckinEmployee({ shift, record, setItems }) {
             });
         }
     };
-    console.log(record);
+    const showModal = () => {
+        setIsChecked(() => false);
+        setIsModalOpen(() => true);
+    };
+
+    const handleOk = async () => {
+        await handleUpdateCheckinTime();
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(() => false);
+        setIsChecked(() => record.checkInTime !== "2000-01-01T00:00:00");
+    };
     return (
         <div>
             {contextHolderNotification}
+            <Modal
+                title="Confirm checkout"
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+            >
+                <p>Are you sure you want to checkout this person?</p>
+            </Modal>
             <Checkbox
                 disabled={record.checkInTime !== "2000-01-01T00:00:00"}
-                checked={record.checkInTime !== "2000-01-01T00:00:00"}
-                onClick={handleUpdateCheckinTime}
+                checked={isChecked}
+                onClick={() => {
+                    if (!isChecked) {
+                        showModal();
+                    }
+                }}
             >
                 Checkin
             </Checkbox>

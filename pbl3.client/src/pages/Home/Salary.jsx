@@ -4,7 +4,7 @@ import localhost from "../../Services/localhost";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import DetailSalaryHistory from "../Salary/SalaryHistory/DetailSalaryHistory";
-import { Alert, Spin, Table } from "antd";
+import { Alert, Col, Row, Spin, Table } from "antd";
 
 export default function Salary() {
     const { getApi, loading } = useFetch(localhost);
@@ -84,18 +84,22 @@ export default function Salary() {
     ];
 
     return (
-        <Spin spinning={loading}>
-            <Alert
-                message="You haven't paid "
-                description=<Table
-                    dataSource={data}
-                    columns={columns}
-                    rowKey="id"
-                />
-                type="warning"
-                showIcon
-                closable
-            />
-        </Spin>
+        <Row gutter={16}>
+            <Col span={24}>
+                <Spin spinning={loading}>
+                    <Alert
+                        message="You haven't paid "
+                        description=<Table
+                            dataSource={data}
+                            columns={columns}
+                            rowKey="id"
+                        />
+                        type="warning"
+                        showIcon
+                        closable
+                    />
+                </Spin>
+            </Col>
+        </Row>
     );
 }
