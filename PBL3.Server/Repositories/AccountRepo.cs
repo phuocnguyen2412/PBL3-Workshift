@@ -102,24 +102,24 @@ namespace PBL3.Server.Repositories
                 }
             ).FirstOrDefaultAsync();
 
-            if (account != null)
-            {
-                string newToken = GenerateToken();
-                var accountToUpdate = await _context.Accounts.FindAsync(account.AccountId);
-                accountToUpdate.Token = newToken;
-                await _context.SaveChangesAsync();
+            // if (account != null)
+            // {
+            //     string newToken = GenerateToken();
+            //     var accountToUpdate = await _context.Accounts.FindAsync(account.AccountId);
+            //     accountToUpdate.Token = newToken;
+            //     await _context.SaveChangesAsync();
 
-                var updatedAccount = new
-                {
-                    account.FullName,
-                    account.EmployeeId,
-                    account.DutyName,
-                    account.AccountId,
-                    Token = newToken
-                };
+            //     var updatedAccount = new
+            //     {
+            //         account.FullName,
+            //         account.EmployeeId,
+            //         account.DutyName,
+            //         account.AccountId,
+            //         Token = newToken
+            //     };
 
-                return updatedAccount;
-            }
+            //     return updatedAccount;
+            // }
 
             return account;
         }

@@ -41,7 +41,9 @@ function MainLayout() {
             console.log(e);
         }
     };
-    useEffect(() => {}, []);
+    useEffect(() => {
+        login();
+    }, []);
 
     return (
         <ConfigProvider
