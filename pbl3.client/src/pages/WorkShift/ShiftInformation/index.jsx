@@ -48,18 +48,16 @@ const ShiftInformation = () => {
                 };
 
                 const timeStart = dayjs(shift.startTime, "HH:mm:ss");
-
-                if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss"))) {
-                    item.type = "black";
-                } else if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss"))) {
-                    item.type = "yellow";
-                }
-                if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
-                    item.type === "orange";
-                else {
-                    item.type = "purple";
-                }
-
+                const setTime = () => {
+                    if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss")))
+                        return "black";
+                    if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss")))
+                        return "yellow";
+                    if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
+                        return "orange";
+                    return "purple";
+                };
+                item.type = setTime();
                 listData.push(item);
             }
         });
@@ -87,7 +85,11 @@ const ShiftInformation = () => {
 
     return (
         <div style={{ overflow: "hidden" }}>
-            <Flex justify="space-between" align="center">
+            <Flex
+                justify="space-between"
+                align="center"
+                style={{ marginBottom: "16px" }}
+            >
                 <Alert
                     message={`You selected date: ${value?.format(
                         "YYYY-MM-DD"
@@ -95,12 +97,12 @@ const ShiftInformation = () => {
                 />
                 {account.account.dutyName === "Admin" && (
                     <Button onClick={() => setOpenDrawer(true)}>
-                        Create a new meeting
+                        Create a work shift
                     </Button>
                 )}
             </Flex>
             <Drawer
-                title="Create a new meeting"
+                title="Create a work shift"
                 width={720}
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}
@@ -121,7 +123,11 @@ const ShiftInformation = () => {
                 width={1000}
                 footer={null}
             >
-                <WorkInDay date={value?.format("YYYY-MM-DD")} />
+                <WorkInDay
+                    date={value?.format("YYYY-MM-DD")}
+                    openModal={openModal}
+                    onClose={() => setOpenModal(!openModal)}
+                />
             </Modal>
             <Spin spinning={loading}>
                 <Calendar

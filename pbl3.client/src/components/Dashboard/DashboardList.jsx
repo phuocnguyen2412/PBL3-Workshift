@@ -10,8 +10,6 @@ import {
     SafetyOutlined,
     CloseOutlined,
     HomeOutlined,
-    ScheduleOutlined,
-    SmileOutlined,
     SolutionOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";

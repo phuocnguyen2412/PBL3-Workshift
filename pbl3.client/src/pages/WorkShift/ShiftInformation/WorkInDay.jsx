@@ -25,10 +25,7 @@ const WorkInDay = ({ date }) => {
                         children: (
                             <TableEmployeePerShift
                                 shift={e}
-                                setItems={async () => {
-                                    fetchData();
-                                    
-                                }}
+                                setItems={fetchData}
                             />
                         ),
                     };

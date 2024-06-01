@@ -1,23 +1,19 @@
+import { useEffect, useState } from "react";
+import useFetch from "../../custom hook/useFetch";
+import localhost from "../../Services/localhost";
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import DetailSalaryHistory from "../Salary/SalaryHistory/DetailSalaryHistory";
-import useFetch from "../../custom hook/useFetch";
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { Spin, Table } from "antd";
-import localhost from "../../Services/localhost";
+import { Alert, Col, Row, Spin, Table } from "antd";
 
-const EmployeeSalaryHistory = () => {
-    const { id } = useParams();
+export default function Salary() {
     const { getApi, loading } = useFetch(localhost);
     const [data, setData] = useState([]);
     const fetchData = async () => {
         try {
-            console.log(`/SalaryHistory/EmployeeId?EmployeeId=${id}`);
-            const response = await getApi(
-                `/SalaryHistory/EmployeeId?EmployeeId=${id}`
-            );
-            console.log(response);
-            setData(response);
+            const response = await getApi(`/SalaryHistory`);
+
+            setData(() => response.filter((data) => data.paidDate === null));
         } catch (e) {
             console.log(e);
         }
@@ -79,7 +75,7 @@ const EmployeeSalaryHistory = () => {
         {
             align: "center",
 
-            title: "Detail",
+            title: "detail",
 
             render: (_, record) => (
                 <DetailSalaryHistory record={record} fetchData={fetchData} />
@@ -88,10 +84,26 @@ const EmployeeSalaryHistory = () => {
     ];
 
     return (
-        <Spin spinning={loading}>
-            <Table dataSource={data} columns={columns} rowKey="id" />
-        </Spin>
+        <>
+            {data.length > 0 && (
+                <Row gutter={16}>
+                    <Col span={24}>
+                        <Spin spinning={loading}>
+                            <Alert
+                                message="You haven't paid "
+                                description=<Table
+                                    dataSource={data}
+                                    columns={columns}
+                                    rowKey="id"
+                                />
+                                type="warning"
+                                showIcon
+                                closable
+                            />
+                        </Spin>
+                    </Col>
+                </Row>
+            )}
+        </>
     );
-};
-
-export default EmployeeSalaryHistory;
+}

@@ -110,12 +110,16 @@ namespace PBL3.Server.Repositories
                     : await _context.Employees.Select(e => e.Id).ToListAsync();
             foreach (var employeeId in employeeIdsToProcess)
             {
+                
                 var result = await (
                     from e in _context.Employees
                     join d in _context.Duties on e.DutyId equals d.Id
                     where e.Id == employeeId
-                    select new { e.CoefficientsSalary, d.BasicSalary, }
-                ).FirstOrDefaultAsync();
+                    select new
+                    {
+                        e.CoefficientsSalary,
+                        d.BasicSalary,
+                    }).FirstOrDefaultAsync();
                 if (result != null)
                 {
                     var totalHours = await CalculateTotalHours(

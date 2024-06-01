@@ -1,19 +1,28 @@
 import { useContext, useEffect, useState } from "react";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout, Button, theme, Flex, Spin } from "antd";
+
+import { Layout, theme, Spin, ConfigProvider } from "antd";
+const { Content } = Layout;
 import AdminDashboard from "../../components/Dashboard";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AccountContext } from "../../Context/AccountContext";
-import { UserOutlined } from "@ant-design/icons";
+
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
 
-const { Header, Content } = Layout;
+import HeaderLayout from "./Header";
+
 function MainLayout() {
     const { postApi, loading } = useFetch(localhost);
     const [collapsed, setCollapsed] = useState(false);
     const account = useContext(AccountContext);
     const navigate = useNavigate();
+    const [darkMode, setDarkMode] = useState(() =>
+        JSON.parse(localStorage.getItem("darkMode"))
+    );
+    const {
+        token: { borderRadiusLG },
+    } = theme.useToken();
+
     const login = async () => {
         try {
             if (localStorage.getItem("token")) {
@@ -36,73 +45,50 @@ function MainLayout() {
         login();
     }, []);
 
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
-
     return (
-        <Spin spinning={loading}>
-            <Layout
-                style={{
-                    height: "100vh",
-                    overflow: "hidden",
-                }}
-            >
-                <AdminDashboard
-                    collapsed={collapsed}
+        <ConfigProvider
+            theme={{
+                algorithm: darkMode
+                    ? theme.darkAlgorithm
+                    : theme.defaultAlgorithm,
+            }}
+        >
+            <Spin spinning={loading}>
+                <Layout
                     style={{
-                        height: "100%",
+                        height: "100vh",
+                        overflow: "hidden",
                     }}
-                />
-                <Layout>
-                    <Header
-                        style={{ padding: 0, background: colorBgContainer }}
-                    >
-                        <Flex justify="space-between" align="center">
-                            <Button
-                                type="text"
-                                icon={
-                                    collapsed ? (
-                                        <MenuUnfoldOutlined />
-                                    ) : (
-                                        <MenuFoldOutlined />
-                                    )
-                                }
-                                onClick={() => setCollapsed(!collapsed)}
-                                style={{
-                                    fontSize: "16px",
-                                    width: 64,
-                                    height: 64,
-                                }}
-                            />
-                            <Button
-                                icon={<UserOutlined />}
-                                style={{ margin: "0 16px" }}
-                                onClick={() => {
-                                    navigate(
-                                        `/employee/${account.account.employeeId}`
-                                    );
-                                }}
-                            >
-                                {account.account.fullName}
-                            </Button>
-                        </Flex>
-                    </Header>
-                    <Content
+                >
+                    <AdminDashboard
+                        collapsed={collapsed}
                         style={{
-                            margin: "24px 16px",
-                            padding: 24,
-                            heigt: "100%",
-                            background: colorBgContainer,
-                            borderRadius: borderRadiusLG,
-                            overflow: "auto",
+                            height: "100%",
                         }}
-                    >
-                        <Outlet />
-                    </Content>
+                    />
+                    <Layout>
+                        <HeaderLayout
+                            darkMode={darkMode}
+                            setDarkMode={setDarkMode}
+                            collapsed={collapsed}
+                            setCollapsed={setCollapsed}
+                        />
+                        <Content
+                            style={{
+                                margin: "24px 16px",
+                                padding: 24,
+                                heigt: "100%",
+
+                                borderRadius: borderRadiusLG,
+                                overflow: "auto",
+                            }}
+                        >
+                            <Outlet />
+                        </Content>
+                    </Layout>
                 </Layout>
-            </Layout>
-        </Spin>
+            </Spin>
+        </ConfigProvider>
     );
 }
 

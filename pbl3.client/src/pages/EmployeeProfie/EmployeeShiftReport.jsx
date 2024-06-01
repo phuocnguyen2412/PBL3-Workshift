@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import localhost from "../../Services/localhost";
 import useFetch from "../../custom hook/useFetch";
 import TableReport from "../WorkShift/ShiftReport/TableReport";
 import KanbanReport from "../WorkShift/ShiftReport/KanbanReport";
 import { Spin, Tabs } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import CreateReport from "../WorkShift/ShiftReport/CreateReport";
 
 import { useParams } from "react-router-dom";
 
@@ -49,7 +48,6 @@ export default function EmployeeShiftReport() {
                         icon: <AppstoreOutlined />,
                     },
                 ]}
-                tabBarExtraContent={<CreateReport fetchData={fetchData} />}
             />
         </Spin>
     );

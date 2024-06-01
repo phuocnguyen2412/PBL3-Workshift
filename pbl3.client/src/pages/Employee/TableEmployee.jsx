@@ -39,7 +39,7 @@ const TableEmployee = ({ data, setEmployee }) => {
                         <Tag bordered={false} color="red">
                             {record.dutyName}
                         </Tag>
-                    ) : record.dutyName === "Quản lý" ? (
+                    ) : record.dutyName === "Manager" ? (
                         <Tag bordered={false} color="blue">
                             {record.dutyName}
                         </Tag>
@@ -108,7 +108,7 @@ const TableEmployee = ({ data, setEmployee }) => {
         };
 
         fetchData();
-    }, [setEmployee]);
+    }, []);
 
     return (
         <>

@@ -2,6 +2,8 @@ import { Badge, Descriptions, Modal, Spin, Tag, notification } from "antd";
 import PropTypes from "prop-types";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
+import { useContext } from "react";
+import { AccountContext } from "../../../Context/AccountContext";
 ReportContent.propTypes = {
     data: PropTypes.object.isRequired,
     setOpen: PropTypes.func.isRequired,
@@ -9,12 +11,14 @@ ReportContent.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
 export default function ReportContent({ data, setOpen, open, fetchData }) {
+    const account = useContext(AccountContext);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
 
     const { updateApi, loading } = useFetch(localhost);
     const handleUpdateReport = async () => {
         try {
+            if (account.account.dutyName !== "Admin") return;
             await updateApi(`/Violate/${data.id}?isChecked=${!data.checked}`);
 
             apiNotification.success({
