@@ -19,14 +19,14 @@ namespace PBL3.Server.Controllers
         {
             _bonusSalaryRepo = bonusSalaryRepo;
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
+     
         [HttpGet]
         public async Task<object> GetAllBonusSalaryAsync()
         {
             var bonusSalaries = await _bonusSalaryRepo.GetAllBonusSalaryAsync();
             return bonusSalaries;
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
+       
         [HttpPost("addforemployees")]
         public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryModel model)
         {
@@ -41,7 +41,7 @@ namespace PBL3.Server.Controllers
                 return BadRequest(new { Message = "Failed to add bonus salary" });
             }
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
+   
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBonusSalary(int id)
         {
@@ -55,7 +55,7 @@ namespace PBL3.Server.Controllers
                 return NotFound(new { Message = "Bonus salary not found" });
             }
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetBonusSalaryById(int id)
         {
