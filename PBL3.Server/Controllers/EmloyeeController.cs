@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Helpers;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
@@ -20,7 +21,7 @@ namespace PBL3.Server.Controllers
             _employeeRepository = employeeRepository;
             _accountRepository = accountRepository;
         }
-
+        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
         [HttpGet]
         public async Task<ActionResult> GetAllEmployeesAsync()
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Helpers;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
@@ -17,7 +18,7 @@ namespace PBL3.Server.Controllers
             _accountRepo = accountRepo;
         }
 
-
+        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager , RoleEnum.Employee)]
         [HttpPost("Login")]
         public async Task<ActionResult<AccountModel>> Login(AccountModel model)
         {
@@ -39,7 +40,7 @@ namespace PBL3.Server.Controllers
             }
             return Ok(account);
         }
-
+        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager, RoleEnum.Employee)]
         [HttpPost("LoginByToken")]
         public async Task<ActionResult<object>> LoginByToken(TokenModel token)
         {
@@ -57,7 +58,7 @@ namespace PBL3.Server.Controllers
 
             return Ok(account);
         }
-
+        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager, RoleEnum.Employee)]
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<bool>> ChangePassword(ChangePasswordModel model)
         {

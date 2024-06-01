@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Helpers;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
@@ -19,12 +20,14 @@ namespace PBL3.Server.Controllers
             _dutyRepository = dutyRepo;
         }
 
+        [RolesAuthorize(RoleEnum.Admin)]
         [HttpGet]
         public async Task<ActionResult<List<DutyModel>>> GetAllDutiesAsync()
         {
             return await _dutyRepository.GetAllDutiesAsync();
         }
 
+        [RolesAuthorize(RoleEnum.Admin)]
         [HttpPost]
         public async Task<ActionResult<DutyModel>> AddDutyAsync(DutyModel dutyModel)
         {
@@ -37,6 +40,7 @@ namespace PBL3.Server.Controllers
             return Ok(id);
         }
 
+        [RolesAuthorize(RoleEnum.Admin)]
         [HttpPut]
         public async Task<ActionResult> UpdateDutyAsync(DutyModel dutyModel)
         {
@@ -44,6 +48,7 @@ namespace PBL3.Server.Controllers
             return NoContent();
         }
 
+        [RolesAuthorize(RoleEnum.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDutyAsync(int id)
         {
