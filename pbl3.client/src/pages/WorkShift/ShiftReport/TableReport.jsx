@@ -3,6 +3,7 @@ import ReportContent from "./ReportContent";
 import { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { AccountContext } from "../../../Context/AccountContext";
+import dayjs from "dayjs";
 TableReport.propTypes = {
     data: PropTypes.array.isRequired,
     fetchData: PropTypes.func.isRequired,
@@ -17,14 +18,17 @@ export default function TableReport({ data, fetchData }) {
             key: "name",
         },
         {
-            title: "Age",
+            title: "Shift name",
             dataIndex: "shiftName",
             key: "shiftName",
         },
         {
-            title: "Address",
+            title: "Date",
             dataIndex: "date",
             key: "date",
+            render: (_, record) => (
+                <span>{dayjs(record.date).format("DD-MM-YYYY")}</span>
+            ),
         },
         {
             title: "Start time",

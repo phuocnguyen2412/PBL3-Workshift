@@ -11,7 +11,10 @@ const SearchEmployee = ({ setEmployee }) => {
     const handleSearch = async (value) => {
         try {
             const data = await getApi(`/Employee/search/${value}`);
+            if (data.length === 0)
+                throw new Error(`Không tồn tại nhân viên ${value}`);
             setEmployee(data);
+
             apiNotification.success({
                 message: "Thành công!",
                 description: `Hệ thống đã tìm được nhân viên ${value}`,
@@ -20,7 +23,7 @@ const SearchEmployee = ({ setEmployee }) => {
         } catch (err) {
             apiNotification.error({
                 message: "Error!",
-                description: `${err}`,
+                description: `${err.message}`,
                 placement: "topRight",
             });
         }
