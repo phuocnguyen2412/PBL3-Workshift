@@ -10,7 +10,7 @@ namespace PBL3.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
+
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepository;
@@ -22,15 +22,16 @@ namespace PBL3.Server.Controllers
             _employeeRepository = employeeRepository;
             _accountRepository = accountRepository;
         }
-     
+
         [HttpGet]
-        
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult> GetAllEmployeesAsync()
-       {
-            try{
-               
-                
-                
+        {
+            try
+            {
+
+
+
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
                 if (employees == null)
                 {

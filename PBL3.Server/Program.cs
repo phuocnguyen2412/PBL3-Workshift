@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Interface;
@@ -28,7 +29,6 @@ builder.Services.AddScoped<IBonusSalary, BonusSalaryRepo>();
 builder.Services.AddScoped<IViolate, ViolateRepo>();
 builder.Services.AddScoped<IShift, ShiftRepo>();
 builder.Services.AddScoped<ISalaryHistory,SalaryHistoryRepo>();
-builder.Services.AddAuthentication();
 
 var app = builder.Build();
 

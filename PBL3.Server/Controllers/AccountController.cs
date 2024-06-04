@@ -9,7 +9,7 @@ namespace PBL3.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [RolesAuthorize("Admin", "Manager", "Employee")]
+
     public class AccountController : ControllerBase
     {
         private readonly IAccount _accountRepo;
@@ -62,7 +62,7 @@ namespace PBL3.Server.Controllers
             return Ok(account);
         }
 
- 
+
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<bool>> ChangePassword(ChangePasswordModel model)
         {

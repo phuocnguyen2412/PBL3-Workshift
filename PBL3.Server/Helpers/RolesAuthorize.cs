@@ -20,22 +20,21 @@ namespace PBL3.Server.Helpers
             _requiredRoles = roles;
         }
 
-       
+
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            
-            var token = context.HttpContext.Request.Headers["Authorization"].ToString();
 
-            if (string.IsNullOrEmpty(token) || !await IsAuthorized(context.HttpContext, token)) 
+            var token = context.HttpContext.Request.Headers["Authorization"].ToString();
+            await Console.Out.WriteLineAsync(token);
+            if (string.IsNullOrEmpty(token) || !await IsAuthorized(context.HttpContext, token))
             {
-                context.Result =  new NotFoundResult();
-                return;
+                throw new Exception();
             }
 
             await Task.CompletedTask;
         }
 
-        
+
         private async Task<bool> IsAuthorized(HttpContext httpContext, string token)
         {
             var dbContext = httpContext.RequestServices.GetService(typeof(MyDbContext)) as MyDbContext; // Service locator pattern

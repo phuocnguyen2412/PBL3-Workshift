@@ -15,8 +15,17 @@ import SalaryHistory from "../pages/Salary/SalaryHistory";
 import ShiftInformation from "../pages/WorkShift/ShiftInformation";
 import ShiftReport from "../pages/WorkShift/ShiftReport";
 import Page404 from "../pages/page404";
-
-const routes = [
+export const publicRoutes = [
+    {
+        path: "*",
+        element: <Page404 />,
+    },
+    {
+        path: "/login",
+        element: <Login />,
+    },
+];
+export const privateRoutes = [
     {
         path: "/",
         element: <MainLayout />,
@@ -96,4 +105,3 @@ const routes = [
         element: <Login />,
     },
 ];
-export default routes;

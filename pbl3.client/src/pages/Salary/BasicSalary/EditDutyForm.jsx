@@ -8,10 +8,10 @@ import {
     Spin,
     notification,
 } from "antd";
-import localhost from "../../../Services/localhost";
-import useFetch from "../../../custom hook/useFetch";
+
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
+import dutyApi from "../../../Services/dutyApi";
 
 export default function EditDutyForm({
     form,
@@ -19,21 +19,27 @@ export default function EditDutyForm({
     setOpenEdit,
     setDutyList,
 }) {
-    const { getApi, updateApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const [optionsDuty, setOptionsDuty] = useState([]);
     const [api, contextHolder] = notification.useNotification();
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getApi("/Duty");
-
-            setOptionsDuty(
-                data.map((item) => {
-                    return {
-                        label: <span>{item.dutyName}</span>,
-                        value: item.id,
-                    };
-                })
-            );
+            try {
+                setloading(true);
+                const data = await dutyApi.getAll();
+                setOptionsDuty(
+                    data.map((item) => {
+                        return {
+                            label: <span>{item.dutyName}</span>,
+                            value: item.id,
+                        };
+                    })
+                );
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setloading(false);
+            }
         };
         fetchData();
     }, []);
@@ -43,24 +49,24 @@ export default function EditDutyForm({
                 ...e,
                 id: record.id,
             });
-            await updateApi("/Duty", {
+            await dutyApi.change({
                 ...e,
                 id: record.id,
             });
 
             api.success({
-                message: "Thành công!",
-                description: `Đã edit thành công nhân viên ${e.fullName}`,
+                message: "Success!",
+                description: `You have edited successfully`,
             });
             setOpenEdit(false);
         } catch (err) {
             console.log(err);
             api.error({
-                message: "Thất bại",
-                description: `Edit thất bại nhân viên ${e.fullName}`,
+                message: "Error",
+                description: `Failed to edit!`,
             });
         }
-        setDutyList(await getApi("/Duty"));
+        setDutyList(await dutyApi.getAll());
     };
     return (
         <div>
