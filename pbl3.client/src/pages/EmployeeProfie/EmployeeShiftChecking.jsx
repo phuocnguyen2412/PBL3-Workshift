@@ -1,11 +1,12 @@
 import dayjs from "dayjs";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../../custom hook/useFetch";
 import localhost from "../../Services/localhost";
-import { AccountContext } from "../../Context/AccountContext";
+
 import { Alert, Badge, Calendar, Flex, Modal, Spin } from "antd";
-import WorkInDay from "../WorkShift/ShiftInformation/WorkInDay";
+
 import { useParams } from "react-router-dom";
+import WorkShiftInfo from "./WorkShiftInfo";
 
 export default function EmployeeShiftChecking() {
     const { id } = useParams();
@@ -44,19 +45,16 @@ export default function EmployeeShiftChecking() {
                 };
 
                 const timeStart = dayjs(shift.startTime, "HH:mm:ss");
-
-                if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss"))) {
-                    item.type = "black";
-                } else if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss"))) {
-                    item.type = "yellow";
-                }
-                if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
-                    item.type === "orange";
-                else {
-                    item.type = "purple";
-                }
-
-                //console.log(item);
+                const setTime = () => {
+                    if (timeStart.isBefore(dayjs("05:00:00", "HH:mm:ss")))
+                        return "black";
+                    if (timeStart.isBefore(dayjs("12:00:00", "HH:mm:ss")))
+                        return "yellow";
+                    if (timeStart.isBefore(dayjs("17:00:00", "HH:mm:ss")))
+                        return "orange";
+                    return "purple";
+                };
+                item.type = setTime();
                 listData.push(item);
             }
         });
@@ -101,7 +99,7 @@ export default function EmployeeShiftChecking() {
                 width={1000}
                 footer={null}
             >
-                <WorkInDay date={value?.format("YYYY-MM-DD")} />
+                <WorkShiftInfo date={value?.format("YYYY-MM-DD")} />
             </Modal>
             <Spin spinning={loading}>
                 <Calendar

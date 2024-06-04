@@ -33,15 +33,13 @@ export default function EditEmployeeForm({
 
     const [api, contextHolder] = notification.useNotification();
     const handleSubmitForm = async (e) => {
-        console.log(e);
         try {
             const data = {
                 ...e,
                 id: record.id,
                 typeOfEmployee: e.typeOfEmployee === "true",
-                status: e.status === "true",
             };
-
+            console.log(data);
             await updateApi("/Employee", data);
 
             api.success({

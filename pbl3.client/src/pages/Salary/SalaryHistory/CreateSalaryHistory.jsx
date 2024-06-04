@@ -3,14 +3,13 @@ import {
     Col,
     notification,
     Form,
-    Input,
     Row,
     Spin,
-    TimePicker,
     Button,
     Drawer,
     Select,
     DatePicker,
+    Flex,
 } from "antd";
 import useFetch from "../../../custom hook/useFetch";
 import localhost from "../../../Services/localhost";
@@ -74,12 +73,19 @@ export default function CreateSalaryHistory() {
     return (
         <>
             {contextHolderNotification}
-            <Button type="primary" onClick={showDrawer}>
-                Open
-            </Button>
+            <Flex justify="end">
+                <Button
+                    type="primary"
+                    onClick={showDrawer}
+                    style={{ marginBottom: "16px" }}
+                >
+                    Create salary bill
+                </Button>
+            </Flex>
+
             <Drawer
                 width={600}
-                title="Basic Drawer"
+                title="Create salary bill"
                 onClose={onClose}
                 open={open}
             >
@@ -143,7 +149,9 @@ export default function CreateSalaryHistory() {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Button htmlType="submit">Submit</Button>
+                        <Button block htmlType="submit">
+                            Submit
+                        </Button>
                     </Form>
                 </Spin>
             </Drawer>

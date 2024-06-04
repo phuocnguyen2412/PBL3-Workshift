@@ -28,7 +28,7 @@ namespace PBL3.Server.Repositories
                 join d in _context.Duties on e.DutyId equals d.Id
                 select new
                 {
-                    e.Id,
+                    sh.Id,
                     e.FullName,
                     d.DutyName,
                     d.BasicSalary,
@@ -110,12 +110,16 @@ namespace PBL3.Server.Repositories
                     : await _context.Employees.Select(e => e.Id).ToListAsync();
             foreach (var employeeId in employeeIdsToProcess)
             {
+                
                 var result = await (
                     from e in _context.Employees
                     join d in _context.Duties on e.DutyId equals d.Id
                     where e.Id == employeeId
-                    select new { e.CoefficientsSalary, d.BasicSalary, }
-                ).FirstOrDefaultAsync();
+                    select new
+                    {
+                        e.CoefficientsSalary,
+                        d.BasicSalary,
+                    }).FirstOrDefaultAsync();
                 if (result != null)
                 {
                     var totalHours = await CalculateTotalHours(
@@ -224,7 +228,6 @@ namespace PBL3.Server.Repositories
             if (salaryHistory != null)
             {
                 salaryHistory.PaidDate = DateTime.Now;
-
                 await _context.SaveChangesAsync();
             }
         }

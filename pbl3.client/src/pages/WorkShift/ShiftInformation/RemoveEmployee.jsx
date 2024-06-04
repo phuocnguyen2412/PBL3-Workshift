@@ -13,16 +13,18 @@ const RemoveEmployee = ({ record, setItems }) => {
     const cancelDelete = () => {
         setOpenDelete(false);
     };
+
     const confirmDelete = async () => {
         try {
-            deleteApi("/Shift", record.shiftId);
-            setOpenDelete(false);
+            await deleteApi("/Shift/delete?shiftId=", record.shiftId);
+
             apiNotification.success({
                 message: "Success!",
-                description: `You created a shift ${record.fullName}`,
+                description: `${record.fullName} was successfully deleted`,
                 placement: "topRight",
             });
             setItems();
+            setOpenDelete(() => false);
         } catch (e) {
             apiNotification.error({
                 message: "Error!",
@@ -58,5 +60,6 @@ const RemoveEmployee = ({ record, setItems }) => {
 };
 RemoveEmployee.propTypes = {
     record: PropsType.object.isRequired,
+    setItems: PropsType.func.isRequired,
 };
 export default RemoveEmployee;

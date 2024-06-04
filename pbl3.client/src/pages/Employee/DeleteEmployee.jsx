@@ -13,14 +13,12 @@ const DeleteEmployee = ({ record, setEmployee }) => {
 
     const confirmDelete = async () => {
         try {
-            await deleteApi(`/Employee`, record.id);
-
+            await deleteApi(`/Employee/`, record.id);
             apiNotification.success({
                 message: "Thành công!",
                 description: `Bạn đã xóa thành công nhân viên`,
                 placement: "topRight",
             });
-
             setEmployee(await getApi("/Employee"));
         } catch (err) {
             apiNotification.error({

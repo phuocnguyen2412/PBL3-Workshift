@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Layout, Menu, theme } from "antd";
 
 import { AdminList, Employee, Manager } from "./DashboardList";
 import { useContext, useState } from "react";
@@ -12,6 +12,10 @@ AdminDashboard.propTypes = {
 
 export default function AdminDashboard({ collapsed }) {
     const account = useContext(AccountContext);
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
+
     const getLevelKeys = (items1) => {
         const key = {};
         const func = (items2, level = 1) => {
@@ -42,9 +46,9 @@ export default function AdminDashboard({ collapsed }) {
                 );
             setStateOpenKeys(
                 openKeys
-                    // remove repeat key
+
                     .filter((_, index) => index !== repeatIndex)
-                    // remove current level all child
+
                     .filter(
                         (key) => levelKeys[key] <= levelKeys[currentOpenKey]
                     )
@@ -64,8 +68,8 @@ export default function AdminDashboard({ collapsed }) {
             <div
                 className="demo-logo-vertical"
                 style={{
+                    background: colorBgContainer,
                     padding: "24px",
-                    backgroundColor: "white",
                 }}
             >
                 <img
@@ -91,6 +95,7 @@ export default function AdminDashboard({ collapsed }) {
                 }
                 style={{
                     height: "100%",
+                    border: "none",
                 }}
             />
         </Sider>
