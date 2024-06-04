@@ -59,6 +59,7 @@
     "/Users/ttcenter/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.26/microsoft.aspnetcore.app.ref.6.0.26.nupkg.sha512",
     "/Users/ttcenter/.nuget/packages/microsoft.netcore.app.host.osx-arm64/6.0.26/microsoft.netcore.app.host.osx-arm64.6.0.26.nupkg.sha512"
   ],
+<<<<<<< HEAD
   "logs": [
     {
       "code": "Undefined",
@@ -67,4 +68,7 @@
       "message": "Problem reading the cache file /Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
     }
   ]
+=======
+  "logs": []
+>>>>>>> refs/remotes/origin/main
 }

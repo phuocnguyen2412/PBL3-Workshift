@@ -1,20 +1,23 @@
+import { useEffect, useState } from "react";
+import dutyApi from "../../../Services/dutyApi";
 import { Spin, Table, Tag } from "antd";
-import { useEffect } from "react";
-import PropTypes from "prop-types";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
-
 import EditDuty from "./EditDuty";
-
-export default function TableDuty({ dutyList, setDutyList }) {
-    const { getApi, loading } = useFetch(localhost);
-
+const BasicSalary = () => {
+    const [dutyList, setDutyList] = useState([]);
+    const [loading, setloading] = useState(false);
     useEffect(() => {
-        const getData = async () => {
-            const data = await getApi("/Duty");
-            setDutyList(data);
-        };
-        getData();
+        try {
+            setloading(true);
+            const getData = async () => {
+                const data = await dutyApi.getAll();
+                setDutyList(data);
+            };
+            getData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
     const columns = [
         {
@@ -27,7 +30,7 @@ export default function TableDuty({ dutyList, setDutyList }) {
                         <Tag bordered={false} color="red">
                             {record.dutyName}
                         </Tag>
-                    ) : record.dutyName === "Quản lý" ? (
+                    ) : record.dutyName === "Manager" ? (
                         <Tag bordered={false} color="blue">
                             {record.dutyName}
                         </Tag>
@@ -57,17 +60,10 @@ export default function TableDuty({ dutyList, setDutyList }) {
     return (
         <>
             <Spin spinning={loading}>
-                <Table
-                    rowKey="id"
-                    columns={columns}
-                    dataSource={dutyList}
-                ></Table>
-                ;
+                <Table rowKey="id" columns={columns} dataSource={dutyList} />
             </Spin>
         </>
     );
-}
-TableDuty.propTypes = {
-    dutyList: PropTypes.array.isRequired,
-    setDutyList: PropTypes.func.isRequired,
 };
+
+export default BasicSalary;

@@ -54,7 +54,7 @@ namespace PBL3.Server.Repositories
                 where sh.Id == Id
                 select new
                 {
-                    e.Id,
+                    sh.Id,
                     e.FullName,
                     d.DutyName,
                     d.BasicSalary,
@@ -81,7 +81,7 @@ namespace PBL3.Server.Repositories
                 where e.Id == Id
                 select new
                 {
-                    e.Id,
+                    sh.Id,
                     e.FullName,
                     d.DutyName,
                     d.BasicSalary,
@@ -203,8 +203,7 @@ namespace PBL3.Server.Repositories
         {
             var totalBonus = await _context
                 .BonusSalaryHistories
-                .Where(bs =>
-                    bs.EmployeeId == employeeId && bs.Date >= startDate && bs.Date <= endDate
+                .Where(bs => bs.EmployeeId == employeeId && bs.Date >= startDate && bs.Date <= endDate
                 )
                 .SumAsync(bs => bs.Bonus);
 

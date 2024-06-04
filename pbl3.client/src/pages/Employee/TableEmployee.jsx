@@ -108,7 +108,7 @@ const TableEmployee = ({ data, setEmployee }) => {
         };
 
         fetchData();
-    }, [setEmployee]);
+    }, []);
 
     return (
         <>

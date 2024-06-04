@@ -20,18 +20,7 @@ namespace PBL3.Server.Repositories
             _context = context;
             _mapper = mapper;
         }
-        public async Task<object> Author(string token, List<string> listDuty)
-        {
-            var result = await (
-                from account in _context.Accounts
-                join employee in _context.Employees on account.EmployeeId equals employee.Id
-                join duty in _context.Duties on employee.DutyId equals duty.Id
-                where account.Token == token && listDuty.Contains(duty.DutyName)
-                select new { dutyName = duty.DutyName }
-            ).FirstOrDefaultAsync();
-
-            return result;
-        }
+        
         public async Task AddAccountAsync(string email, int employeeId)
         {
             var hashedPassword = HashPassword(email);
@@ -102,24 +91,24 @@ namespace PBL3.Server.Repositories
                 }
             ).FirstOrDefaultAsync();
 
-            if (account != null)
-            {
-                string newToken = GenerateToken();
-                var accountToUpdate = await _context.Accounts.FindAsync(account.AccountId);
-                accountToUpdate.Token = newToken;
-                await _context.SaveChangesAsync();
+            // if (account != null)
+            // {
+            //     string newToken = GenerateToken();
+            //     var accountToUpdate = await _context.Accounts.FindAsync(account.AccountId);
+            //     accountToUpdate.Token = newToken;
+            //     await _context.SaveChangesAsync();
 
-                var updatedAccount = new
-                {
-                    account.FullName,
-                    account.EmployeeId,
-                    account.DutyName,
-                    account.AccountId,
-                    Token = newToken
-                };
+            //     var updatedAccount = new
+            //     {
+            //         account.FullName,
+            //         account.EmployeeId,
+            //         account.DutyName,
+            //         account.AccountId,
+            //         Token = newToken
+            //     };
 
-                return updatedAccount;
-            }
+            //     return updatedAccount;
+            // }
 
             return account;
         }

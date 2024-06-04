@@ -2505,11 +2505,19 @@
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
       "projectName": "PBL3.Server",
       "projectPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/PBL3.Server.csproj",
       "packagesPath": "/Users/ttcenter/.nuget/packages/",
       "outputPath": "/Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/obj/",
+=======
+      "projectUniqueName": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
+      "projectName": "PBL3.Server",
+      "projectPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
+      "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\obj\\",
+>>>>>>> refs/remotes/origin/main
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/ttcenter/.nuget/NuGet/NuGet.Config"
@@ -2601,6 +2609,7 @@
         "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/RuntimeIdentifierGraph.json"
       }
     }
+<<<<<<< HEAD
   },
   "logs": [
     {
@@ -2610,4 +2619,7 @@
       "message": "Problem reading the cache file /Users/ttcenter/Desktop/PBL3-Workshift/PBL3.Server/obj/project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
     }
   ]
+=======
+  }
+>>>>>>> refs/remotes/origin/main
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Data;
+using PBL3.Server.Helpers;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace PBL3.Server.Controllers
         {
             _bonusSalaryRepo = bonusSalaryRepo;
         }
-
+     
         [HttpGet]
         public async Task<object> GetAllBonusSalaryAsync()
         {
             var bonusSalaries = await _bonusSalaryRepo.GetAllBonusSalaryAsync();
             return bonusSalaries;
         }
-
+       
         [HttpPost("addforemployees")]
         public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryModel model)
         {
@@ -40,7 +41,7 @@ namespace PBL3.Server.Controllers
                 return BadRequest(new { Message = "Failed to add bonus salary" });
             }
         }
-
+   
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteBonusSalary(int id)
         {
@@ -54,7 +55,7 @@ namespace PBL3.Server.Controllers
                 return NotFound(new { Message = "Bonus salary not found" });
             }
         }
-
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetBonusSalaryById(int id)
         {

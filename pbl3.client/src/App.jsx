@@ -1,14 +1,17 @@
 import { useRoutes } from "react-router-dom";
 
-import {  AccountProvider } from "./Context/AccountContext";
-
-import routes from "./routes";
-
+import { publicRoutes, privateRoutes } from "./routes";
+import { useContext } from "react";
+import { AccountContext } from "./Context/AccountContext";
 
 function App() {
-    const routeList = useRoutes(routes);
+    const account = useContext(AccountContext);
 
-    return <AccountProvider>{routeList}</AccountProvider>;
+    const routeList = useRoutes(
+        Object.keys(account.account) === 0 ? publicRoutes : privateRoutes
+    );
+
+    return <>{routeList}</>;
 }
 
 export default App;
