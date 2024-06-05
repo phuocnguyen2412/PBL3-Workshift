@@ -13,22 +13,24 @@ import {
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+import employeeApi from "../../../Services/employeeApi";
 import PropTypes from "prop-types";
+import bonusSalary from "../../../Services/BonusSalary";
 CreateBonusSalary.propTypes = {
     reload: PropTypes.func.isRequired,
 };
 export default function CreateBonusSalary({ reload }) {
+    const [loading, setloading] = useState(false);
+
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const [open, setOpen] = useState(false);
-    const { getApi, loading, postApi } = useFetch(localhost);
+
     const [form] = Form.useForm();
     const [employeeOptions, setEmployeeOptions] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getApi("/Employee");
+            const data = await employeeApi.getAll();
             data.push({
                 fullName: "Tất cả",
                 id: 0,
@@ -42,7 +44,14 @@ export default function CreateBonusSalary({ reload }) {
                 });
             });
         };
-        fetchData();
+        try {
+            setloading(true);
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
 
     const showDrawer = () => {
@@ -58,14 +67,14 @@ export default function CreateBonusSalary({ reload }) {
                 e.employeeIds.length > 1
             ) {
                 apiNotification.error({
-                    message: "Thất bại!",
-                    description: `Chỉ được chọn tất cả hoặc 1 số nhân viên`,
+                    message: "Error!",
+                    description: `You only can choose all or list employee`,
                     placement: "bottomRight",
                 });
                 return;
             }
             e.date = e.date.format("YYYY-MM-DDTHH:mm:ss");
-            const response = await postApi("/BonusSalary/addforemployees", e);
+            const response = await bonusSalary.add(e);
             apiNotification.success({
                 message: "Success!",
                 description: `${response.message}`,

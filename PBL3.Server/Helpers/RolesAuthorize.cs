@@ -37,15 +37,11 @@ namespace PBL3.Server.Helpers
 
         private async Task<bool> IsAuthorized(HttpContext httpContext, string token)
         {
-            var dbContext = httpContext.RequestServices.GetService(typeof(MyDbContext)) as MyDbContext; // Service locator pattern
-            if (dbContext == null) return false;
-
+            if (httpContext.RequestServices.GetService(typeof(MyDbContext)) is not MyDbContext dbContext) return false;
             var result = await (
                 from account in dbContext.Accounts
-                join employee in dbContext.Employees on account.EmployeeId equals employee.Id
-                join duty in dbContext.Duties on employee.DutyId equals duty.Id
-                where account.Token == token && _requiredRoles.Contains(duty.DutyName)
-                select duty.DutyName
+                where account.Token == token && _requiredRoles.Contains(account.Employee.Duty.DutyName)
+                select account
             ).FirstOrDefaultAsync();
 
             return result != null;

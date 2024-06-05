@@ -1,8 +1,9 @@
 import { Button, notification } from "antd";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import PropTypes from "prop-types";
 import { DeleteOutlined } from "@ant-design/icons";
+import { useState } from "react";
+import bonusSalary from "../../../Services/BonusSalary";
 
 DeleteBonus.propTypes = {
     record: PropTypes.object.isRequired,
@@ -12,11 +13,12 @@ DeleteBonus.propTypes = {
 export default function DeleteBonus({ record, fetchData }) {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const { deleteApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
 
     const handleDeleteBonus = async (id) => {
         try {
-            const response = await deleteApi("/BonusSalary", id);
+            setloading(true);
+            const response = await bonusSalary.delete(id);
             apiNotification.success({
                 message: "Success!",
                 description: `${response.message}`,
@@ -31,6 +33,8 @@ export default function DeleteBonus({ record, fetchData }) {
                 description: `${err}`,
                 placement: "topRight",
             });
+        } finally {
+            setloading(false);
         }
     };
     return (

@@ -4,15 +4,17 @@ import { Layout, theme, Spin, ConfigProvider } from "antd";
 const { Content } = Layout;
 import AdminDashboard from "../../components/Dashboard";
 import { Outlet, useNavigate } from "react-router-dom";
-import { AccountContext } from "../../Context/AccountContext";
 
 import HeaderLayout from "./Header";
 import authApi from "../../Services/authApi";
+import { AccountContext } from "../../Context/AccountContext";
 
 function MainLayout() {
+    const account = useContext(AccountContext);
+    console.log(account);
     const [loading, setloading] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
-    const account = useContext(AccountContext);
+
     const navigate = useNavigate();
     const [darkMode, setDarkMode] = useState(() =>
         JSON.parse(localStorage.getItem("darkMode"))
@@ -20,7 +22,7 @@ function MainLayout() {
     const {
         token: { borderRadiusLG },
     } = theme.useToken();
-
+  
     const login = async () => {
         try {
             setloading(true);
@@ -30,10 +32,8 @@ function MainLayout() {
                 navigate("/login");
                 return;
             }
-            const data = await authApi.loginByToken({ token });
-            account.onChange(data);
-            localStorage.removeItem("Authorization");
-            localStorage.setItem("Authorization", data.token);
+            const res = await authApi.loginByToken({ token });
+            account.onChange(res);
         } catch (e) {
             navigate("/login");
             console.log(e);

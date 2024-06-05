@@ -1,21 +1,16 @@
 import axios from "axios";
-import queryString from "query-string";
 
-// Retrieve token from local storage
-const token = localStorage.getItem("Authorization");
-console.log(token);
-
-// Create an axios instance
 const axiosClient = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {
         "Content-Type": "application/json",
-        Authorization: token,
     },
 });
 
 axiosClient.interceptors.request.use(
     async (config) => {
+        config.headers.Authorization =
+            localStorage.getItem("Authorization") || "";
         return config;
     },
     (error) => {

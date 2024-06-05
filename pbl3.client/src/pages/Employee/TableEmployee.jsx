@@ -1,18 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Badge, Spin, Table, Tag } from "antd";
-
-import useFetch from "../../custom hook/useFetch";
 
 import DeleteEmployee from "./DeleteEmployee";
 import SearchEmployee from "./SearchEmployee";
 import EditEmployee from "./EditEmployee";
 import { Link } from "react-router-dom";
 
-import localhost from "../../Services/localhost";
 import PropTypes from "prop-types";
+import employeeApi from "../../Services/employeeApi";
 const TableEmployee = ({ data, setEmployee }) => {
-    const { getApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
 
     const columns = [
         {
@@ -103,11 +101,18 @@ const TableEmployee = ({ data, setEmployee }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getApi("/Employee");
+            setloading(true);
+            const data = await employeeApi.getAll();
             setEmployee(data);
+            setloading(false);
         };
-
-        fetchData();
+        try {
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
 
     return (

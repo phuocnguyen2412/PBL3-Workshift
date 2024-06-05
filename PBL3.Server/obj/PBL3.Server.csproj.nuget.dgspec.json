@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj": {}
+    "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj": {
+    "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
+        "projectUniqueName": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj",
         "projectName": "PBL3.Server",
-        "projectPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
+        "projectPath": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj",
         "packagesPath": "C:\\Users\\Hi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\obj\\",
+        "outputPath": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

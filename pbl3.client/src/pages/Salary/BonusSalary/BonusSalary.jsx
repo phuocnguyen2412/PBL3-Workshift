@@ -1,26 +1,25 @@
-import { useEffect, useState } from "react";
-
+import { useContext, useEffect, useState } from "react";
+import CreateBonusSalary from "./CreateBonusSalary";
+import { AccountContext } from "../../../Context/AccountContext";
 import { Spin, Tabs } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
-import TableBonus from "../Salary/BonusSalary/TableBonus";
-import KanbanBonus from "../Salary/BonusSalary/KanbanBonus";
+import TableBonus from "./TableBonus";
+import KanbanBonus from "./KanbanBonus";
+import bonusSalary from "../../../Services/BonusSalary";
 
-import { useParams } from "react-router-dom";
-import bonusSalary from "../../Services/BonusSalary";
-export default function EmployeeBonusSalary() {
+const BonusSalary = () => {
+    const account = useContext(AccountContext);
     const [loading, setloading] = useState(false);
-    const { id } = useParams();
 
     const [data, setData] = useState([]);
 
     const fetchData = async () => {
-        const response = await bonusSalary.getAllOfEmployee(id);
+        const response = await bonusSalary.getAll();
         setData(response);
     };
     useEffect(() => {
         try {
-            setloading(true);
             fetchData();
         } catch (error) {
             console.log(error);
@@ -49,7 +48,14 @@ export default function EmployeeBonusSalary() {
                         icon: <AppstoreOutlined />,
                     },
                 ]}
+                tabBarExtraContent={
+                    account.account.dutyName === "Admin" && (
+                        <CreateBonusSalary reload={fetchData} />
+                    )
+                }
             />
         </Spin>
     );
-}
+};
+
+export default BonusSalary;

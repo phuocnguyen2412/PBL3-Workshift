@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-import useFetch from "../../custom hook/useFetch";
+
 import CountUp from "react-countup";
-import localhost from "../../Services/localhost";
+
 import { Card, Col, Row, Spin, Statistic } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import employeeApi from "../../Services/employeeApi";
 const formatter = (value) => <CountUp end={value} separator="," />;
 export default function HomeAdmin() {
-    const { getApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const [employee, setEmployee] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
-            setEmployee(await getApi("/Employee"));
+            setEmployee(await employeeApi.getAll());
         };
-        fetchData();
+        setloading(true);
+        try {
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
     const admin = employee.filter((item) => item.dutyName === "Admin");
     const manager = employee.filter((item) => item.dutyName === "Manager");

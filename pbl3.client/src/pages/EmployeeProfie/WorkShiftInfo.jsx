@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import localhost from "../../Services/localhost";
-import useFetch from "../../custom hook/useFetch";
+
 import { Collapse, Empty, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import ShiftDetail from "./ShiftDetail";
 import dayjs from "dayjs";
+import PropsType from "prop-types";
+import shiftApi from "../../Services/shiftApi";
+WorkShiftInfo.propTypes = {
+    date: PropsType.string.isRequired,
+};
 
 export default function WorkShiftInfo({ date }) {
+    const [loading, setloading] = useState(false);
     const { id } = useParams();
     const [items, setItems] = useState([]);
-    const { getApi, loading } = useFetch(localhost);
+
     const fetchData = async () => {
         try {
-            const data = await getApi(`/Shift/employee/${id}`);
+            setloading(true);
+            const data = await shiftApi.getAllOfEmployee(id);
 
             setItems(() =>
                 data
@@ -30,6 +36,8 @@ export default function WorkShiftInfo({ date }) {
         } catch (e) {
             setItems([]);
             console.log(e);
+        } finally {
+            setloading(false);
         }
     };
     useEffect(() => {

@@ -1,12 +1,13 @@
 import { createContext, useState } from "react";
 import PropTypes from "prop-types";
 export const AccountContext = createContext();
+
 export const AccountProvider = (props) => {
     const [account, setAccount] = useState({});
     const value = {
         account: account,
         onChange: function (newAccount) {
-            setAccount(newAccount);
+            setAccount(() => newAccount);
         },
     };
     return (
@@ -15,7 +16,7 @@ export const AccountProvider = (props) => {
         </AccountContext.Provider>
     );
 };
+
 AccountContext.propTypes = {
     props: PropTypes.object.isRequired,
-
 };
