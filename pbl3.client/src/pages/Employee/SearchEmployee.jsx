@@ -3,6 +3,7 @@ const { Search } = Input;
 import PropTypes from "prop-types";
 
 import employeeApi from "../../Services/employeeApi";
+import { useState } from "react";
 const SearchEmployee = ({ setEmployee }) => {
     const [loading, setLoading] = useState(false);
     const [apiNotification, contextHolderNotification] =

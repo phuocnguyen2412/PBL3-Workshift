@@ -8,15 +8,18 @@ import violateApi from "../../Services/violateApi";
 export default function Reports() {
     const [loading, setloading] = useState(false);
 
-    const { account } = useContext(AccountContext);
+    const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
     const [data, setData] = useState([]);
     const fetchData = async () => {
         let data;
 
-        if (account.dutyName === "Admin") data = await violateApi.getAll();
+        if (account.account.dutyName === "Admin")
+            data = await violateApi.getAll();
         else {
-            data = await violateApi.getAllOfEmployeeId(account.employeeId);
+            data = await violateApi.getAllOfEmployeeId(
+                account.account.employeeId
+            );
         }
 
         setData(() => data.filter((e) => e.checked === false));

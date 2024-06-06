@@ -11,7 +11,7 @@ import { AccountContext } from "../../Context/AccountContext";
 
 function MainLayout() {
     const account = useContext(AccountContext);
-    console.log(account);
+
     const [loading, setloading] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
 
@@ -22,7 +22,7 @@ function MainLayout() {
     const {
         token: { borderRadiusLG },
     } = theme.useToken();
-  
+
     const login = async () => {
         try {
             setloading(true);

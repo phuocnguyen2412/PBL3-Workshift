@@ -14,7 +14,6 @@ axiosClient.interceptors.request.use(
         return config;
     },
     (error) => {
-        // Handle request errors
         return Promise.reject(error);
     }
 );
@@ -30,7 +29,7 @@ axiosClient.interceptors.response.use(
     (error) => {
         // Handle response errors
         console.error("API error:", error);
-        throw error;
+        throw error.response.data.message;
     }
 );
 

@@ -8,17 +8,17 @@ import {
 import PropTypes from "prop-types";
 const items = [
     {
-        label: "Tất cả",
+        label: "All",
         key: "Tất cả",
         icon: <TeamOutlined />,
     },
     {
-        label: "Đang đi làm",
+        label: "Working",
         key: "true",
         icon: <UserAddOutlined />,
     },
     {
-        label: "Đã nghỉ làm",
+        label: "Off",
         key: "false",
         icon: <UserDeleteOutlined />,
     },
