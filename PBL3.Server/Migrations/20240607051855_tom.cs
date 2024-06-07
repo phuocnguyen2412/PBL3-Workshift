@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PBL3.Server.Migrations
 {
-    public partial class dádsa : Migration
+    public partial class tom : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

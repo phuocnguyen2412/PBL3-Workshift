@@ -10,34 +10,39 @@ import {
     Spin,
     notification,
 } from "antd";
-import useFetch from "../../custom hook/useFetch";
+
 import { useEffect, useState } from "react";
-import localhost from "../../Services/localhost";
+
 import PropTypes from "prop-types";
+import employeeApi from "../../Services/employeeApi";
+import dutyApi from "../../Services/dutyApi";
 
 export default function InputEmployeeForm({ setEmployee }) {
     const [form] = Form.useForm();
     const [optionsDuty, setOptionsDuty] = useState([]);
-    const { postApi, loading, getApi } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
 
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const handleSubmitForm = async (e) => {
         try {
+            setloading(true);
             const data = {
                 ...e,
                 status: true,
                 typeOfEmployee: e.typeOfEmployee === "true",
             };
-            console.log(data);
-            await postApi("/Employee", data);
+
+            await employeeApi.add(data);
+
             form.resetFields();
             apiNotification.success({
                 message: "Success!",
-                description: `Bạn đã thêm thành công nhân viên ${e.fullName}`,
+                description: `You have added employee successfully ${e.fullName}`,
                 placement: "bottomRight",
             });
-            setEmployee(await getApi("/Employee"));
+
+            setEmployee(await employeeApi.getAll());
         } catch (err) {
             console.log(err);
             apiNotification.error({
@@ -45,21 +50,29 @@ export default function InputEmployeeForm({ setEmployee }) {
                 description: `Bạn đã thêm thất bại nhân viên ${e.fullName}`,
                 placement: "bottomRight",
             });
+        } finally {
+            setloading(false);
         }
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getApi("/Duty");
-
-            setOptionsDuty(
-                data.map((item) => {
-                    return {
-                        label: <span>{item.dutyName}</span>,
-                        value: item.id,
-                    };
-                })
-            );
+            setloading(true);
+            try {
+                const data = await dutyApi.getAll();
+                setOptionsDuty(
+                    data.map((item) => {
+                        return {
+                            label: <span>{item.dutyName}</span>,
+                            value: item.id,
+                        };
+                    })
+                );
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setloading(false);
+            }
         };
         fetchData();
     }, []);

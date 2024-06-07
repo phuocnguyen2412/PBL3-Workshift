@@ -11,14 +11,15 @@ import {
     DatePicker,
     Flex,
 } from "antd";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
+import employeeApi from "../../../Services/employeeApi";
+import bonusSalary from "../../../Services/BonusSalary";
 
 export default function CreateSalaryHistory() {
+    const [loading, setloading] = useState(false);
     const [form] = Form.useForm();
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const { getApi, loading, postApi } = useFetch(localhost);
 
     const [open, setOpen] = useState(false);
     const [listEmployee, setListEmployee] = useState([]);
@@ -32,7 +33,7 @@ export default function CreateSalaryHistory() {
     };
     useEffect(() => {
         const fetchData = async () => {
-            const response = await getApi("/Employee/status/true");
+            const response = await employeeApi.findByStatus(true);
 
             const data = response.map((e) => {
                 return {
@@ -40,13 +41,21 @@ export default function CreateSalaryHistory() {
                     value: e.id,
                 };
             });
+
             data.push({
                 label: "All",
                 value: 0,
             });
             setListEmployee(data);
         };
-        fetchData();
+        try {
+            setloading(true);
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
 
     const handleSubmit = async (e) => {
@@ -54,7 +63,7 @@ export default function CreateSalaryHistory() {
             e.startDate = e.startDate.format("YYYY-MM-DD");
             e.endDate = e.endDate.format("YYYY-MM-DD");
 
-            const res = await postApi("/SalaryHistory", e);
+            const res = await bonusSalary.add(e);
             console.log(res);
             apiNotification.success({
                 message: "Success!",

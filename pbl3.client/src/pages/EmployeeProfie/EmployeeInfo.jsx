@@ -12,21 +12,24 @@ import {
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useFetch from "../../custom hook/useFetch";
-import localhost from "../../Services/localhost";
+
+import employeeApi from "../../Services/employeeApi";
 const EmployeeInfo = () => {
-    const { getApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const params = useParams();
     const [employee, setEmployee] = useState({});
     const [error, setError] = useState(false);
     const naviagte = useNavigate();
     const fetchData = async () => {
         try {
-            const data = await getApi(`/Employee/${params.id}`);
+            setloading(true);
+            const data = await employeeApi.findById(params.id);
 
             setEmployee(data);
         } catch (e) {
             setError(true);
+        } finally {
+            setloading(false);
         }
     };
 

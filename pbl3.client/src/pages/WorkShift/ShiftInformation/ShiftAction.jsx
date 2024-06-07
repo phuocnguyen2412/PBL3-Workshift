@@ -1,10 +1,11 @@
 import { Button, Flex, notification } from "antd";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountContext";
 import PropTypes from "prop-types";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import DeleteWorkShift from "./DeleteWorkShift";
+import shiftApi from "../../../Services/shiftApi";
+import shiftInfo from "../../../Services/shiftInfoApi";
 ShiftAction.propTypes = {
     shift: PropTypes.object.isRequired,
     setItems: PropTypes.func.isRequired,
@@ -12,22 +13,21 @@ ShiftAction.propTypes = {
 export default function ShiftAction({ shift, setItems }) {
     const account = useContext(AccountContext);
 
-    const { loading, deleteApi, postApi, updateApi } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
 
     const handleDeleteShift = async () => {
         try {
+            setloading(true);
             if (shift.check)
                 throw { message: "Work shift is checked! You can't out" };
             const data = shift.employees.find(
                 (e) => e.employeeId === account.account.employeeId
             );
-            console.log(data);
-            const response = await deleteApi(
-                `/Shift/delete?shiftId=${data.shiftId}`
-            );
-            console.log(response);
+
+            await shiftApi.detele(data.shiftId);
+
             apiNotification.success({
                 message: "Success!",
                 description: `Unregistration successful`,
@@ -41,10 +41,12 @@ export default function ShiftAction({ shift, setItems }) {
                 description: `${error.message}`,
                 placement: "topRight",
             });
+        } finally {
+            setloading(false);
         }
     };
     const handleCheck = async (id, checked) => {
-        await updateApi(`/ShiftInfo/${id}/${!checked}`);
+        await shiftInfo.changeChecked(id, checked);
 
         apiNotification.success({
             message: "Thành công!",
@@ -65,8 +67,8 @@ export default function ShiftAction({ shift, setItems }) {
                 checkOutTime: "2000-01-01T00:00:00.000Z",
             };
 
-            const res = await postApi("/Shift", data);
-            console.log(res);
+            await shiftApi.add(data);
+
             apiNotification.success({
                 message: "Success!",
                 description: `Registration successful`,

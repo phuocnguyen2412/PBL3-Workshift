@@ -54,9 +54,9 @@ namespace PBL3.Server.Controllers
             {
                 return BadRequest(ex);
             }
-        }
+        }   
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}")]   
         public async Task<ActionResult> UpdateSalaryById(int id)
         {
             try

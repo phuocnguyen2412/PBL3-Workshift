@@ -1,18 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Badge, Spin, Table, Tag } from "antd";
-
-import useFetch from "../../custom hook/useFetch";
 
 import DeleteEmployee from "./DeleteEmployee";
 import SearchEmployee from "./SearchEmployee";
 import EditEmployee from "./EditEmployee";
 import { Link } from "react-router-dom";
 
-import localhost from "../../Services/localhost";
 import PropTypes from "prop-types";
+import employeeApi from "../../Services/employeeApi";
 const TableEmployee = ({ data, setEmployee }) => {
-    const { getApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
 
     const columns = [
         {
@@ -27,12 +25,46 @@ const TableEmployee = ({ data, setEmployee }) => {
                     </>
                 );
             },
+            sortDirections: ["ascend", "descend", "ascend"],
+            sorter: (a, b) => {
+                if (a.fullName < b.fullName) {
+                    return -1;
+                }
+                if (a.fullName > b.fullName) {
+                    return 1;
+                }
+                return 0;
+            },
         },
 
         {
             title: "Duty",
             dataIndex: "dutyName",
-
+            filters: [
+                {
+                    text: "Admin",
+                    value: "Admin",
+                },
+                {
+                    text: "Manager",
+                    value: "Manager",
+                },
+                {
+                    text: "Employee",
+                    value: "Employee",
+                },
+            ],
+            onFilter: (value, record) => record.dutyName === value,
+            sorter: (a, b) => {
+                if (a.dutyName < b.dutyName) {
+                    return -1;
+                }
+                if (a.dutyName > b.dutyName) {
+                    return 1;
+                }
+                return 0;
+            },
+            sortDirections: ["ascend", "descend", "ascend"],
             render: (_, record) => (
                 <>
                     {record.dutyName === "Admin" ? (
@@ -54,6 +86,23 @@ const TableEmployee = ({ data, setEmployee }) => {
         {
             title: "Type of employee",
             dataIndex: "typeOfEmployee",
+            filters: [
+                {
+                    text: "Full time",
+                    value: "true",
+                },
+                {
+                    text: "Part time",
+                    value: "false",
+                },
+            ],
+            onFilter: (value, record) => {
+                return record.typeOfEmployee == (value === "true");
+            },
+            sorter: (a, b) => {
+                return a.typeOfEmployee - b.typeOfEmployee;
+            },
+            sortDirections: ["ascend", "descend", "ascend"],
             render: (_, record) => (
                 <>
                     {record.typeOfEmployee ? (
@@ -71,12 +120,29 @@ const TableEmployee = ({ data, setEmployee }) => {
         {
             title: "Status",
             dataIndex: "status",
+            filters: [
+                {
+                    text: "Working",
+                    value: "true",
+                },
+                {
+                    text: "Off",
+                    value: "false",
+                },
+            ],
+            onFilter: (value, record) => {
+                return record.status == (value === "true");
+            },
+            sorter: (a, b) => {
+                return a.status - b.status;
+            },
+            sortDirections: ["ascend", "descend", "ascend"],
             render: (_, record) => (
                 <>
                     {record.status ? (
-                        <Badge status="success" text="Đang làm" />
+                        <Badge status="success" text="Working" />
                     ) : (
-                        <Badge status="error" text="Đã nghỉ làm" />
+                        <Badge status="error" text="Off" />
                     )}
                 </>
             ),
@@ -103,11 +169,18 @@ const TableEmployee = ({ data, setEmployee }) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getApi("/Employee");
+            setloading(true);
+            const data = await employeeApi.getAll();
             setEmployee(data);
+            setloading(false);
         };
-
-        fetchData();
+        try {
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
 
     return (

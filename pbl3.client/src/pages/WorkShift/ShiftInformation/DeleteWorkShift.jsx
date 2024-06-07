@@ -1,8 +1,8 @@
 import { Button, Modal, notification } from "antd";
 import { useState } from "react";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import PropTypes from "prop-types";
+import shiftInfo from "../../../Services/shiftInfoApi";
 DeleteWorkShift.propTypes = {
     shift: PropTypes.object.isRequired,
 
@@ -10,13 +10,14 @@ DeleteWorkShift.propTypes = {
 };
 export default function DeleteWorkShift({ shift, setItems }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { deleteApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const handleDeleteShiftInfo = async (id) => {
         try {
-            const response = await deleteApi(`/ShiftInfo/`, id);
-            console.log(response);
+            setloading(true);
+            await shiftInfo.delete(id);
+
             apiNotification.success({
                 message: "Success!",
                 description: `${shift.shiftName}: ${shift.startTime} - ${shift.endTime} was successfully deleted`,
@@ -31,6 +32,8 @@ export default function DeleteWorkShift({ shift, setItems }) {
                 description: `${e.message}`,
                 placement: "topRight",
             });
+        } finally {
+            setloading(false);
         }
     };
     const showModal = () => {

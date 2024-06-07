@@ -1,31 +1,33 @@
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import useFetch from "../../custom hook/useFetch";
-import localhost from "../../Services/localhost";
 
 import { Alert, Badge, Calendar, Flex, Modal, Spin } from "antd";
 
 import { useParams } from "react-router-dom";
 import WorkShiftInfo from "./WorkShiftInfo";
+import shiftInfo from "../../Services/shiftInfoApi";
 
 export default function EmployeeShiftChecking() {
+    const [loading, setloading] = useState(false);
     const { id } = useParams();
     const [data, setData] = useState([]);
     const [value, setValue] = useState(() => dayjs());
     const [openModal, setOpenModal] = useState(false);
 
-    const { getApi, loading } = useFetch(localhost);
     useEffect(() => {
         const fetchData = async () => {
-            const yourData = await getApi(`/ShiftInfo/workdates/${id}`);
-            console.log(yourData);
+            const yourData = await shiftInfo.getAllOfEmployee(id);
+
             setData(yourData);
         };
 
         try {
+            setloading(true);
             fetchData();
         } catch (e) {
             console.log(e);
+        } finally {
+            setloading(false);
         }
     }, []);
 

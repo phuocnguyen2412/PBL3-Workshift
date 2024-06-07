@@ -1,24 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Data;
 using PBL3.Server.Helpers;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
-using PBL3.Server.Repositories;
 using System.Threading.Tasks;
 
 namespace PBL3.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class AccountController : ControllerBase
     {
         private readonly IAccount _accountRepo;
+        private readonly MyDbContext _context;
 
-        public AccountController(IAccount accountRepo)
+        // Dependency Injection for MyDbContext
+        public AccountController(IAccount accountRepo, MyDbContext context)
         {
             _accountRepo = accountRepo;
+            _context = context; // Inject MyDbContext
         }
 
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager , RoleEnum.Employee)]
         [HttpPost("Login")]
         public async Task<ActionResult<AccountModel>> Login(AccountModel model)
         {
@@ -36,11 +39,11 @@ namespace PBL3.Server.Controllers
 
             if (account == null)
             {
-                return NotFound(new { Message = "UserName or Password is incorrect, please try again!" });
+                return NotFound(new { Message = "Username or Password is incorrect, please try again!" });
             }
             return Ok(account);
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager, RoleEnum.Employee)]
+
         [HttpPost("LoginByToken")]
         public async Task<ActionResult<object>> LoginByToken(TokenModel token)
         {
@@ -58,7 +61,8 @@ namespace PBL3.Server.Controllers
 
             return Ok(account);
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager, RoleEnum.Employee)]
+
+
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<bool>> ChangePassword(ChangePasswordModel model)
         {

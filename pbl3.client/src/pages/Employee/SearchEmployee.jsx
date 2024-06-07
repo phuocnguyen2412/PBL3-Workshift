@@ -1,16 +1,18 @@
-import useFetch from "../../custom hook/useFetch";
-
 import { notification, Input } from "antd";
 const { Search } = Input;
 import PropTypes from "prop-types";
-import localhost from "../../Services/localhost";
+
+import employeeApi from "../../Services/employeeApi";
+import { useState } from "react";
 const SearchEmployee = ({ setEmployee }) => {
+    const [loading, setLoading] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const { getApi, loading } = useFetch(localhost);
+
     const handleSearch = async (value) => {
         try {
-            const data = await getApi(`/Employee/search/${value}`);
+            setLoading(true);
+            const data = await employeeApi.findByName(value);
             setEmployee(data);
             apiNotification.success({
                 message: "Thành công!",
@@ -23,6 +25,8 @@ const SearchEmployee = ({ setEmployee }) => {
                 description: `${err}`,
                 placement: "topRight",
             });
+        } finally {
+            setLoading(false);
         }
     };
     return (

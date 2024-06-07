@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using PBL3.Server.Data;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -9,33 +12,39 @@ using System.Threading.Tasks;
 namespace PBL3.Server.Helpers
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class RolesAuthorize : AuthorizeAttribute, IAsyncAuthorizationFilter
+    public class RolesAuthorize : ActionFilterAttribute, IAsyncAuthorizationFilter
     {
-        public RoleEnum[] RequiredRoles { get; set; }
-
-        public RolesAuthorize(params RoleEnum[] roles)
+        private readonly string[] _requiredRoles;
+        public RolesAuthorize(params string[] roles)
         {
-            RequiredRoles = roles ?? Array.Empty<RoleEnum>();
+            _requiredRoles = roles;
         }
+
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var userRole = context.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
 
-            if (string.IsNullOrEmpty(userRole) || !RequiredRoles.Select(r => r.ToString()).Contains(userRole))
+            var token = context.HttpContext.Request.Headers["Authorization"].ToString();
+            await Console.Out.WriteLineAsync(token);
+            if (string.IsNullOrEmpty(token) || !await IsAuthorized(context.HttpContext, token))
             {
-                context.Result = new ForbidResult("You do not have access to this resource!");
-                return;
+                throw new Exception();
             }
 
             await Task.CompletedTask;
         }
-    }
 
-    public enum RoleEnum
-    {
-        Admin,
-        Employee,
-        Manager
+
+        private async Task<bool> IsAuthorized(HttpContext httpContext, string token)
+        {
+            if (httpContext.RequestServices.GetService(typeof(MyDbContext)) is not MyDbContext dbContext) return false;
+            var result = await (
+                from account in dbContext.Accounts
+                where account.Token == token && _requiredRoles.Contains(account.Employee.Duty.DutyName)
+                select account
+            ).FirstOrDefaultAsync();
+
+            return result != null;
+        }
     }
 }

@@ -12,10 +12,11 @@ import {
     notification,
 } from "antd";
 import PropType from "prop-types";
-import useFetch from "../../custom hook/useFetch";
+
 import { useEffect, useState } from "react";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import localhost from "../../Services/localhost";
+import employeeApi from "../../Services/employeeApi";
+import dutyApi from "../../Services/dutyApi";
 
 export default function EditEmployeeForm({
     record,
@@ -27,46 +28,47 @@ export default function EditEmployeeForm({
         ...record,
         typeOfEmployee: record.typeOfEmployee ? "true" : "false",
     };
+    const [loading, setloading] = useState(false);
     const [optionsDuty, setOptionsDuty] = useState([]);
-
-    const { getApi, updateApi, loading } = useFetch(localhost);
 
     const [api, contextHolder] = notification.useNotification();
     const handleSubmitForm = async (e) => {
         try {
+            setloading(true);
             const data = {
                 ...e,
                 id: record.id,
                 typeOfEmployee: e.typeOfEmployee === "true",
             };
-            console.log(data);
-            await updateApi("/Employee", data);
+            await employeeApi.change(data);
 
             api.success({
                 message: "Success!",
                 description: `Đã edit thành công nhân viên ${e.fullName}`,
             });
 
-            setOpenEdit(false);
-            setEmployee(await getApi("/Employee"));
+            setOpenEdit(() => false);
+            setEmployee(await employeeApi.getAll());
         } catch (err) {
             console.log(err);
             api.error({
                 message: "Error!",
                 description: `${err}`,
             });
+        } finally {
+            setloading(false);
         }
     };
 
     useEffect(() => {
         const fetchData = async () => {
-            const dutyList = await getApi("/Duty");
+            const dutyList = await dutyApi.getAll();
 
             setOptionsDuty(() =>
                 dutyList.map((item) => {
                     return {
                         label: <span>{item.dutyName}</span>,
-                        value: item.id, // Sử dụng value thay vì defaultValue
+                        value: item.id,
                     };
                 })
             );

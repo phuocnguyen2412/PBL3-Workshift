@@ -1,9 +1,9 @@
 import { Checkbox, Modal, notification } from "antd";
-import useFetch from "../../../custom hook/useFetch.js";
-import localhost from "../../../Services/localhost.js";
+
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountContext.jsx";
+import shiftApi from "../../../Services/shiftApi.js";
 
 CheckoutEmployee.propTypes = {
     record: PropTypes.object.isRequired,
@@ -12,7 +12,7 @@ CheckoutEmployee.propTypes = {
 
 export default function CheckoutEmployee({ record, setItems }) {
     const account = useContext(AccountContext);
-    const { updateApi } = useFetch(localhost);
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(
         record.checkOutTime !== "2000-01-01T00:00:00"
@@ -39,8 +39,9 @@ export default function CheckoutEmployee({ record, setItems }) {
 
     const handleUpdateCheckoutTime = async () => {
         try {
-            await updateApi(
-                `/Shift/${record.shiftId}/checkout?managerId=${account.account.employeeId}`
+            await shiftApi.updateCheckOutTime(
+                record.shiftId,
+                account.account.employeeId
             );
 
             apiNotification.success({

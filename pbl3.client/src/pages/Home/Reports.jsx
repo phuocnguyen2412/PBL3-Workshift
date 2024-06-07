@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { AccountContext } from "../../Context/AccountContext";
 import { Alert, Button, Col, Row, Spin, Table } from "antd";
 import ReportContent from "../WorkShift/ShiftReport/ReportContent";
-import useFetch from "../../custom hook/useFetch";
-import localhost from "../../Services/localhost";
+
+import violateApi from "../../Services/violateApi";
 
 export default function Reports() {
-    const { getApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
 
     const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
@@ -15,17 +15,24 @@ export default function Reports() {
         let data;
 
         if (account.account.dutyName === "Admin")
-            data = await getApi("/Violate");
+            data = await violateApi.getAll();
         else {
-            data = await getApi(
-                `/Violate/ByemployeeId/${account.account.employeeId}`
+            data = await violateApi.getAllOfEmployeeId(
+                account.account.employeeId
             );
         }
 
         setData(() => data.filter((e) => e.checked === false));
     };
     useEffect(() => {
-        fetchData();
+        try {
+            setloading(true);
+            fetchData();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
     }, []);
 
     const columns = [

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
+using PBL3.Server.Helpers;
 
 namespace PBL3.Server.Repositories
 {
@@ -23,7 +24,7 @@ namespace PBL3.Server.Repositories
 
         public async Task<Employee> AddEmployeeAsync(EmployeeModel employeeModel)
         {
-            var employee = _mapper.Map<Employee>(employeeModel);    
+            var employee = _mapper.Map<Employee>(employeeModel);
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
             return employee;
@@ -40,7 +41,7 @@ namespace PBL3.Server.Repositories
             await _context.SaveChangesAsync();
             return _mapper.Map<EmployeeModel>(employee);
         }
-
+        
         public async Task<object> GetAllEmployeesAsync()
         {
             var employees = await (

@@ -10,6 +10,7 @@ namespace PBL3.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployee _employeeRepository;
@@ -21,19 +22,16 @@ namespace PBL3.Server.Controllers
             _employeeRepository = employeeRepository;
             _accountRepository = accountRepository;
         }
-        [RolesAuthorize(RoleEnum.Admin, RoleEnum.Manager)]
+
         [HttpGet]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult> GetAllEmployeesAsync()
         {
             try
             {
-                // string token = HttpContext.Request.Headers["Authorization"].ToString();
-                // var authResult = await _accountRepository.Author(token, new List<string> { "Admin" });
-                // if (authResult == null)
-                // {
-                //     return BadRequest(new { Message = "Bạn không có quyền sử dụng tính năng này" });
-                // }
-                
+
+
+
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
                 if (employees == null)
                 {

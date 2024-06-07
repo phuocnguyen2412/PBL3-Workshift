@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿
+using System.Linq;
 using System.Security.AccessControl;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -110,7 +111,6 @@ namespace PBL3.Server.Repositories
                     : await _context.Employees.Select(e => e.Id).ToListAsync();
             foreach (var employeeId in employeeIdsToProcess)
             {
-                
                 var result = await (
                     from e in _context.Employees
                     join d in _context.Duties on e.DutyId equals d.Id
@@ -154,7 +154,6 @@ namespace PBL3.Server.Repositories
                             totalViolate
                         ),
                     };
-
                     newSalaryHistories.Add(newSalaryHistory);
                     _context.SalaryHistories.Add(newSalaryHistory);
                 }

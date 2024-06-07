@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import { Spin, Table } from "antd";
 import dayjs from "dayjs";
 import DetailSalaryHistory from "./DetailSalaryHistory";
 import { Link } from "react-router-dom";
+import salaryHistory from "../../../Services/SalaryHistoryApi";
 
 export default function TableSalaryHistory() {
-    const { getApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const [data, setData] = useState([]);
+
     const fetchData = async () => {
         try {
-            const response = await getApi(`/SalaryHistory`);
+            setloading(true);
+            const response = await salaryHistory.getAll();
             setData(response);
         } catch (e) {
             console.log(e);
+        } finally {
+            setloading(false);
         }
     };
 

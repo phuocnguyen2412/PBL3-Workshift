@@ -18,13 +18,13 @@ namespace PBL3.Server.Controllers
             _violateRepo = violateRepo;
         }
         [HttpGet]
-        public async Task<ActionResult> GetAllViolates()
+        public async Task<ActionResult> GetAll()
         {
             return Ok(await _violateRepo.GetAllViolates());
         }
 
         [HttpGet("ById/{id}")]
-        public async Task<ActionResult<Violate>> GetViolate(int id)
+        public async Task<ActionResult<Violate>> GetById(int id)
         {
             var violate = await _violateRepo.GetViolateById(id);
             if (violate == null)
@@ -36,7 +36,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpGet("ByManagerId/{managerid}")]
-        public async Task<ActionResult<Violate>> GetViolateByManagerId(int managerid)
+        public async Task<ActionResult<Violate>> GetByManagerId(int managerid)
         {
             var violate = await _violateRepo.GetViolateByManagerId(managerid);
             if (violate == null)
@@ -47,7 +47,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("ByemployeeId/{employeeid}")]
-        public async Task<ActionResult<Violate>> GetViolateByEmployeeId(int employeeid)
+        public async Task<ActionResult<Violate>> GetByEmployeeId(int employeeid)
         {
             var violate = await _violateRepo.GetViolateByEmployeeId(employeeid);
             if (violate == null)
@@ -57,8 +57,19 @@ namespace PBL3.Server.Controllers
             return Ok(violate);
         }
 
+        [HttpGet("ByDate")]
+        public async Task<ActionResult<Violate>> GetByDate(DateTime date)
+        {
+            var violate = await _violateRepo.GetViolateByDate(date);
+            if (violate == null)
+            {
+                return NotFound();
+            }
+            return Ok(violate);
+        }
+
         [HttpPost]
-        public async Task<ActionResult> PostViolate(ViolateModel violatemodel)
+        public async Task<ActionResult> Post(ViolateModel violatemodel)
         {
             try
             {
@@ -72,7 +83,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateViolateChecked(int id, bool isChecked)
+        public async Task<IActionResult> UpdateChecked(int id, bool isChecked)
         {
             try
             {
