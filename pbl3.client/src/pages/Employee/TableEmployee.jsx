@@ -156,15 +156,6 @@ const TableEmployee = ({ data, setEmployee }) => {
                 <EditEmployee record={record} setEmployee={setEmployee} />
             ),
         },
-        {
-            align: "center",
-            width: "100px",
-            title: "Delete",
-            dataIndex: "Delete",
-            render: (_, record) => (
-                <DeleteEmployee record={record} setEmployee={setEmployee} />
-            ),
-        },
     ];
 
     useEffect(() => {
