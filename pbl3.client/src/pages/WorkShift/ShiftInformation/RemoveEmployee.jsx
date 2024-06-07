@@ -36,6 +36,7 @@ const RemoveEmployee = ({ record, setItems }) => {
             setloading(false);
         }
     };
+
     return (
         <>
             {contextHolderNotification}
@@ -49,7 +50,7 @@ const RemoveEmployee = ({ record, setItems }) => {
                     onOk={confirmDelete}
                     okText="Yes"
                 >
-                    <p>Bạn có chắc chắn muốn xóa?</p>
+                    <p>Remove {record.fullName} out of this work shift?</p>
                 </Modal>
             </Spin>
 

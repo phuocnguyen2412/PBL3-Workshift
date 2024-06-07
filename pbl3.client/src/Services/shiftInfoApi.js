@@ -18,7 +18,7 @@ class ShiftInfo {
         return axiosClient.post("/ShiftInfo", data);
     };
     delete = (idShiftInfo) => {
-        return axiosClient.delete("/ShiftInfo" + idShiftInfo);
+        return axiosClient.delete("/ShiftInfo/" + idShiftInfo);
     };
     changeChecked = (idShiftInfo, isChecked) => {
         return axiosClient.put(

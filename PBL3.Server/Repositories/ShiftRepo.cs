@@ -219,7 +219,7 @@ namespace PBL3.Server.Repositories
             DateTime date = DateTime.Now;
             TimeSpan checkOutTime = date.TimeOfDay;
 
-            if (checkOutTime < shiftInfo.EndTime || checkOutTime > shiftInfo.EndTime.Add(TimeSpan.FromMinutes(5)))
+            if (checkOutTime > shiftInfo.EndTime.Add(TimeSpan.FromMinutes(5)))
             {
                 throw new Exception("Check-out time must be within 5 minutes after the end time.");
             }
@@ -243,7 +243,6 @@ namespace PBL3.Server.Repositories
             return _mapper.Map<ShiftModel>(shift);
         }
 
-
         public async Task<object> GetAllShiftByEmployeeIdAsync(int employeeId)
         {
             var shifts = await (
@@ -264,9 +263,9 @@ namespace PBL3.Server.Repositories
                     Date = si.Date,
                     ManagerName = e.FullName,
                     TotalHours = CalculateTotalHours(s.CheckInTime, s.CheckOutTime)
-                }).ToListAsync();
+                }
+            ).ToListAsync();
             return shifts;
-
         }
 
         private static double CalculateTotalHours(DateTime? checkInTime, DateTime? checkOutTime)
@@ -278,7 +277,5 @@ namespace PBL3.Server.Repositories
             }
             return totalTimeSpan.HasValue ? Convert.ToDouble(totalTimeSpan.Value.TotalHours) : 0;
         }
-
-
     }
 }

@@ -12,7 +12,7 @@ ShiftAction.propTypes = {
 };
 export default function ShiftAction({ shift, setItems }) {
     const account = useContext(AccountContext);
-
+    console.log(shift);
     const [loading, setloading] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
@@ -46,11 +46,11 @@ export default function ShiftAction({ shift, setItems }) {
         }
     };
     const handleCheck = async (id, checked) => {
-        await shiftInfo.changeChecked(id, checked);
+        await shiftInfo.changeChecked(id, !checked);
 
         apiNotification.success({
-            message: "Thành công!",
-            description: `Bạn đã chỉnh sửa thành công ${shift.shiftName}: ${shift.startTime} - ${shift.endTime}`,
+            message: "Success!",
+            description: `You updated successfully ${shift.shiftName}: ${shift.startTime} - ${shift.endTime}`,
             placement: "topRight",
         });
         setItems();

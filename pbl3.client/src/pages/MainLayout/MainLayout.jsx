@@ -4,7 +4,7 @@ import { Layout, theme, Spin, ConfigProvider } from "antd";
 const { Content } = Layout;
 import AdminDashboard from "../../components/Dashboard";
 import { Outlet, useNavigate } from "react-router-dom";
-
+import { App } from "antd";
 import HeaderLayout from "./Header";
 import authApi from "../../Services/authApi";
 import { AccountContext } from "../../Context/AccountContext";
@@ -53,41 +53,43 @@ function MainLayout() {
                     : theme.defaultAlgorithm,
             }}
         >
-            <Spin spinning={loading}>
-                <Layout
-                    style={{
-                        height: "100vh",
-                        overflow: "hidden",
-                    }}
-                >
-                    <AdminDashboard
-                        collapsed={collapsed}
+            <App>
+                <Spin spinning={loading}>
+                    <Layout
                         style={{
-                            height: "100%",
+                            height: "100vh",
+                            overflow: "hidden",
                         }}
-                    />
-                    <Layout>
-                        <HeaderLayout
-                            darkMode={darkMode}
-                            setDarkMode={setDarkMode}
+                    >
+                        <AdminDashboard
                             collapsed={collapsed}
-                            setCollapsed={setCollapsed}
-                        />
-                        <Content
                             style={{
-                                margin: "24px 16px",
-                                padding: 24,
-                                heigt: "100%",
-
-                                borderRadius: borderRadiusLG,
-                                overflow: "auto",
+                                height: "100%",
                             }}
-                        >
-                            <Outlet />
-                        </Content>
+                        />
+                        <Layout>
+                            <HeaderLayout
+                                darkMode={darkMode}
+                                setDarkMode={setDarkMode}
+                                collapsed={collapsed}
+                                setCollapsed={setCollapsed}
+                            />
+                            <Content
+                                style={{
+                                    margin: "24px 16px",
+                                    padding: 24,
+                                    heigt: "100%",
+
+                                    borderRadius: borderRadiusLG,
+                                    overflow: "auto",
+                                }}
+                            >
+                                <Outlet />
+                            </Content>
+                        </Layout>
                     </Layout>
-                </Layout>
-            </Spin>
+                </Spin>
+            </App>
         </ConfigProvider>
     );
 }

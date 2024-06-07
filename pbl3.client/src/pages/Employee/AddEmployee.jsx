@@ -5,7 +5,7 @@ const AddEmployee = ({ setEmployee, onClose, open }) => {
     return (
         <>
             <Drawer
-                title="Create a new account"
+                title="Create a new employee"
                 width={720}
                 onClose={onClose}
                 open={open}

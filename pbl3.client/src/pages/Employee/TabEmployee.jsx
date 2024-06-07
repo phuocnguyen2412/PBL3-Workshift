@@ -27,7 +27,7 @@ const items = [
 const TabEmployee = ({ handleTabCick, handleOpenDrawer }) => {
     const button = (
         <Button icon={<PlusOutlined />} onClick={handleOpenDrawer}>
-            Thêm nhân viên
+            Add employee
         </Button>
     );
     return (

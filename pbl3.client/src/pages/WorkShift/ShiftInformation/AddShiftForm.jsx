@@ -12,6 +12,7 @@ import {
 
 import PropsType from "prop-types";
 import shiftInfo from "../../../Services/shiftInfoApi";
+import { useState } from "react";
 
 const AddShiftForm = ({ setData }) => {
     const [loading, setLoading] = useState(false);
@@ -135,7 +136,7 @@ const AddShiftForm = ({ setData }) => {
                     <Row gutter={16}>
                         <Col span={24}>
                             <Button block htmlType="submit">
-                                Tạo ca làm
+                                Add a work shift
                             </Button>
                         </Col>
                     </Row>

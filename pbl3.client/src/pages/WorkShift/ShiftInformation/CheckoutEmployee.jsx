@@ -31,7 +31,7 @@ export default function CheckoutEmployee({ record, setItems }) {
 
     const handleCancel = () => {
         setIsModalOpen(false);
-        setIsChecked(record.checkOutTime !== "2000-01-01T00:00:00");
+        setIsChecked(false);
     };
 
     const [apiNotification, contextHolderNotification] =
@@ -49,6 +49,7 @@ export default function CheckoutEmployee({ record, setItems }) {
                 description: `Checked out ${record.fullName} successfully`,
                 placement: "topRight",
             });
+            setIsChecked((prev) => !prev);
             setItems();
         } catch (error) {
             apiNotification.error({

@@ -193,7 +193,7 @@ const TableEmployee = ({ data, setEmployee }) => {
                     columns={columns}
                     dataSource={data}
                     pagination={{
-                        pageSize: 20,
+                        pageSize: 10,
                     }}
                     scroll={{
                         y: "600px",

@@ -3,6 +3,7 @@ import { Checkbox, Modal, notification } from "antd";
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountContext.jsx";
+import shiftApi from "../../../Services/shiftApi.js";
 CheckinEmployee.propTypes = {
     shift: PropTypes.object.isRequired,
     record: PropTypes.object.isRequired,
@@ -39,7 +40,7 @@ export default function CheckinEmployee({ shift, record, setItems }) {
             // Lấy thời gian hiện tại
             let now = new Date();
             if (now < specificTime) throw "Can't checkin before start time";
-            await shift.handleUpdateCheckinTime(
+            await shiftApi.updateCheckInTime(
                 record.shiftId,
                 account.account.employeeId
             );

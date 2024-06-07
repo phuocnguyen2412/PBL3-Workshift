@@ -32,7 +32,7 @@ export default function BonusContent({ data, setOpen, open }) {
     return (
         <Modal
             open={open}
-            title="Chi tiết bonus"
+            title="Detail bonus"
             onCancel={() => setOpen(false)}
             footer={null}
         >
