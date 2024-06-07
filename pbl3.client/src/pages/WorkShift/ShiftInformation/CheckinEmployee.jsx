@@ -1,6 +1,5 @@
 import { Checkbox, Modal, notification } from "antd";
-import useFetch from "../../../custom hook/useFetch.js";
-import localhost from "../../../Services/localhost.js";
+
 import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountContext.jsx";
@@ -29,7 +28,7 @@ export default function CheckinEmployee({ shift, record, setItems }) {
         record.checkInTime !== "2000-01-01T00:00:00"
     );
     const account = useContext(AccountContext);
-    const { updateApi } = useFetch(localhost);
+
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
 
@@ -40,8 +39,9 @@ export default function CheckinEmployee({ shift, record, setItems }) {
             // Lấy thời gian hiện tại
             let now = new Date();
             if (now < specificTime) throw "Can't checkin before start time";
-            await updateApi(
-                `/Shift/${record.shiftId}/checkin?ManagerId=${account.account.employeeId}`
+            await shift.handleUpdateCheckinTime(
+                record.shiftId,
+                account.account.employeeId
             );
             apiNotification.success({
                 message: "Error!",

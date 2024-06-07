@@ -9,17 +9,18 @@ import {
     TimePicker,
     notification,
 } from "antd";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import PropsType from "prop-types";
+import shiftInfo from "../../../Services/shiftInfoApi";
 
 const AddShiftForm = ({ setData }) => {
-    const { getApi, postApi, loading } = useFetch(localhost);
+    const [loading, setLoading] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const [form] = Form.useForm();
     const handleSubmit = async (e) => {
         try {
+            setLoading(true);
             const data = {
                 ...e,
                 date: `${e.date.format("YYYY-MM-DD")}T00:00:00.000Z`,
@@ -29,20 +30,22 @@ const AddShiftForm = ({ setData }) => {
                 checked: false,
             };
 
-            const response = await postApi("/ShiftInfo", data);
+            const response = await shiftInfo.add(data);
             apiNotification.success({
                 message: "Success!",
                 description: `You created a shift ${response.shiftName}`,
                 placement: "topRight",
             });
             form.resetFields();
-            setData(await getApi("/ShiftInfo"));
+            setData(await shiftInfo.getAll());
         } catch (e) {
             apiNotification.error({
                 message: "Error!",
                 description: `${e}`,
                 placement: "topRight",
             });
+        } finally {
+            setLoading(false);
         }
     };
     return (

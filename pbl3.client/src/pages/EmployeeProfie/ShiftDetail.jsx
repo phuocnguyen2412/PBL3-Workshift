@@ -1,6 +1,9 @@
 import { Descriptions } from "antd";
 import dayjs from "dayjs";
-
+import PropsType from "prop-types";
+ShiftDetail.propTypes = {
+    shift: PropsType.object.isRequired,
+};
 export default function ShiftDetail({ shift }) {
     const items = [
         {

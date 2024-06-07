@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { AccountContext } from "../../Context/AccountContext";
@@ -15,28 +15,21 @@ import {
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
 import "./Login.css";
-import useFetch from "../../custom hook/useFetch";
-import localhost from "../../Services/localhost";
+import authApi from "../../Services/authApi";
 
 function Login() {
-    const { postApi, loading } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const account = useContext(AccountContext);
     const navigate = useNavigate();
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const onFinish = async (values) => {
         try {
-            const response = await postApi("/Account/Login", values);
+            setloading(true);
 
-            if (values.remember) {
-                localStorage.setItem(
-                    "isRemember",
-                    JSON.stringify(values.remember)
-                );
-            }
-
-            localStorage.setItem("Authorization", response.token);
-            account.onChange(response);
+            const res = await authApi.loginByAccount(values);
+            account.onChange(res);
+            localStorage.setItem("Authorization", res.token);
             navigate("/home");
         } catch (err) {
             console.log(err);
@@ -45,6 +38,8 @@ function Login() {
                 description: `${err}`,
                 placement: "topRight",
             });
+        } finally {
+            setloading(false);
         }
     };
 
@@ -64,15 +59,14 @@ function Login() {
             {contextHolderNotification}
             <Col span={12}>
                 <Row justify="center" align="middle">
-                    <Typography>
-                        <img
-                            src="https://demo.1office.vn/packages/4x/style/packages/login/images/logo.svg"
-                            alt=""
-                        />
-                    </Typography>
+                    <img
+                        src="https://demo.1office.vn/packages/4x/style/packages/login/images/logo.svg"
+                        alt=""
+                    />
                 </Row>
-
-                <img src="./src/assets/bg1.svg" alt="" />
+                <Row justify="center" align="middle">
+                    <img src="./src/assets/bg1.svg" alt="" />
+                </Row>
             </Col>
             <Col span={12}>
                 <Form
@@ -128,10 +122,6 @@ function Login() {
                         >
                             <Checkbox>Remember me</Checkbox>
                         </Form.Item>
-
-                        <a className="login-form-forgot" href="">
-                            Forgot password
-                        </a>
                     </Form.Item>
 
                     <Form.Item>

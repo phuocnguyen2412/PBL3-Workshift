@@ -1,26 +1,35 @@
+import {
+    Alert,
+    Badge,
+    Button,
+    Calendar,
+    Drawer,
+    Flex,
+    Modal,
+    Spin,
+} from "antd";
+import { useContext, useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import WorkInDay from "./WorkInDay";
+import AddShiftForm from "./AddShiftForm";
 
-import { Alert, Badge, Calendar, Flex, Modal, Spin } from "antd";
+import { AccountContext } from "../../../Context/AccountContext";
+import shiftInfo from "../../../Services/shiftInfoApi";
 
-import { useParams } from "react-router-dom";
-import WorkShiftInfo from "./WorkShiftInfo";
-import shiftInfo from "../../Services/shiftInfoApi";
-
-export default function EmployeeShiftChecking() {
+const ShiftInformation = () => {
     const [loading, setloading] = useState(false);
-    const { id } = useParams();
+    const account = useContext(AccountContext);
     const [data, setData] = useState([]);
     const [value, setValue] = useState(() => dayjs());
     const [openModal, setOpenModal] = useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            const yourData = await shiftInfo.getAllOfEmployee(id);
+            const yourData = await shiftInfo.getAll();
 
             setData(yourData);
         };
-
         try {
             setloading(true);
             fetchData();
@@ -84,14 +93,35 @@ export default function EmployeeShiftChecking() {
 
     return (
         <div style={{ overflow: "hidden" }}>
-            <Flex justify="space-between" align="center">
+            <Flex
+                justify="space-between"
+                align="center"
+                style={{ marginBottom: "16px" }}
+            >
                 <Alert
                     message={`You selected date: ${value?.format(
                         "YYYY-MM-DD"
                     )}`}
                 />
+                {account.account.dutyName === "Admin" && (
+                    <Button onClick={() => setOpenDrawer(true)}>
+                        Create a work shift
+                    </Button>
+                )}
             </Flex>
-
+            <Drawer
+                title="Create a work shift"
+                width={720}
+                onClose={() => setOpenDrawer(false)}
+                open={openDrawer}
+                styles={{
+                    body: {
+                        paddingBottom: 80,
+                    },
+                }}
+            >
+                <AddShiftForm setData={setData} />
+            </Drawer>
             <Modal
                 title={`Lịch làm việc ngày ${value?.format("DD-MM-YYYY")}`}
                 centered
@@ -101,7 +131,11 @@ export default function EmployeeShiftChecking() {
                 width={1000}
                 footer={null}
             >
-                <WorkShiftInfo date={value?.format("YYYY-MM-DD")} />
+                <WorkInDay
+                    date={value?.format("YYYY-MM-DD")}
+                    openModal={openModal}
+                    onClose={() => setOpenModal(!openModal)}
+                />
             </Modal>
             <Spin spinning={loading}>
                 <Calendar
@@ -112,4 +146,6 @@ export default function EmployeeShiftChecking() {
             </Spin>
         </div>
     );
-}
+};
+
+export default ShiftInformation;

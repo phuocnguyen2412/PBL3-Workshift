@@ -60,7 +60,8 @@ export default function AdminDashboard({ collapsed }) {
     };
     const handleSelected = (e) => {
         if (e.key === "/login") {
-            localStorage.removeItem("token");
+            localStorage.removeItem("Authorization");
+            account.onChange({});
         }
     };
     return (

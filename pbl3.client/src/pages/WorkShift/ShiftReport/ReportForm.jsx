@@ -10,17 +10,17 @@ import {
 } from "antd";
 import { AccountContext } from "../../../Context/AccountContext";
 import { useContext, useEffect, useState } from "react";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
 import PropTypes from "prop-types";
+import violateApi from "../../../Services/violateApi";
+import employeeApi from "../../../Services/employeeApi";
 
 ReportForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
 export default function ReportForm({ fetchData }) {
-    const { getApi, postApi, loading } = useFetch(localhost);
     const account = useContext(AccountContext);
     const [employeeList, setEmployeeList] = useState([]);
     const [shiftList, setShiftList] = useState([]);
@@ -30,7 +30,7 @@ export default function ReportForm({ fetchData }) {
 
     useEffect(() => {
         const fetchDataEmployee = async () => {
-            const response = await getApi("/Employee/status/true");
+            const response = await employeeApi.findByStatus(true);
             setEmployeeList(
                 response.map((item) => {
                     return {
@@ -42,8 +42,8 @@ export default function ReportForm({ fetchData }) {
         };
         const fetchDataShift = async () => {
             try {
-                const response = await getApi(
-                    `/ShiftInfo/manager/${account.account.employeeId}`
+                const response = await violateApi.getAllOfManager(
+                    account.account.employeeId
                 );
 
                 setShiftList(
@@ -75,7 +75,7 @@ export default function ReportForm({ fetchData }) {
                 checked: false,
             };
 
-            const response = await postApi("/Violate", data);
+            const response = await violateApi.add(data);
             console.log(response);
             apiNotification.success({
                 message: "Success!",

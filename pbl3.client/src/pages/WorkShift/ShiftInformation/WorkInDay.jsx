@@ -2,17 +2,17 @@ import { Collapse, Empty, Spin } from "antd";
 import TableEmployeePerShift from "./TableEmployeePerShift";
 
 import { useEffect, useState } from "react";
-import useFetch from "../../../custom hook/useFetch";
-import localhost from "../../../Services/localhost";
+
 import PropTypes from "prop-types";
+import shiftInfo from "../../../Services/shiftInfoApi";
 const WorkInDay = ({ date }) => {
+    const [loading, setloading] = useState(false);
     const [items, setItems] = useState([]);
-    const { getApi, loading } = useFetch(localhost);
+
     const fetchData = async () => {
         try {
-            const data = await getApi(
-                `/ShiftInfo/shifts-and-employees-by-date/${date}`
-            );
+            setloading(true);
+            const data = await shiftInfo.getAllByDate(date);
             setItems(() =>
                 data.map((e, index) => {
                     return {
@@ -34,6 +34,8 @@ const WorkInDay = ({ date }) => {
         } catch (e) {
             setItems([]);
             console.log(e);
+        } finally {
+            setloading(false);
         }
     };
     useEffect(() => {

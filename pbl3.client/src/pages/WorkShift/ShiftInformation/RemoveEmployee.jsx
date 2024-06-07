@@ -1,12 +1,12 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Modal, Spin, notification } from "antd";
 import { useState } from "react";
-import useFetch from "../../../custom hook/useFetch";
+
 import PropsType from "prop-types";
-import localhost from "../../../Services/localhost";
+import shiftApi from "../../../Services/shiftApi";
 
 const RemoveEmployee = ({ record, setItems }) => {
-    const { loading, deleteApi } = useFetch(localhost);
+    const [loading, setloading] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
@@ -16,7 +16,8 @@ const RemoveEmployee = ({ record, setItems }) => {
 
     const confirmDelete = async () => {
         try {
-            await deleteApi("/Shift/delete?shiftId=", record.shiftId);
+            setloading(true);
+            await shiftApi.detele(record.shiftId);
 
             apiNotification.success({
                 message: "Success!",
@@ -31,6 +32,8 @@ const RemoveEmployee = ({ record, setItems }) => {
                 description: `${e}`,
                 placement: "topRight",
             });
+        } finally {
+            setloading(false);
         }
     };
     return (
