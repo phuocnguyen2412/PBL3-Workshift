@@ -42,9 +42,16 @@ const ShiftReport = () => {
     const handleTimeSelect = async (e) => {
         try {
             setloading(true);
-            setData(
-                await violateApi.getAllOfDate(dayjs(e).format("YYYY-MM-DD"))
+            const res = await violateApi.getAllOfDate(
+                dayjs(e).format("YYYY-MM-DD")
             );
+            if (account.account.dutyName === "Admin") setData(res);
+            else
+                setData(
+                    res.filter(
+                        (e) => e.managerId === account.account.employeeId
+                    )
+                );
         } catch (error) {
             apiNotification.error({
                 message: "Error!",
@@ -54,7 +61,6 @@ const ShiftReport = () => {
         } finally {
             setloading(false);
         }
-        console.log(dayjs(e).format("YYYY-MM-DD"));
     };
     return (
         <Spin spinning={loading}>
