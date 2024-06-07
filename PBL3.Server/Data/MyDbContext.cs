@@ -46,5 +46,8 @@ namespace PBL3.Server.Data
         public DbSet<BonusSalaryHistory>? BonusSalaryHistories { get; set; }
         public DbSet<Violate>? Violates { get; set; }
         #endregion
+
+
+
     }
 }
