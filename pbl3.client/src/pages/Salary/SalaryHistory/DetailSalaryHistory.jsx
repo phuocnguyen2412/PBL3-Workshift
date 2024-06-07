@@ -16,7 +16,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
     const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
-    
+
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const showModal = () => {
@@ -142,9 +142,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
     return (
         <>
             {contextHolderNotification}
-            <Button type="primary" onClick={showModal}>
-                Detail
-            </Button>
+            <Button onClick={showModal}>Detail</Button>
             <Modal
                 title="Basic salary"
                 open={open}

@@ -1,38 +1,38 @@
 import {
-    TransactionOutlined,
-    UserOutlined,
-    CalendarOutlined,
-    FormOutlined,
-    CarryOutOutlined,
-    DollarOutlined,
-    AccountBookOutlined,
-    CheckCircleOutlined,
-    SafetyOutlined,
-    CloseOutlined,
-    HomeOutlined,
     SolutionOutlined,
+    HomeFilled,
+    IdcardFilled,
+    ScheduleFilled,
+    CalendarFilled,
+    FileExclamationFilled,
+    PayCircleFilled,
+    RedEnvelopeFilled,
+    LockFilled,
+    GoldFilled,
+    GiftFilled,
+    CloseSquareFilled,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 export const AdminList = [
     {
         key: "/home",
-        icon: <HomeOutlined />,
+        icon: <HomeFilled />,
         label: <Link to="/home">Home</Link>,
     },
     {
         key: "/employee",
-        icon: <UserOutlined />,
+        icon: <IdcardFilled />,
         label: <Link to="/employee">Employee</Link>,
     },
     {
         key: "/work_shift",
-        icon: <CarryOutOutlined />,
+        icon: <ScheduleFilled />,
         label: "Work Shift",
         children: [
             {
                 key: "/work_shift/shift",
-                icon: <CalendarOutlined />,
+                icon: <CalendarFilled />,
                 label: (
                     <Link to="/work_shift/shift_information">
                         Shift Information
@@ -41,53 +41,53 @@ export const AdminList = [
             },
             {
                 key: "/work_shift/shift_report",
-                icon: <FormOutlined />,
+                icon: <FileExclamationFilled />,
                 label: <Link to="/work_shift/shift_report">Shift Report</Link>,
             },
         ],
     },
     {
         key: "/salary",
-        icon: <TransactionOutlined />,
+        icon: <PayCircleFilled />,
         label: "Salary",
         children: [
             {
                 key: "/salary/basic_salary",
-                icon: <DollarOutlined />,
+                icon: <GoldFilled />,
                 label: <Link to="/salary/basic_salary">Basic Salary</Link>,
             },
             {
                 key: "/salary/bonus_salary",
-                icon: <CheckCircleOutlined />,
+                icon: <GiftFilled />,
                 label: <Link to="/salary/bonus_salary">Bonus Salary</Link>,
             },
             {
                 key: "/salary/salary_history",
-                icon: <AccountBookOutlined />,
+                icon: <RedEnvelopeFilled />,
                 label: <Link to="/salary/salary_history">Salary History</Link>,
             },
         ],
     },
     {
         key: "/change-password",
-        icon: <SafetyOutlined />,
+        icon: <LockFilled />,
         label: <Link to="/change-password">Change Password</Link>,
     },
     {
         key: "/login",
-        icon: <CloseOutlined />,
+        icon: <CloseSquareFilled />,
         label: <Link to="/login">Logout</Link>,
     },
 ];
 export const Manager = [
     {
         key: "1",
-        icon: <UserOutlined />,
+        icon: <HomeFilled />,
         label: <Link to="./home/">Home</Link>,
     },
     {
         key: "2",
-        icon: <CalendarOutlined />,
+        icon: <CalendarFilled />,
         label: <Link to="./work_shift/shift_information">Work Shift</Link>,
     },
     {
@@ -97,34 +97,34 @@ export const Manager = [
     },
     {
         key: "/change-password",
-        icon: <SafetyOutlined />,
+        icon: <LockFilled />,
         label: <Link to="/change-password">Change Password</Link>,
     },
     {
         key: "/login",
-        icon: <CloseOutlined />,
+        icon: <CloseSquareFilled />,
         label: <Link to="/login">Logout</Link>,
     },
 ];
 export const Employee = [
     {
         key: "1",
-        icon: <UserOutlined />,
+        icon: <HomeFilled />,
         label: <Link to="./home/">Home</Link>,
     },
     {
         key: "2",
-        icon: <CalendarOutlined />,
+        icon: <CalendarFilled />,
         label: <Link to="./work_shift/shift_information">Work Shift</Link>,
     },
     {
         key: "/change-password",
-        icon: <SafetyOutlined />,
+        icon: <LockFilled />,
         label: <Link to="/change-password">Change Password</Link>,
     },
     {
         key: "/login",
-        icon: <CloseOutlined />,
+        icon: <CloseSquareFilled />,
         label: <Link to="/login">Logout</Link>,
     },
 ];

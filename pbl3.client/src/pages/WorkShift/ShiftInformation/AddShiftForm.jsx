@@ -135,7 +135,7 @@ const AddShiftForm = ({ setData }) => {
 
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Button block htmlType="submit">
+                            <Button block htmlType="submit" type="primary">
                                 Add a work shift
                             </Button>
                         </Col>

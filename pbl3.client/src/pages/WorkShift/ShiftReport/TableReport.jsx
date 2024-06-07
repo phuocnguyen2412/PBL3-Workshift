@@ -2,8 +2,9 @@ import { Button, Table } from "antd";
 import ReportContent from "./ReportContent";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { AccountContext } from "../../../Context/AccountContext";
+
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 TableReport.propTypes = {
     data: PropTypes.array.isRequired,
     fetchData: PropTypes.func.isRequired,
@@ -15,6 +16,11 @@ export default function TableReport({ data, fetchData }) {
             title: "Employee",
             dataIndex: "employeeName",
             key: "name",
+            render: (_, record) => (
+                <Link to={`/Employee/${record.employeeId}`}>
+                    {record.employeeName}
+                </Link>
+            ),
         },
         {
             title: "Shift name",

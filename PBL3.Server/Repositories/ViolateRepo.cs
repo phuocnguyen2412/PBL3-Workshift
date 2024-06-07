@@ -30,6 +30,7 @@ namespace PBL3.Server.Repositories
                 from manager in managers.DefaultIfEmpty()
                 select new
                 {
+                    employeeId = e.Id,
                     v.Id,
                     EmployeeName = e.FullName,
                     v.Handle,
@@ -150,7 +151,7 @@ namespace PBL3.Server.Repositories
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
                 }
-            ).FirstOrDefaultAsync();
+            ).ToListAsync();
 
             return violate;
         }

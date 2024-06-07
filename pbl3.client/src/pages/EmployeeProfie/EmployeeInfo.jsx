@@ -74,6 +74,7 @@ const EmployeeInfo = () => {
                         {employee.dutyName}
                     </Tag>
                 ),
+            span: 2,
         },
         {
             key: "5",
@@ -141,6 +142,7 @@ const EmployeeInfo = () => {
                         <Col span={16}>
                             <Descriptions
                                 layout="vertical"
+                                column={4}
                                 title={`Employee Information`}
                                 bordered
                                 items={items}

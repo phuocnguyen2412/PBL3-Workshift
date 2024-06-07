@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import employeeApi from "../../Services/employeeApi";
 import dutyApi from "../../Services/dutyApi";
+import { PlusOutlined } from "@ant-design/icons";
 
 export default function InputEmployeeForm({ setEmployee }) {
     const [form] = Form.useForm();
@@ -149,7 +150,8 @@ export default function InputEmployeeForm({ setEmployee }) {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter employee's email!",
+                                        message:
+                                            "Please enter employee's email!",
                                     },
                                 ]}
                             >
@@ -199,7 +201,11 @@ export default function InputEmployeeForm({ setEmployee }) {
                             </Form.Item>
                         </Col>
                     </Row>
-                    <Button htmlType="submit" loading={loading}>
+                    <Button
+                        htmlType="submit"
+                        loading={loading}
+                        icon={<PlusOutlined />}
+                    >
                         Add employee
                     </Button>
                 </Form>

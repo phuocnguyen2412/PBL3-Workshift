@@ -13,7 +13,6 @@ import {
 } from "antd";
 
 import employeeApi from "../../../Services/employeeApi";
-import bonusSalary from "../../../Services/BonusSalary";
 import salaryHistory from "../../../Services/SalaryHistoryApi";
 
 export default function CreateSalaryHistory() {
@@ -159,7 +158,7 @@ export default function CreateSalaryHistory() {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Button block htmlType="submit">
+                        <Button block htmlType="submit" type="primary">
                             Submit
                         </Button>
                     </Form>

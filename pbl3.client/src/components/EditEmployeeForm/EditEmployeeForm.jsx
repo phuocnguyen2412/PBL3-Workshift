@@ -14,7 +14,7 @@ import {
 import PropType from "prop-types";
 
 import { useEffect, useState } from "react";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { EditFilled } from "@ant-design/icons";
 import employeeApi from "../../Services/employeeApi";
 import dutyApi from "../../Services/dutyApi";
 
@@ -130,16 +130,11 @@ export default function EditEmployeeForm({
                                 </Flex>
                             </Form.Item>
                         </Col>
-                        <Col span={4}>
+                        <Col span={2}>
                             <Form.Item name="status" label="Status">
                                 <Switch
-                                    checkedChildren=<span>
-                                        Đang đi làm
-                                        <CheckOutlined />
-                                    </span>
-                                    unCheckedChildren=<span>
-                                        Nghỉ làm <CloseOutlined />
-                                    </span>
+                                    checkedChildren=<span>Working</span>
+                                    unCheckedChildren=<span>Off</span>
                                 />
                             </Form.Item>
                         </Col>
@@ -218,7 +213,11 @@ export default function EditEmployeeForm({
                         </Col>
                     </Row>
 
-                    <Button htmlType="submit" loading={loading}>
+                    <Button
+                        htmlType="submit"
+                        loading={loading}
+                        icon=<EditFilled />
+                    >
                         Edit employee
                     </Button>
                 </Form>

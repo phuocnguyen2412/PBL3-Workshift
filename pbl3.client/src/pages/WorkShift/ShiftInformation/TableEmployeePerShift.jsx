@@ -7,14 +7,24 @@ import { useContext } from "react";
 import { AccountContext } from "../../../Context/AccountContext";
 import CheckinEmployee from "./CheckinEmployee";
 import CheckoutEmployee from "./CheckoutEmployee";
+import { Link } from "react-router-dom";
 const TableEmployeePerShift = ({ shift, setItems }) => {
     const account = useContext(AccountContext);
-    
+
     return (
         <>
             <ShiftAction shift={shift} setItems={setItems} />
             <Table dataSource={shift.employees} rowKey="employeeId">
-                <Column title="Full name" dataIndex="fullName" key="fullName" />
+                <Column
+                    title="Full name"
+                    dataIndex="fullName"
+                    key="fullName"
+                    render={(_, record) => (
+                        <Link to={`/Employee/${record.employeeId}`}>
+                            {record.fullName}
+                        </Link>
+                    )}
+                />
                 <Column
                     title="Duty"
                     dataIndex="dutyName"

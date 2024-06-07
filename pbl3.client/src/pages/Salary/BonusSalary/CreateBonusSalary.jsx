@@ -186,7 +186,9 @@ export default function CreateBonusSalary({ reload }) {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Button htmlType="submit">Submit</Button>
+                        <Button htmlType="submit" type="primary" block>
+                            Submit
+                        </Button>
                     </Form>
                 </Spin>
             </Drawer>

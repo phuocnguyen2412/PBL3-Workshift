@@ -39,6 +39,7 @@ const ShiftReport = () => {
             setloading(false);
         }
     }, []);
+
     const handleTimeSelect = async (e) => {
         try {
             setloading(true);

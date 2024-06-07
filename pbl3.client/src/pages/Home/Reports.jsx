@@ -100,6 +100,12 @@ export default function Reports() {
                                     : `${data.length} reports`
                             }  that haven't been reviewed`}
                             description=<Table
+                                pagination={{
+                                    pageSize: 10,
+                                }}
+                                scroll={{
+                                    y: 240,
+                                }}
                                 rowKey="id"
                                 dataSource={data}
                                 columns={columns}

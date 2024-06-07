@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Badge, Spin, Table, Tag } from "antd";
 
-import DeleteEmployee from "./DeleteEmployee";
+
 import SearchEmployee from "./SearchEmployee";
 import EditEmployee from "./EditEmployee";
 import { Link } from "react-router-dom";

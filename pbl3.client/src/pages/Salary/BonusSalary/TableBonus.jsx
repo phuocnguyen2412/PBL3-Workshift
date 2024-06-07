@@ -5,6 +5,7 @@ import BonusContent from "./BonusContent";
 import dayjs from "dayjs";
 import DeleteBonus from "./DeleteBonus";
 import { AccountContext } from "../../../Context/AccountContext";
+import { Link } from "react-router-dom";
 TableBonus.propTypes = {
     data: PropTypes.array.isRequired,
     fetchData: PropTypes.func.isRequired,
@@ -12,11 +13,15 @@ TableBonus.propTypes = {
 export default function TableBonus({ data, fetchData }) {
     const account = useContext(AccountContext);
     const [open, setOpen] = useState(false);
+
     let columns = [
         {
             title: "Employee",
             dataIndex: "fullName",
             key: "name",
+            render: (_, record) => (
+                <Link to={`/Employee/${record.id}`}>{record.fullName}</Link>
+            ),
         },
 
         {

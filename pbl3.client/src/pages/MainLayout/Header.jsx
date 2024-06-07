@@ -1,6 +1,8 @@
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    MoonFilled,
+    SunFilled,
     UserOutlined,
 } from "@ant-design/icons";
 import { Button, Flex, Switch, Layout, theme } from "antd";
@@ -48,7 +50,7 @@ export default function HeaderLayout({
                 />
                 <Flex justify="space-between" align="center">
                     <Switch
-                        checkedChildren="Lumos!"
+                        checkedChildren=<MoonFilled style={{ color: "#ccc" }} />
                         onClick={() => {
                             setDarkMode(!darkMode);
                             localStorage.removeItem("darkMode");
@@ -57,7 +59,9 @@ export default function HeaderLayout({
                                 JSON.stringify(!darkMode)
                             );
                         }}
-                        unCheckedChildren="Nox!"
+                        unCheckedChildren=<SunFilled
+                            style={{ color: "yellow" }}
+                        />
                     />
                     <Button
                         icon={<UserOutlined />}

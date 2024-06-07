@@ -98,6 +98,12 @@ export default function Salary() {
                                     dataSource={data}
                                     columns={columns}
                                     rowKey="id"
+                                    pagination={{
+                                        pageSize: 10,
+                                    }}
+                                    scroll={{
+                                        y: 240,
+                                    }}
                                 />
                                 type="warning"
                                 showIcon

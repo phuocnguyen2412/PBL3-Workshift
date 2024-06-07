@@ -59,7 +59,7 @@ export default function ChangePassword() {
             <Spin spinning={loading}>
                 <Form autoFocus layout="vertical" onFinish={handleSubmitForm}>
                     <Row gutter={12}>
-                        <Col span={24}>
+                        <Col span={13}>
                             <Form.Item
                                 name="oldPassword"
                                 label="Current Password"
@@ -71,14 +71,15 @@ export default function ChangePassword() {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.Password
+                                    size="large"
                                     type="password"
                                     autoFocus
                                     placeholder="Please enter Current Password"
                                 />
                             </Form.Item>
                         </Col>
-                        <Col span={24}>
+                        <Col span={13}>
                             <Form.Item
                                 name="newPassword"
                                 label="New Password"
@@ -89,7 +90,8 @@ export default function ChangePassword() {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.Password
+                                    size="large"
                                     type="password"
                                     placeholder="Please enter New Password"
                                 />
@@ -97,7 +99,7 @@ export default function ChangePassword() {
                         </Col>
                     </Row>
                     <Row gutter={16}>
-                        <Col span={24}>
+                        <Col span={13}>
                             <Form.Item
                                 name="confirmPassword"
                                 label="Comfirm your password"
@@ -109,7 +111,8 @@ export default function ChangePassword() {
                                     },
                                 ]}
                             >
-                                <Input
+                                <Input.Password
+                                    size="large"
                                     type="password"
                                     placeholder="Please enter your new password"
                                 />

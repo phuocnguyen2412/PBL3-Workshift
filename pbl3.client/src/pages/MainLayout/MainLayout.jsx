@@ -48,6 +48,14 @@ function MainLayout() {
     return (
         <ConfigProvider
             theme={{
+                token: {
+                    colorPrimary: darkMode ? "#A1c9f1" : "#2F54EB",
+                },
+                components: {
+                    Button: {
+                        colorPrimary: "#91aebd",
+                    },
+                },
                 algorithm: darkMode
                     ? theme.darkAlgorithm
                     : theme.defaultAlgorithm,

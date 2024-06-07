@@ -105,7 +105,7 @@ function Login() {
                             },
                         ]}
                     >
-                        <Input
+                        <Input.Password
                             size="large"
                             prefix={
                                 <LockOutlined className="site-form-item-icon" />
@@ -120,7 +120,7 @@ function Login() {
                             valuePropName="checked"
                             noStyle
                         >
-                            <Checkbox>Remember me</Checkbox>
+                            <Checkbox size="large">Remember me</Checkbox>
                         </Form.Item>
                     </Form.Item>
 
@@ -128,6 +128,7 @@ function Login() {
                         <Button
                             loading={loading}
                             block
+                            size="large"
                             shape="round"
                             type="primary"
                             htmlType="submit"

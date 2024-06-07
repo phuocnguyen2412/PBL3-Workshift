@@ -1,7 +1,7 @@
 import { Button, Form, Modal } from "antd";
 import { useState } from "react";
 import EditEmployeeForm from "../../components/EditEmployeeForm/EditEmployeeForm";
-import { SettingOutlined } from "@ant-design/icons";
+import { SettingFilled } from "@ant-design/icons";
 import PropTypes from "prop-types";
 const EditEmployee = ({ record, setEmployee }) => {
     const [openEdit, setOpenEdit] = useState(false);
@@ -36,7 +36,7 @@ const EditEmployee = ({ record, setEmployee }) => {
 
             <Button
                 shape="circle"
-                icon={<SettingOutlined />}
+                icon={<SettingFilled />}
                 onClick={handleClickBtn}
             />
         </>

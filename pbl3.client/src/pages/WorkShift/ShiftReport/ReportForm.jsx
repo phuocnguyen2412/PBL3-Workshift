@@ -165,7 +165,9 @@ export default function ReportForm({ fetchData }) {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Button htmlType="submit">Submit</Button>
+                <Button htmlType="submit" type="primary" block>
+                    Submit
+                </Button>
             </Form>
         </Spin>
     );

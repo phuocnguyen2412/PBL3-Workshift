@@ -15,6 +15,7 @@ import AddShiftForm from "./AddShiftForm";
 
 import { AccountContext } from "../../../Context/AccountContext";
 import shiftInfo from "../../../Services/shiftInfoApi";
+import { PlusOutlined } from "@ant-design/icons";
 
 const ShiftInformation = () => {
     const [loading, setloading] = useState(false);
@@ -104,7 +105,10 @@ const ShiftInformation = () => {
                     )}`}
                 />
                 {account.account.dutyName === "Admin" && (
-                    <Button onClick={() => setOpenDrawer(true)}>
+                    <Button
+                        onClick={() => setOpenDrawer(true)}
+                        icon={<PlusOutlined />}
+                    >
                         Create a work shift
                     </Button>
                 )}

@@ -1,4 +1,12 @@
-import { Badge, Descriptions, Modal, Spin, Tag, notification } from "antd";
+import {
+    Badge,
+    Button,
+    Descriptions,
+    Input,
+    Modal,
+    Spin,
+    notification,
+} from "antd";
 import PropTypes from "prop-types";
 
 import { useContext, useState } from "react";
@@ -11,15 +19,38 @@ ReportContent.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
 export default function ReportContent({ data, setOpen, open, fetchData }) {
+    const [isEdit, setisEdit] = useState(false);
     const [loading, setloading] = useState(false);
     const account = useContext(AccountContext);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-
-    const handleUpdateReport = async () => {
+    const [handleValue, setHandleValue] = useState(data.handle);
+    const handleUpdateCheck = async () => {
         try {
             setloading(true);
             if (account.account.dutyName !== "Admin") return;
+            await violateApi.updateChecked(data.id, !data.checked);
+
+            apiNotification.success({
+                message: "Success!",
+                description: `You updated report!`,
+                placement: "topRight",
+            });
+            fetchData();
+        } catch (error) {
+            apiNotification.error({
+                message: "Error!",
+                description: `${error}`,
+                placement: "topRight",
+            });
+        } finally {
+            setloading(false);
+        }
+    };
+    const handleUpdateHandleValue = async () => {
+        try {
+            setloading(true);
+
             await violateApi.updateChecked(data.id, !data.checked);
 
             apiNotification.success({
@@ -67,12 +98,14 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
         {
             key: "10",
             label: "Handle",
-            children:
-                data.handle > 0 ? (
-                    <Tag color="green">{data.handle.toLocaleString()}</Tag>
-                ) : (
-                    <Tag color="red">{data.handle.toLocaleString()}</Tag>
-                ),
+            children: (
+                <Input
+                    type="number"
+                    value={handleValue}
+                    disabled={!isEdit}
+                    onChange={(e) => setHandleValue(e.target.value)}
+                />
+            ),
         },
         {
             key: "7",
@@ -82,7 +115,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
         },
         {
             key: "8",
-            label: "Reason",
+            label: "Manager name",
             children: data.managerName,
         },
         {
@@ -95,19 +128,53 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
             ),
         },
     ];
+    const handleClose = () => {
+        setisEdit(false);
+        setOpen(false);
+    };
     return (
         <>
             {contextHolderNotification}
             <Spin spinning={loading}>
                 <Modal
                     open={open}
-                    title="Chi tiết report"
-                    onCancel={() => setOpen(false)}
-                    okText={data.checked ? "Hủy xác nhận" : "Xác nhận"}
-                    onOk={() => {
-                        handleUpdateReport();
-                        setOpen(false);
-                    }}
+                    title="Detail report"
+                    onCancel={handleClose}
+                    footer={[
+                        <Button key="back" onClick={handleClose}>
+                            Return
+                        </Button>,
+                        <>
+                            {!data.checked && (
+                                <Button
+                                    key="submit"
+                                    type="primary"
+                                    loading={loading}
+                                    onClick={() => {
+                                        handleUpdateCheck();
+                                    }}
+                                    text="Check"
+                                />
+                            )}
+                        </>,
+                        <>
+                            {isEdit ? (
+                                <Button
+                                    type="primary"
+                                    onClick={handleUpdateHandleValue}
+                                >
+                                    Update
+                                </Button>
+                            ) : (
+                                <Button
+                                    key="edit"
+                                    onClick={() => setisEdit(true)}
+                                >
+                                    Edit
+                                </Button>
+                            )}
+                        </>,
+                    ]}
                 >
                     <Descriptions layout="vertical" bordered items={items} />
                 </Modal>
