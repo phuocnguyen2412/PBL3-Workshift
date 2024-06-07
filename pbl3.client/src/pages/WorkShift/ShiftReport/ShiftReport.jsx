@@ -1,5 +1,5 @@
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
-import { DatePicker, Spin, Tabs } from "antd";
+import { DatePicker, Spin, Tabs, notification } from "antd";
 import TableReport from "./TableReport";
 import KanbanReport from "./KanbanReport";
 import { useContext, useEffect, useState } from "react";
@@ -12,19 +12,23 @@ import dayjs from "dayjs";
 const ShiftReport = () => {
     const [loading, setloading] = useState(false);
     const account = useContext(AccountContext);
-
+    const [apiNotification, contextHolderNotification] =
+        notification.useNotification();
     const [data, setData] = useState([]);
     const fetchData = async () => {
-        let newData;
-        if (account.account.dutyName === "Admin")
-            newData = await violateApi.getAll();
-        else if (account.account.dutyName === "Manager")
-            newData = await violateApi.getAllOfManager(
-                account.account.employeeId
-            );
+        if (account.account.dutyName === "Admin") {
+            setData(await violateApi.getAll());
+            return;
+        }
 
-        setData(newData);
+        if (account.account.dutyName === "Manager") {
+            setData(
+                await violateApi.getAllOfManager(account.account.employeeId)
+            );
+            return;
+        }
     };
+
     useEffect(() => {
         try {
             setloading(true);
@@ -35,11 +39,18 @@ const ShiftReport = () => {
             setloading(false);
         }
     }, []);
-    const handleTimeSelect = (e) => {
+    const handleTimeSelect = async (e) => {
         try {
             setloading(true);
+            setData(
+                await violateApi.getAllOfDate(dayjs(e).format("YYYY-MM-DD"))
+            );
         } catch (error) {
-            console.log(error);
+            apiNotification.error({
+                message: "Error!",
+                description: `There isn't any report that has date selected`,
+                placement: "topRight",
+            });
         } finally {
             setloading(false);
         }
@@ -47,13 +58,13 @@ const ShiftReport = () => {
     };
     return (
         <Spin spinning={loading}>
+            {contextHolderNotification}
             <DatePicker
                 style={{
                     width: "100%",
                 }}
                 onChange={handleTimeSelect}
                 size="large"
-                
             />
             <Tabs
                 defaultActiveKey="1"

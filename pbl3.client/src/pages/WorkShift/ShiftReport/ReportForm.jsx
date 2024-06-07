@@ -21,6 +21,7 @@ ReportForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
 export default function ReportForm({ fetchData }) {
+    const [loading, setLoading] = useState(false);
     const account = useContext(AccountContext);
     const [employeeList, setEmployeeList] = useState([]);
     const [shiftList, setShiftList] = useState([]);

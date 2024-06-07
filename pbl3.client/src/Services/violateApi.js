@@ -9,6 +9,9 @@ class ViolateApi {
     getAllOfEmployeeId(id) {
         return axiosClient.get("/Violate/ByemployeeId/" + id);
     }
+    getAllOfDate(date) {
+        return axiosClient.get("/Violate/ByDate?date=" + date);
+    }
     add = (data) => {
         return axiosClient.post("/violate", data);
     };
