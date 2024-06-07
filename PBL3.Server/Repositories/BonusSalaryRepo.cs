@@ -73,7 +73,7 @@ namespace PBL3.Server.Repositories
             return true;
         }
 
-        public async Task<List<object>> GetBonusSalaryByEmployeeId(int id)
+        public async Task<List<object>> GetBonusSalaryByEmployeeIdAsync(int id)
         {
             var bonusSalary = await (
                 from b in _context.BonusSalaryHistories
@@ -111,11 +111,6 @@ namespace PBL3.Server.Repositories
             ).ToListAsync<object>();
 
             return bonusSalary;
-        }
-
-        public Task<List<object>> GetBonusSalaryByEmployeeIdAsync(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }

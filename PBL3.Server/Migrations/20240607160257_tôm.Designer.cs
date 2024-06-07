@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240607062752_v13")]
-    partial class v13
+    [Migration("20240607160257_tôm")]
+    partial class tôm
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -173,6 +173,9 @@ namespace PBL3.Server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("BasicSalaryStorage")
+                        .HasColumnType("float");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");

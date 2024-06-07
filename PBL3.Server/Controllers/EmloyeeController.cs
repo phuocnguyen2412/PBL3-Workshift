@@ -29,9 +29,6 @@ namespace PBL3.Server.Controllers
         {
             try
             {
-
-
-
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
                 if (employees == null)
                 {

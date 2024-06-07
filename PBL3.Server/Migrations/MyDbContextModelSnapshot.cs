@@ -172,6 +172,9 @@ namespace PBL3.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<double>("BasicSalaryStorage")
+                        .HasColumnType("float");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 

@@ -13,6 +13,7 @@ namespace PBL3.Server.Data
 
         [ForeignKey("EmployeeId")]
         public virtual Employee? Employee { get; set; }
+        public double BasicSalaryStorage { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public double TotalHours { get; set; }
