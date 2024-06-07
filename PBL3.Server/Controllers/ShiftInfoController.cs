@@ -162,7 +162,7 @@ namespace PBL3.Server.Controllers
                 var workDates = await _shiftInfoRepo.GetWorkDatesForEmployeeAsync(employeeId);
                 if (workDates == null || workDates.Count == 0)
                 {
-                    return NotFound(new { message = $"No work dates found for employee ID {employeeId}." });
+                    workDates = new List<ShiftInfoModel>();
                 }
                 return Ok(workDates);
             }
