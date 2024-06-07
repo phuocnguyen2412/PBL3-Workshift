@@ -112,5 +112,10 @@ namespace PBL3.Server.Repositories
 
             return bonusSalary;
         }
+
+        public Task<List<object>> GetBonusSalaryByEmployeeIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
