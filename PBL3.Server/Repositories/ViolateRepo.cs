@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PBL3.Server.Data;
-using PBL3.Server.Interface;
-using PBL3.Server.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PBL3.Server.Data;
+using PBL3.Server.Interface;
+using PBL3.Server.Models;
 
 namespace PBL3.Server.Repositories
 {
@@ -13,6 +13,7 @@ namespace PBL3.Server.Repositories
     {
         private readonly MyDbContext _context;
         private readonly IMapper _mapper;
+
         public ViolateRepo(MyDbContext context, IMapper mapper)
         {
             _context = context;
@@ -39,7 +40,8 @@ namespace PBL3.Server.Repositories
                     s.EndTime,
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
-                }).ToListAsync();
+                }
+            ).ToListAsync();
 
             return violates;
         }
@@ -65,7 +67,8 @@ namespace PBL3.Server.Repositories
                     s.EndTime,
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
-                }).FirstOrDefaultAsync();
+                }
+            ).FirstOrDefaultAsync();
 
             return violate;
         }
@@ -91,10 +94,12 @@ namespace PBL3.Server.Repositories
                     s.EndTime,
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
-                }).ToListAsync();
+                }
+            ).ToListAsync();
 
             return violate;
         }
+
         public async Task<object> GetViolateByManagerId(int managerid)
         {
             var violate = await (
@@ -116,10 +121,12 @@ namespace PBL3.Server.Repositories
                     s.EndTime,
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
-                }).ToListAsync();
+                }
+            ).ToListAsync();
 
             return violate;
         }
+
         public async Task<object> GetViolateByDate(DateTime date)
         {
             var violate = await (
@@ -131,6 +138,7 @@ namespace PBL3.Server.Repositories
                 where s.Date == date
                 select new
                 {
+                    s.ManagerId,
                     v.Id,
                     EmployeeName = e.FullName,
                     v.Handle,
@@ -141,7 +149,8 @@ namespace PBL3.Server.Repositories
                     s.EndTime,
                     s.Date,
                     ManagerName = manager != null ? manager.FullName : "N/A"
-                }).FirstOrDefaultAsync();
+                }
+            ).FirstOrDefaultAsync();
 
             return violate;
         }
@@ -149,11 +158,11 @@ namespace PBL3.Server.Repositories
         public async Task<Violate> AddViolate(ViolateModel model)
         {
             var violates = await (
-                               from si in _context.ShiftInfos 
-                               join s in _context.Shifts on si.Id equals s.ShiftInfoId
-                               where si.Id == model.ShiftInfoId
-                               select new { s.EmployeeId }
-                               ).ToListAsync();
+                from si in _context.ShiftInfos
+                join s in _context.Shifts on si.Id equals s.ShiftInfoId
+                where si.Id == model.ShiftInfoId
+                select new { s.EmployeeId }
+            ).ToListAsync();
 
             if (violates.Any(v => v.EmployeeId == model.EmployeeId))
             {
@@ -167,7 +176,6 @@ namespace PBL3.Server.Repositories
                 throw new Exception("This employee does not exist during the shift!");
             }
         }
-
 
         public async Task<bool> UpdateViolateChecked(int id, bool isChecked)
         {
@@ -184,10 +192,20 @@ namespace PBL3.Server.Repositories
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
-
+        public async Task UpdateViolateHandle(int id, int handle)
+        {
+            var violate = await _context.Violates.FindAsync(id);
+            if (violate != null)
+            {
+                violate.Handle = handle;
+                await _context.SaveChangesAsync();
+            }
+            else { throw new Exception(); }
+           
+          
+        }
     }
 }

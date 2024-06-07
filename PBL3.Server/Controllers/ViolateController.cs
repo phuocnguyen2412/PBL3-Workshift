@@ -103,6 +103,19 @@ namespace PBL3.Server.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        [HttpPut("Handle/{handle}")]
+        public async Task<ActionResult> UpdateHandle(int id, int handle)
+        {
+            try
+            {
+                await _violateRepo.UpdateViolateHandle(id, handle);
+                return Ok(new { Message = "Update successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { ex.Message });
+            }
+        }
 
 
     }

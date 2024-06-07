@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PBL3.Server.Migrations
 {
-    public partial class tom : Migration
+    public partial class tôm : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -95,7 +95,7 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "DATE", nullable: false),
                     Bonus = table.Column<int>(type: "int", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -138,6 +138,7 @@ namespace PBL3.Server.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    BasicSalaryStorage = table.Column<double>(type: "float", nullable: false),
                     StartDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     EndDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     TotalHours = table.Column<double>(type: "float", nullable: false),

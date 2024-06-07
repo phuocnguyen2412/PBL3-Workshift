@@ -15,5 +15,6 @@ namespace PBL3.Server.Interface
         Task<object> GetViolateByDate(DateTime date);
         Task<Violate> AddViolate(ViolateModel model);
         Task<bool> UpdateViolateChecked(int id, bool isChecked);
+        Task UpdateViolateHandle(int id, int handle);
     }
 }

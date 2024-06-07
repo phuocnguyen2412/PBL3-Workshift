@@ -141,6 +141,7 @@ namespace PBL3.Server.Repositories
                     var newSalaryHistory = new SalaryHistory
                     {
                         EmployeeId = employeeId,
+                        BasicSalaryStorage = result.BasicSalary,
                         StartDate = model.StartDate,
                         EndDate = model.EndDate,
                         TotalHours = totalHours,
