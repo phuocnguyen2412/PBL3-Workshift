@@ -92,5 +92,25 @@ namespace PBL3.Server.Repositories
 
             return bonusSalary;
         }
+
+        public async Task<List<object>> GetAllBonusSalaryByDateAsync(DateTime date)
+        {
+            var bonusSalary = await (
+            from b in _context.BonusSalaryHistories
+            join e in _context.Employees on b.EmployeeId equals e.Id
+            where b.Date == date
+            select new
+            {
+                b.Id,
+                EmployeeId = b.EmployeeId,
+                FullName = e.FullName,
+                DateTime = b.Date,
+                TotalBonus = b.Bonus,
+                Reason = b.Reason
+            }
+            ).ToListAsync<object>();
+
+            return bonusSalary;
+        }
     }
 }

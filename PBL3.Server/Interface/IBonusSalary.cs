@@ -10,5 +10,6 @@ namespace PBL3.Server.Interface
         Task<object> GetAllBonusSalaryAsync();
         Task<List<object>> GetBonusSalaryByEmployeeIdAsync(int id);
         Task<bool> DeleteBonusSalaryAsync(int id);
+        Task<List<object>> GetAllBonusSalaryByDateAsync(DateTime date);
     }
 }

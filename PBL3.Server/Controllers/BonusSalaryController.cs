@@ -66,5 +66,16 @@ namespace PBL3.Server.Controllers
             }
             return bonusSalary;
         }
+
+        [HttpGet("bydate")]
+        public async Task<ActionResult<object>> GetAllBonusSalaryByDate(DateTime date)
+        {
+            var bonusSalaries = await _bonusSalaryRepo.GetAllBonusSalaryByDateAsync(date);
+            if (bonusSalaries == null)
+            {
+                return NotFound(new { Message = "No bonus salary found" });
+            }
+            return bonusSalaries;
+        }
     }
 }
