@@ -12,8 +12,8 @@ using PBL3.Server.Data;
 namespace PBL3.Server.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240517062550_dádsa")]
-    partial class dádsa
+    [Migration("20240607051855_tom")]
+    partial class tom
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

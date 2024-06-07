@@ -19,7 +19,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<object>> GetAllShiftAsync()
+        public async Task<ActionResult<object>> GetAll()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetShiftByIdAsync(int id)
+        public async Task<ActionResult<object>> GetById(int id)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ShiftModel>> AddShiftAsync(ShiftModel shift)
+        public async Task<ActionResult<ShiftModel>> Add(ShiftModel shift)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftAsync(int id, ShiftModel shift)
+        public async Task<ActionResult<ShiftModel>> Update(int id, ShiftModel shift)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut("{shiftId}/checkin")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckInAsync(int shiftId, int managerId)
+        public async Task<ActionResult<ShiftModel>> UpdateCheckIn(int shiftId, int managerId)
         {
             try
             {
@@ -122,7 +122,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut("{shiftId}/checkout")]
-        public async Task<ActionResult<ShiftModel>> UpdateShiftCheckOutAsync(int shiftId, int managerId)
+        public async Task<ActionResult<ShiftModel>> UpdateCheckOut(int shiftId, int managerId)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpDelete("delete")]
-        public async Task<ActionResult<bool>> DeleteShiftAsync(int shiftId)
+        public async Task<ActionResult<bool>> Delete(int shiftId)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("employee/{employeeId}")]
-        public async Task<ActionResult<object>> GetAllShiftByEmployeeIdAsync(int employeeId)
+        public async Task<ActionResult<object>> GetAllByEmployeeId(int employeeId)
         {
             try
             {

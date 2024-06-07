@@ -15,11 +15,10 @@ namespace PBL3.Server.Controllers
         private readonly IAccount _accountRepo;
         private readonly MyDbContext _context;
 
-        // Dependency Injection for MyDbContext
         public AccountController(IAccount accountRepo, MyDbContext context)
         {
             _accountRepo = accountRepo;
-            _context = context; // Inject MyDbContext
+            _context = context; 
         }
 
         [HttpPost("Login")]

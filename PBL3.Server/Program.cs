@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using PBL3.Server.Data;
 using PBL3.Server.Interface;
 using PBL3.Server.Repositories;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 

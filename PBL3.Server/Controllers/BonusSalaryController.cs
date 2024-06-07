@@ -21,7 +21,7 @@ namespace PBL3.Server.Controllers
         }
      
         [HttpGet]
-        public async Task<object> GetAllBonusSalaryAsync()
+        public async Task<object> GetAll()
         {
             var bonusSalaries = await _bonusSalaryRepo.GetAllBonusSalaryAsync();
             return bonusSalaries;
@@ -43,7 +43,7 @@ namespace PBL3.Server.Controllers
         }
    
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteBonusSalary(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var delete = await _bonusSalaryRepo.DeleteBonusSalaryAsync(id);
             if (delete)
@@ -57,9 +57,9 @@ namespace PBL3.Server.Controllers
         }
        
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetBonusSalaryById(int id)
+        public async Task<ActionResult<object>> GetByEmployeeId(int id)
         {
-            var bonusSalary = await _bonusSalaryRepo.GetBonusSalaryByIdAsync(id);
+            var bonusSalary = await _bonusSalaryRepo.GetBonusSalaryByEmployeeIdAsync(id);
             if (bonusSalary == null)
             {
                 return NotFound(new { Message = "Bonus salary not found" });
