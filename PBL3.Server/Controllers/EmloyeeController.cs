@@ -25,7 +25,7 @@ namespace PBL3.Server.Controllers
 
         [HttpGet]
         [RolesAuthorize("Admin")]
-        public async Task<ActionResult> GetAllEmployeesAsync()
+        public async Task<ActionResult> GetAll()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEmployeeByIdAsync(int id)
+        public async Task<ActionResult> GetById(int id)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("status/{status}")]
-        public async Task<ActionResult> GetAllEmployeesByStatusAsync(bool status)
+        public async Task<ActionResult> GetByStatus(bool status)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmployeeModel>> AddEmployeeAsync(EmployeeModel employee)
+        public async Task<ActionResult<EmployeeModel>> Add(EmployeeModel employee)
         {
             if (employee == null)
             {
@@ -110,7 +110,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<EmployeeModel>> UpdateEmployeeAsync(EmployeeModel employee)
+        public async Task<ActionResult<EmployeeModel>> Update(EmployeeModel employee)
         {
             if (employee == null)
             {
@@ -133,7 +133,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EmployeeModel>> DeleteEmployeeAsync(int id)
+        public async Task<ActionResult<EmployeeModel>> Delete(int id)
         {
             try
             {
@@ -151,7 +151,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("search/{searchString}")]
-        public async Task<ActionResult<object>> SearchEmployeeByStringAsync(string searchString)
+        public async Task<ActionResult<object>> SearchByString(string searchString)
         {
             try
             {

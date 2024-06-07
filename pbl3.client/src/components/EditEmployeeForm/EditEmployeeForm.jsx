@@ -44,7 +44,7 @@ export default function EditEmployeeForm({
 
             api.success({
                 message: "Success!",
-                description: `Đã edit thành công nhân viên ${e.fullName}`,
+                description: `You updated employee ${e.fullName} successfully`,
             });
 
             setOpenEdit(() => false);

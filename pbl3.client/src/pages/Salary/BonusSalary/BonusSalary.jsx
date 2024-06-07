@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import CreateBonusSalary from "./CreateBonusSalary";
 import { AccountContext } from "../../../Context/AccountContext";
-import { Spin, Tabs } from "antd";
+import { DatePicker, Spin, Tabs } from "antd";
 import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
 import TableBonus from "./TableBonus";
@@ -27,9 +27,25 @@ const BonusSalary = () => {
             setloading(false);
         }
     }, []);
-
+    const handleTimeSelect = (e) => {
+        try {
+            setloading(true);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setloading(false);
+        }
+        console.log(dayjs(e).format("YYYY-MM-DD"));
+    };
     return (
         <Spin spinning={loading}>
+            <DatePicker
+                style={{
+                    width: "100%",
+                }}
+                onChange={handleTimeSelect}
+                size="large"
+            />
             <Tabs
                 defaultActiveKey="1"
                 items={[

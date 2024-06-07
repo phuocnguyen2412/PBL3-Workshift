@@ -14,6 +14,7 @@ import {
 
 import employeeApi from "../../../Services/employeeApi";
 import bonusSalary from "../../../Services/BonusSalary";
+import salaryHistory from "../../../Services/SalaryHistoryApi";
 
 export default function CreateSalaryHistory() {
     const [loading, setloading] = useState(false);
@@ -62,8 +63,8 @@ export default function CreateSalaryHistory() {
         try {
             e.startDate = e.startDate.format("YYYY-MM-DD");
             e.endDate = e.endDate.format("YYYY-MM-DD");
-
-            const res = await bonusSalary.add(e);
+            console.log(e);
+            const res = await salaryHistory.add(e);
             console.log(res);
             apiNotification.success({
                 message: "Success!",

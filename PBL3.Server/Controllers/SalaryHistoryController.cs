@@ -17,14 +17,14 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<object> GetAllSalaryHistory()
+        public async Task<object> GetAll()
         {
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistory();
             return Ok(salaryHistories);
         }
 
         [HttpGet("Id")]
-        public async Task<object> GetAllSalaryHistoryById(int Id)
+        public async Task<object> GetAllById(int Id)
         {
             var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
             return Ok(salaryHistories);
@@ -40,7 +40,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<object> AddSalaryHistory(SalaryHistoryModel model)
+        public async Task<object> Add(SalaryHistoryModel model)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace PBL3.Server.Controllers
         }   
 
         [HttpPut("{id}")]   
-        public async Task<ActionResult> UpdateSalaryById(int id)
+        public async Task<ActionResult> UpdateById(int id)
         {
             try
             {

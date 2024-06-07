@@ -43,7 +43,7 @@ export default function DeleteBonus({ record, fetchData }) {
             <Button
                 danger
                 shape="circle"
-                icon=<DeleteOutlined />
+                icon={<DeleteOutlined />}
                 onClick={() => {
                     handleDeleteBonus(record.id);
                 }}

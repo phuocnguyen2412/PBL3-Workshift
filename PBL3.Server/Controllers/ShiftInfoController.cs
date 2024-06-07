@@ -18,7 +18,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ShiftInfoModel>>> GetAllShiftInfoAsync()
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetAll()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ShiftInfoModel>> GetShiftInfoByIdAsync(int id)
+        public async Task<ActionResult<ShiftInfoModel>> GetById(int id)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddShiftInfoAsync(ShiftInfoModel shiftInfo)
+        public async Task<ActionResult> Add(ShiftInfoModel shiftInfo)
         {
             if (shiftInfo == null)
             {
@@ -77,7 +77,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateShiftInfoAsync(ShiftInfoModel shiftInfo)
+        public async Task<ActionResult> Update(ShiftInfoModel shiftInfo)
         {
             if (shiftInfo == null)
             {
@@ -101,7 +101,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPut("{id}/{isChecked}")]
-        public async Task<ActionResult<ShiftInfoModel>> UpdateShiftInfoCheckedAsync(int id, bool isChecked)
+        public async Task<ActionResult<ShiftInfoModel>> UpdateChecked(int id, bool isChecked)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ShiftInfoModel>> DeleteShiftInfoAsync(int id)
+        public async Task<ActionResult<ShiftInfoModel>> Delete(int id)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("shifts-and-employees-by-date/{date}")]
-        public async Task<ActionResult<object>> GetShiftsAndEmployeesByDateAsync(DateTime date)
+        public async Task<ActionResult<object>> GetByDate(DateTime date)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("workdates/{employeeId}")]
-        public async Task<ActionResult<List<ShiftInfoModel>>> GetWorkDatesForEmployeeAsync(int employeeId)
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetWorkDates(int employeeId)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("manager/{managerId}")]
-        public async Task<ActionResult<List<ShiftInfoModel>>> GetShiftsForManagerAsync(int managerId)
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetShiftsForManager(int managerId)
         {
             try
             {

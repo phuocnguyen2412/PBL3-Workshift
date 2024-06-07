@@ -22,14 +22,14 @@ namespace PBL3.Server.Controllers
 
      
         [HttpGet]
-        public async Task<ActionResult<List<DutyModel>>> GetAllDutiesAsync()
+        public async Task<ActionResult<List<DutyModel>>> GetAll()
         {
             return await _dutyRepository.GetAllDutiesAsync();
         }
 
        
         [HttpPost]
-        public async Task<ActionResult<DutyModel>> AddDutyAsync(DutyModel dutyModel)
+        public async Task<ActionResult<DutyModel>> Add(DutyModel dutyModel)
         {
             DutyModel id = await _dutyRepository.AddDutyAsync(dutyModel);
 
@@ -42,7 +42,7 @@ namespace PBL3.Server.Controllers
 
      
         [HttpPut]
-        public async Task<ActionResult> UpdateDutyAsync(DutyModel dutyModel)
+        public async Task<ActionResult> Update(DutyModel dutyModel)
         {
             await _dutyRepository.UpdateDutyAsync(dutyModel);
             return NoContent();
@@ -50,7 +50,7 @@ namespace PBL3.Server.Controllers
 
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteDutyAsync(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             await _dutyRepository.DeleteDutyAsync(id);
             return NoContent();

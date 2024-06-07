@@ -1,22 +1,25 @@
-import { Button, Modal, notification } from "antd";
+import { App, Button, Modal, notification } from "antd";
 import { useState } from "react";
 
 import PropTypes from "prop-types";
 import shiftInfo from "../../../Services/shiftInfoApi";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 DeleteWorkShift.propTypes = {
     shift: PropTypes.object.isRequired,
 
     setItems: PropTypes.func.isRequired,
 };
+
 export default function DeleteWorkShift({ shift, setItems }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { modal } = App.useApp();
+
     const [loading, setloading] = useState(false);
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-    const handleDeleteShiftInfo = async (id) => {
+    const handleDeleteShiftInfo = async () => {
         try {
             setloading(true);
-            await shiftInfo.delete(id);
+            await shiftInfo.delete(shift.id);
 
             apiNotification.success({
                 message: "Success!",
@@ -37,29 +40,23 @@ export default function DeleteWorkShift({ shift, setItems }) {
         }
     };
     const showModal = () => {
-        setIsModalOpen(() => true);
-    };
+        modal.confirm({
+            title: "CONFIRM YOUR DECISION?",
+            icon: <ExclamationCircleFilled />,
+            content: `Do you want to delete work shift ${shift.shiftName}`,
+            okText: "Yes",
+            okType: "danger",
 
-    const handleOk = async () => {
-        handleDeleteShiftInfo(shift.id);
-        setIsModalOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(() => false);
+            onOk() {
+                handleDeleteShiftInfo();
+            },
+        });
     };
 
     return (
         <>
             {contextHolderNotification}
-            <Modal
-                title="Confirm delete"
-                open={isModalOpen}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <p>Are you sure to delete this work shift?</p>
-            </Modal>
+
             <Button
                 style={{ marginLeft: "16px" }}
                 danger

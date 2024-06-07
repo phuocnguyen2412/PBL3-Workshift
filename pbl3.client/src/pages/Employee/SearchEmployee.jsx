@@ -13,16 +13,18 @@ const SearchEmployee = ({ setEmployee }) => {
         try {
             setLoading(true);
             const data = await employeeApi.findByName(value);
+            if (data.length == 0) throw new Error("");
             setEmployee(data);
+
             apiNotification.success({
-                message: "Thành công!",
-                description: `Hệ thống đã tìm được nhân viên ${value}`,
+                message: "Success!",
+                description: `System have found employee whose name is ${value}`,
                 placement: "topRight",
             });
         } catch (err) {
             apiNotification.error({
                 message: "Error!",
-                description: `${err}`,
+                description: `System cound found employee whose name is ${value}`,
                 placement: "topRight",
             });
         } finally {

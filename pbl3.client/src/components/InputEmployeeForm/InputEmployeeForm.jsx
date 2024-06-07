@@ -47,7 +47,7 @@ export default function InputEmployeeForm({ setEmployee }) {
             console.log(err);
             apiNotification.error({
                 message: "Error!",
-                description: `Bạn đã thêm thất bại nhân viên ${e.fullName}`,
+                description: `Can't add employee ${e.fullName}`,
                 placement: "bottomRight",
             });
         } finally {
@@ -90,13 +90,13 @@ export default function InputEmployeeForm({ setEmployee }) {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter user name",
+                                        message: "Please enter full name",
                                     },
                                 ]}
                             >
                                 <Input
                                     autoFocus
-                                    placeholder="Please enter user name"
+                                    placeholder="Please enter full name"
                                 />
                             </Form.Item>
                         </Col>
@@ -149,7 +149,7 @@ export default function InputEmployeeForm({ setEmployee }) {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please enter url",
+                                        message: "Please enter employee's email!",
                                     },
                                 ]}
                             >
@@ -157,7 +157,7 @@ export default function InputEmployeeForm({ setEmployee }) {
                                     style={{
                                         width: "100%",
                                     }}
-                                    placeholder="Please enter your email!"
+                                    placeholder="Please enter employee's email!"
                                 />
                             </Form.Item>
                         </Col>
@@ -170,12 +170,12 @@ export default function InputEmployeeForm({ setEmployee }) {
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please choose the approver",
+                                        message: "Please choose the duty",
                                     },
                                 ]}
                             >
                                 <Select
-                                    placeholder="Please choose the approver"
+                                    placeholder="Please choose the duty"
                                     options={optionsDuty}
                                 />
                             </Form.Item>
@@ -200,7 +200,7 @@ export default function InputEmployeeForm({ setEmployee }) {
                         </Col>
                     </Row>
                     <Button htmlType="submit" loading={loading}>
-                        Thêm nhân viên
+                        Add employee
                     </Button>
                 </Form>
             </Spin>

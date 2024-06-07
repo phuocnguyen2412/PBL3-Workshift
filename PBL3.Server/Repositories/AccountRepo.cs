@@ -90,26 +90,6 @@ namespace PBL3.Server.Repositories
                     AccountId = a.Id
                 }
             ).FirstOrDefaultAsync();
-
-            // if (account != null)
-            // {
-            //     string newToken = GenerateToken();
-            //     var accountToUpdate = await _context.Accounts.FindAsync(account.AccountId);
-            //     accountToUpdate.Token = newToken;
-            //     await _context.SaveChangesAsync();
-
-            //     var updatedAccount = new
-            //     {
-            //         account.FullName,
-            //         account.EmployeeId,
-            //         account.DutyName,
-            //         account.AccountId,
-            //         Token = newToken
-            //     };
-
-            //     return updatedAccount;
-            // }
-
             return account;
         }
 
@@ -136,7 +116,6 @@ namespace PBL3.Server.Repositories
                 return false;
             }
         }
-
         private string HashPassword(string password)
         {
             using var sha256 = System.Security.Cryptography.SHA256.Create();
