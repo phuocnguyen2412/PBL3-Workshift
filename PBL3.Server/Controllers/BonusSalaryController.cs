@@ -57,9 +57,9 @@ namespace PBL3.Server.Controllers
         }
        
         [HttpGet("{id}")]
-        public async Task<ActionResult<object>> GetById(int id)
+        public async Task<ActionResult<object>> GetByEmployeeId(int id)
         {
-            var bonusSalary = await _bonusSalaryRepo.GetBonusSalaryByIdAsync(id);
+            var bonusSalary = await _bonusSalaryRepo.GetBonusSalaryByEmployeeIdAsync(id);
             if (bonusSalary == null)
             {
                 return NotFound(new { Message = "Bonus salary not found" });
