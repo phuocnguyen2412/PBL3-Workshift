@@ -183,9 +183,9 @@ namespace PBL3.Server.Repositories
             DateTime date = DateTime.Now;
             TimeSpan checkInTime = date.TimeOfDay;
 
-            if (checkInTime < shiftInfo.StartTime || checkInTime > shiftInfo.EndTime)
+            if (checkInTime < shiftInfo.StartTime || checkInTime > shiftInfo.StartTime.Add(TimeSpan.FromMinutes(5)))
             {
-                throw new Exception("Check-in time must be within the shift time.");
+                throw new Exception("Check-in time must be within 5 minutes after the shift start time.");
             }
 
             shift.CheckInTime = date;
@@ -211,7 +211,7 @@ namespace PBL3.Server.Repositories
                 );
             }
 
-            if (shift.CheckInTime == null || shift.CheckInTime == DateTime.MinValue)
+            if (shift.CheckInTime == null || shift.CheckOutTime == shift.CheckInTime)
             {
                 throw new Exception("Employee must check-in before checking out.");
             }
@@ -219,9 +219,9 @@ namespace PBL3.Server.Repositories
             DateTime date = DateTime.Now;
             TimeSpan checkOutTime = date.TimeOfDay;
 
-            if (checkOutTime > shiftInfo.EndTime.Add(TimeSpan.FromMinutes(5)))
+            if (checkOutTime < shift.CheckInTime.TimeOfDay || checkOutTime > shiftInfo.EndTime.Add(TimeSpan.FromMinutes(5)))
             {
-                throw new Exception("Check-out time must be within 5 minutes after the end time.");
+                throw new Exception("Check-out time must be within the range from the check-in time to 5 minutes after the shift end time.");
             }
 
             shift.CheckOutTime = date;
