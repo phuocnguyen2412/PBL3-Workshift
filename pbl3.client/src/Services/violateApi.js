@@ -19,6 +19,9 @@ class ViolateApi {
     updateChecked = (violateId, checked) => {
         return axiosClient.put(`/Violate/${violateId}?isChecked=${checked}`);
     };
+
+    updateHandle = (violateId, handle) =>
+        axiosClient.put(`/Violate/Handle/${handle}?id=${violateId}`);
 }
 const violateApi = new ViolateApi();
 export default violateApi;

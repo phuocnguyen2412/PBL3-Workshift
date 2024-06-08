@@ -20,8 +20,7 @@ export default function ShiftAction({ shift, setItems }) {
     const handleDeleteShift = async () => {
         try {
             setloading(true);
-            if (shift.check)
-                throw { message: "Work shift is checked! You can't out" };
+            if (!shift.check) throw "Work shift is checked! You can't out";
             const data = shift.employees.find(
                 (e) => e.employeeId === account.account.employeeId
             );
@@ -38,7 +37,7 @@ export default function ShiftAction({ shift, setItems }) {
             console.log(error);
             apiNotification.error({
                 message: "Error!",
-                description: `${error.message}`,
+                description: `${error}`,
                 placement: "topRight",
             });
         } finally {
@@ -58,8 +57,7 @@ export default function ShiftAction({ shift, setItems }) {
 
     const handleCreate = async () => {
         try {
-            if (shift.checked)
-                throw { message: "Work shift is checked! You can't submit" };
+            if (shift.checked) throw "Work shift is checked! You can't submit";
             const data = {
                 employeeId: account.account.employeeId,
                 shiftInfoId: shift.id,

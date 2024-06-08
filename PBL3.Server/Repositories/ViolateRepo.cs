@@ -196,6 +196,8 @@ namespace PBL3.Server.Repositories
                 return false;
             }
         }
+
+
         public async Task UpdateViolateHandle(int id, int handle)
         {
             var violate = await _context.Violates.FindAsync(id);
@@ -205,8 +207,8 @@ namespace PBL3.Server.Repositories
                 await _context.SaveChangesAsync();
             }
             else { throw new Exception(); }
-           
-          
+
+
         }
     }
 }

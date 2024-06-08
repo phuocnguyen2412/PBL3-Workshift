@@ -104,7 +104,7 @@ export default function Reports() {
                                     pageSize: 10,
                                 }}
                                 scroll={{
-                                    y: 240,
+                                    y: 140,
                                 }}
                                 rowKey="id"
                                 dataSource={data}

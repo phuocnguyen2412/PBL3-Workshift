@@ -25,7 +25,7 @@ export default function TableSalaryHistory() {
     useEffect(() => {
         fetchData();
     }, []);
-
+    console.log(data);
     const columns = [
         {
             title: "Full Name",
@@ -67,6 +67,9 @@ export default function TableSalaryHistory() {
         {
             title: "Total salary",
             dataIndex: "totalSalary",
+            render: (_, record) => (
+                <span>{Math.floor(record.totalSalary).toLocaleString()}</span>
+            ),
         },
         {
             title: "Paid date",

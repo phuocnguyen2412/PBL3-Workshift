@@ -99,10 +99,10 @@ export default function Salary() {
                                     columns={columns}
                                     rowKey="id"
                                     pagination={{
-                                        pageSize: 10,
+                                        pageSize: 5,
                                     }}
                                     scroll={{
-                                        y: 240,
+                                        y: 140,
                                     }}
                                 />
                                 type="warning"

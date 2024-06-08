@@ -1,13 +1,4 @@
-import {
-    Button,
-    Col,
-    Form,
-    Input,
-    Row,
-    Select,
-    Spin,
-    notification,
-} from "antd";
+import { Button, Col, Form, Row, Select, Spin, notification } from "antd";
 import { AccountContext } from "../../../Context/AccountContext";
 import { useContext, useEffect, useState } from "react";
 
@@ -15,8 +6,8 @@ import dayjs from "dayjs";
 import TextArea from "antd/es/input/TextArea";
 import PropTypes from "prop-types";
 import violateApi from "../../../Services/violateApi";
-import employeeApi from "../../../Services/employeeApi";
 
+import shiftInfo from "../../../Services/shiftInfoApi";
 ReportForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
 };
@@ -28,10 +19,10 @@ export default function ReportForm({ fetchData }) {
     const [form] = Form.useForm();
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-
-    useEffect(() => {
-        const fetchDataEmployee = async () => {
-            const response = await employeeApi.findByStatus(true);
+    const fetchDataEmployee = async (e) => {
+        try {
+            setLoading(true);
+            const response = await shiftInfo.getAllOfEmployeeInShiftInfo(e);
             setEmployeeList(
                 response.map((item) => {
                     return {
@@ -40,10 +31,16 @@ export default function ReportForm({ fetchData }) {
                     };
                 })
             );
-        };
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         const fetchDataShift = async () => {
             try {
-                const response = await violateApi.getAllOfManager(
+                const response = await shiftInfo.getAllOfEmployee(
                     account.account.employeeId
                 );
 
@@ -63,7 +60,7 @@ export default function ReportForm({ fetchData }) {
                 console.log(err);
             }
         };
-        fetchDataEmployee();
+
         fetchDataShift();
     }, []);
 
@@ -74,6 +71,7 @@ export default function ReportForm({ fetchData }) {
             const data = {
                 ...e,
                 checked: false,
+                handle: 0,
             };
 
             const response = await violateApi.add(data);
@@ -94,81 +92,73 @@ export default function ReportForm({ fetchData }) {
         }
     };
     return (
-        <Spin spinning={loading}>
+        <>
             {contextHolderNotification}
-            <Form layout="vertical" onFinish={handleSubmitForm} form={form}>
-                <Row gutter={16}>
-                    <Col span={24}>
-                        <Form.Item
-                            name="employeeId"
-                            label="Name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please enter user name",
-                                },
-                            ]}
-                        >
-                            <Select
-                                showSearch
-                                placeholder="Select a person"
-                                optionFilterProp="children"
-                                filterOption={filterOption}
-                                options={employeeList}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Item
-                            name="shiftInfoId"
-                            label="Shift name"
-                            rules={[
-                                { required: true, message: "Please enter url" },
-                            ]}
-                        >
-                            <Select
-                                showSearch
-                                placeholder="Select a shift"
-                                optionFilterProp="children"
-                                filterOption={filterOption}
-                                options={shiftList}
-                            />
-                        </Form.Item>
-                    </Col>
+            <Spin spinning={loading}>
+                <Form layout="vertical" onFinish={handleSubmitForm} form={form}>
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Form.Item
+                                name="shiftInfoId"
+                                label="Shift name"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please select name",
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    onSelect={fetchDataEmployee}
+                                    showSearch
+                                    placeholder="Select a shift"
+                                    optionFilterProp="children"
+                                    filterOption={filterOption}
+                                    options={shiftList}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item
+                                name="employeeId"
+                                label="Name"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please select a work shift",
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    showSearch
+                                    placeholder="Select a person"
+                                    optionFilterProp="children"
+                                    filterOption={filterOption}
+                                    options={employeeList}
+                                />
+                            </Form.Item>
+                        </Col>
 
-                    <Col span={24}>
-                        <Form.Item
-                            name="reason"
-                            label="Reason"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please choose the dateTime",
-                                },
-                            ]}
-                        >
-                            <TextArea rows={4} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Item
-                            name="handle"
-                            label="Handle"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: "Please choose the dateTime",
-                                },
-                            ]}
-                        >
-                            <Input type="number" />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Button htmlType="submit" type="primary" block>
-                    Submit
-                </Button>
-            </Form>
-        </Spin>
+                        <Col span={24}>
+                            <Form.Item
+                                name="reason"
+                                label="Reason"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Please enter reason",
+                                    },
+                                ]}
+                            >
+                                <TextArea rows={4} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Button htmlType="submit" type="primary" block>
+                        Submit
+                    </Button>
+                </Form>
+            </Spin>
+        </>
     );
 }

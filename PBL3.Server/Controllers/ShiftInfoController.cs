@@ -34,24 +34,24 @@ namespace PBL3.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ShiftInfoModel>> GetById(int id)
+        [HttpGet("GetAllEmployeeInShiftInfo")]
+        public async Task<ActionResult<List<ShiftInfoModel>>> GetAllEmployeeInShiftInfo(int shiftInfo)
         {
             try
             {
-                var shiftInfo = await _shiftInfoRepo.GetShiftInfoByIdAsync(id);
-                if (shiftInfo == null)
+                var shiftInfos = await _shiftInfoRepo.GetEmployeeInShiftInfoAsync(shiftInfo);
+                if (shiftInfos == null)
                 {
-                    return NotFound(new { message = $"Shift information with ID {id} not found." });
+                    return NotFound(new { message = "No shift information found." });
                 }
-                return Ok(shiftInfo);
+                return Ok(shiftInfos);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
+
 
         [HttpPost]
         public async Task<ActionResult> Add(ShiftInfoModel shiftInfo)

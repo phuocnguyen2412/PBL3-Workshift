@@ -110,30 +110,34 @@ export default function DetailSalaryHistory({ record, fetchData }) {
         {
             key: "totalBonus",
             label: "totalBonus",
-            children: record.totalBonus.toLocaleString(),
+            children: Math.floor(record.totalBonus).toLocaleString(),
         },
 
         {
             key: "totalViolate",
             label: "totalViolate",
-            children: record.totalViolate.toLocaleString(),
+            children: Math.floor(record.totalViolate).toLocaleString(),
         },
         {
             key: "totalSalary",
             label: "totalSalary",
-            children: record.totalSalary.toLocaleString(),
+            children: (
+                <Tag color="#e0fefe" style={{ color: "#000" }}>
+                    {Math.floor(record.totalSalary).toLocaleString()}
+                </Tag>
+            ),
         },
         {
             key: "Paid date",
             label: "Paid date",
             children: (
                 <>
-                    {record.paidDate === "0001-01-01T00:00:00" ? (
-                        <Tag color="red">Have not been paid</Tag>
-                    ) : (
+                    {record.paidDate ? (
                         <Tag color="green">
                             {dayjs(record.paidDate).format("DD-MM-YYYY")}
                         </Tag>
+                    ) : (
+                        <Tag color="#cf6679">Have not been paid</Tag>
                     )}
                 </>
             ),
@@ -149,6 +153,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
+                okText={account.account.dutyName === "Admin" ? "Pay" : "ok"}
             >
                 <Descriptions layout="vertical" bordered items={items} />
             </Modal>

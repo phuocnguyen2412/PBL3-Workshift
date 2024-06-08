@@ -51,7 +51,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
         try {
             setloading(true);
 
-            await violateApi.updateChecked(data.id, !data.checked);
+            await violateApi.updateHandle(data.id, handleValue);
 
             apiNotification.success({
                 message: "Success!",
@@ -140,41 +140,45 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                     open={open}
                     title="Detail report"
                     onCancel={handleClose}
-                    footer={[
-                        <Button key="back" onClick={handleClose}>
-                            Return
-                        </Button>,
-                        <>
-                            {!data.checked && (
-                                <Button
-                                    key="submit"
-                                    type="primary"
-                                    loading={loading}
-                                    onClick={() => {
-                                        handleUpdateCheck();
-                                    }}
-                                    text="Check"
-                                />
-                            )}
-                        </>,
-                        <>
-                            {isEdit ? (
-                                <Button
-                                    type="primary"
-                                    onClick={handleUpdateHandleValue}
-                                >
-                                    Update
-                                </Button>
-                            ) : (
-                                <Button
-                                    key="edit"
-                                    onClick={() => setisEdit(true)}
-                                >
-                                    Edit
-                                </Button>
-                            )}
-                        </>,
-                    ]}
+                    footer={
+                        account.account.dutyName === "Admin" && [
+                            <Button key="back" onClick={handleClose}>
+                                Return
+                            </Button>,
+
+                            <>
+                                {isEdit ? (
+                                    <Button
+                                        type="primary"
+                                        onClick={handleUpdateHandleValue}
+                                    >
+                                        Update
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        key="edit"
+                                        onClick={() => setisEdit(true)}
+                                    >
+                                        Edit
+                                    </Button>
+                                )}
+                            </>,
+                            <>
+                                {!data.checked && (
+                                    <Button
+                                        key="submit"
+                                        type="primary"
+                                        loading={loading}
+                                        onClick={() => {
+                                            handleUpdateCheck();
+                                        }}
+                                    >
+                                        Check
+                                    </Button>
+                                )}
+                            </>,
+                        ]
+                    }
                 >
                     <Descriptions layout="vertical" bordered items={items} />
                 </Modal>

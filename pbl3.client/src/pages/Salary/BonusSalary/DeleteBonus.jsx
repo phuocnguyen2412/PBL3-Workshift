@@ -1,7 +1,7 @@
-import { Button, notification } from "antd";
+import { App, Button, notification } from "antd";
 
 import PropTypes from "prop-types";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { useState } from "react";
 import bonusSalary from "../../../Services/BonusSalary";
 
@@ -13,12 +13,25 @@ DeleteBonus.propTypes = {
 export default function DeleteBonus({ record, fetchData }) {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
+    const { modal } = App.useApp();
     const [loading, setloading] = useState(false);
+    const showConfirm = () => {
+        modal.confirm({
+            title: "CONFIRM YOUR DECISION?",
+            icon: <ExclamationCircleFilled />,
+            content: `Do you want to delete this bonus`,
+            okText: "Yes",
+            okType: "danger",
 
-    const handleDeleteBonus = async (id) => {
+            onOk() {
+                handleDeleteBonus();
+            },
+        });
+    };
+    const handleDeleteBonus = async () => {
         try {
             setloading(true);
-            const response = await bonusSalary.delete(id);
+            const response = await bonusSalary.delete(record.id);
             apiNotification.success({
                 message: "Success!",
                 description: `${response.message}`,
@@ -45,7 +58,7 @@ export default function DeleteBonus({ record, fetchData }) {
                 shape="circle"
                 icon={<DeleteOutlined />}
                 onClick={() => {
-                    handleDeleteBonus(record.id);
+                    showConfirm();
                 }}
                 loading={loading}
             />

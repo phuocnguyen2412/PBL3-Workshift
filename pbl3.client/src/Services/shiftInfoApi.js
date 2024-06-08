@@ -14,6 +14,11 @@ class ShiftInfo {
     getAllOfManager = (managerId) => {
         return axiosClient.get(`/ShiftInfo/manager/${managerId}`);
     };
+    getAllOfEmployeeInShiftInfo = (shiftInfoId) =>
+        axiosClient.get(
+            `/ShiftInfo/GetAllEmployeeInShiftInfo?shiftInfo=${shiftInfoId}`
+        );
+
     add = (data) => {
         return axiosClient.post("/ShiftInfo", data);
     };

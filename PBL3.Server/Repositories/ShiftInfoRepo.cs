@@ -42,26 +42,20 @@ namespace PBL3.Server.Repositories
             return shiftInfos;
         }
 
-        public async Task<object> GetShiftInfoByIdAsync(int id)
+        public async Task<object> GetEmployeeInShiftInfoAsync(int shiftInfoId)
         {
             var shiftInfos = await (
-                from shiftInfo in _context.ShiftInfos
-                where shiftInfo.Id == id
+                from shift in _context.Shifts
+                where shift.ShiftInfoId == shiftInfoId
                 join employee in _context.Employees
-                    on shiftInfo.ManagerId equals employee.Id
-                    into shiftManager
-                from manager in shiftManager.DefaultIfEmpty()
+                    on shift.EmployeeId equals employee.Id
+
                 select new
                 {
-                    shiftInfo.Id,
-                    shiftInfo.ShiftName,
-                    shiftInfo.Date,
-                    shiftInfo.StartTime,
-                    shiftInfo.EndTime,
-                    shiftInfo.Checked,
-                    ManagerName = manager != null ? manager.FullName : "No Manager"
+                    employee.FullName,
+                    employee.Id
                 }
-            ).FirstOrDefaultAsync();
+            ).ToListAsync();
             return shiftInfos;
         }
 
