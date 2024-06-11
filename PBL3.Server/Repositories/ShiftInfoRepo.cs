@@ -67,11 +67,25 @@ namespace PBL3.Server.Repositories
 
         public async Task<ShiftInfoModel> AddShiftInfoAsync(ShiftInfoModel shiftInfoModel)
         {
+            // Kiểm tra xem có ca làm việc nào khác tồn tại trong cùng ngày và khung giờ giao nhau không
+            var overlappingShifts = await _context.ShiftInfos
+                .Where(s => s.Date == shiftInfoModel.Date && (
+                    (shiftInfoModel.StartTime < s.EndTime && shiftInfoModel.EndTime > s.StartTime) ||
+                    (shiftInfoModel.EndTime > s.StartTime && shiftInfoModel.StartTime < s.EndTime)))
+                .ToListAsync();
+
+            if (overlappingShifts.Any())
+            {
+                throw new Exception("Cannot create a shift that overlaps with another shift.");
+            }
+
+            // Nếu không có ca làm việc nào giao nhau, tiếp tục thêm ca làm mới
             var shiftInfoEntity = _mapper.Map<ShiftInfo>(shiftInfoModel);
-            _context.ShiftInfos!.Add(shiftInfoEntity);
+            _context.ShiftInfos.Add(shiftInfoEntity);
             await _context.SaveChangesAsync();
             return _mapper.Map<ShiftInfoModel>(shiftInfoEntity);
         }
+
 
         public async Task<ShiftInfoModel?> UpdateShiftInfoAsync(ShiftInfoModel shiftInfoModel)
         {
