@@ -102,11 +102,17 @@ namespace PBL3.Server.Repositories
                 where s.Id == shiftId
                 select new
                 {
+                    si.Checked,
                     s.ShiftInfoId,
                     d.DutyName,
                     si.ManagerId
                 }
             ).FirstOrDefaultAsync();
+
+            if (shiftDetails.Checked)
+            {
+                throw new Exception("Cannot register for the shift as the form is closed.");
+            }
 
             if (shiftDetails == null)
             {
