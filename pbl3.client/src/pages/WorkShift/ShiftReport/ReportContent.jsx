@@ -12,6 +12,7 @@ import PropTypes from "prop-types";
 import { useContext, useState } from "react";
 import { AccountContext } from "../../../Context/AccountContext";
 import violateApi from "../../../Services/violateApi";
+import dayjs from "dayjs";
 ReportContent.propTypes = {
     data: PropTypes.object.isRequired,
     setOpen: PropTypes.func.isRequired,
@@ -78,7 +79,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
         {
             key: "2",
             label: "Date",
-            children: data.date,
+            children: dayjs(data.date).format("DD-MM-YYYY"),
         },
         {
             key: "3",
@@ -122,9 +123,9 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
             key: "6",
             label: "Check",
             children: data.checked ? (
-                <Badge color="green" text={`${data.checked}`} />
+                <Badge color="green" text={"Cheked"} />
             ) : (
-                <Badge color="red" text={`${data.checked}`} />
+                <Badge color="red" text={`Uncheck`} />
             ),
         },
     ];
@@ -159,7 +160,6 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                                     <Button
                                         key="edit"
                                         onClick={() => setisEdit(true)}
-                                        
                                     >
                                         Edit
                                     </Button>
@@ -174,7 +174,6 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                                         onClick={() => {
                                             handleUpdateCheck();
                                         }}
-                                        
                                     >
                                         Check
                                     </Button>

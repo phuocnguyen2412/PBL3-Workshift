@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PBL3.Server.Helpers;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
 using PBL3.Server.Repositories;
@@ -18,6 +19,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet]
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         public async Task<ActionResult<List<ShiftInfoModel>>> GetAll()
         {
             try
@@ -34,7 +36,10 @@ namespace PBL3.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = e.Message });
             }
         }
+
+
         [HttpGet("GetAllEmployeeInShiftInfo")]
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         public async Task<ActionResult<List<ShiftInfoModel>>> GetAllEmployeeInShiftInfo(int shiftInfo)
         {
             try
@@ -54,6 +59,7 @@ namespace PBL3.Server.Controllers
 
 
         [HttpPost]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult> Add(ShiftInfoModel shiftInfo)
         {
             if (shiftInfo == null)
@@ -76,31 +82,32 @@ namespace PBL3.Server.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(ShiftInfoModel shiftInfo)
-        {
-            if (shiftInfo == null)
-            {
-                return BadRequest(new { message = "Shift information is null." });
-            }
+        // [HttpPut]
+        // public async Task<ActionResult> Update(ShiftInfoModel shiftInfo)
+        // {
+        //     if (shiftInfo == null)
+        //     {
+        //         return BadRequest(new { message = "Shift information is null." });
+        //     }
 
-            try
-            {
-                var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoAsync(shiftInfo);
-                if (updatedShiftInfo == null)
-                {
-                    return NotFound(new { message = $"Shift information with ID {shiftInfo.Id} not found." });
-                }
-                return Ok(updatedShiftInfo);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
-            }
-        }
+        //     try
+        //     {
+        //         var updatedShiftInfo = await _shiftInfoRepo.UpdateShiftInfoAsync(shiftInfo);
+        //         if (updatedShiftInfo == null)
+        //         {
+        //             return NotFound(new { message = $"Shift information with ID {shiftInfo.Id} not found." });
+        //         }
+        //         return Ok(updatedShiftInfo);
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+        //     }
+        // }
 
 
         [HttpPut("{id}/{isChecked}")]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult<ShiftInfoModel>> UpdateChecked(int id, bool isChecked)
         {
             try
@@ -119,6 +126,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpDelete("{id}")]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult<ShiftInfoModel>> Delete(int id)
         {
             try
@@ -137,6 +145,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("shifts-and-employees-by-date/{date}")]
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         public async Task<ActionResult<object>> GetByDate(DateTime date)
         {
             try
@@ -155,6 +164,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("workdates/{employeeId}")]
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         public async Task<ActionResult<List<ShiftInfoModel>>> GetWorkDates(int employeeId)
         {
             try
@@ -173,6 +183,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("manager/{managerId}")]
+        [RolesAuthorize("Manager")]
         public async Task<ActionResult<List<ShiftInfoModel>>> GetShiftsForManager(int managerId)
         {
             try

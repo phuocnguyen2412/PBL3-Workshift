@@ -19,18 +19,20 @@ namespace PBL3.Server.Controllers
         {
             _bonusSalaryRepo = bonusSalaryRepo;
         }
-     
+
         [HttpGet]
+        [RolesAuthorize("Admin")]
         public async Task<object> GetAll()
         {
             var bonusSalaries = await _bonusSalaryRepo.GetAllBonusSalaryAsync();
             return bonusSalaries;
         }
-       
+
+        [RolesAuthorize("Admin")]
         [HttpPost("addforemployees")]
-        public async Task<ActionResult<int>> AddBonusSalaryForEmployees( BonusSalaryModel model)
+        public async Task<ActionResult<int>> AddBonusSalaryForEmployees(BonusSalaryModel model)
         {
-           
+
             var id = await _bonusSalaryRepo.AddBonusSalaryForEmployeesAsync(model);
             if (id > 0)
             {
@@ -41,7 +43,8 @@ namespace PBL3.Server.Controllers
                 return BadRequest(new { Message = "Failed to add bonus salary" });
             }
         }
-   
+
+        [RolesAuthorize("Admin")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -55,7 +58,8 @@ namespace PBL3.Server.Controllers
                 return NotFound(new { Message = "Bonus salary not found" });
             }
         }
-       
+
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         [HttpGet("{id}")]
         public async Task<ActionResult<object>> GetByEmployeeId(int id)
         {
@@ -67,6 +71,7 @@ namespace PBL3.Server.Controllers
             return bonusSalary;
         }
 
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         [HttpGet("bydate")]
         public async Task<ActionResult<object>> GetAllBonusSalaryByDate(DateTime date)
         {

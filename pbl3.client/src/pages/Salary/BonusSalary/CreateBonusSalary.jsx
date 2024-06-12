@@ -115,11 +115,11 @@ export default function CreateBonusSalary({ reload }) {
                             <Col span={24}>
                                 <Form.Item
                                     name="employeeIds"
-                                    label="Tên nhân viên"
+                                    label="Name of employee"
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Please enter url",
+                                            message: "Please choose name of employee",
                                         },
                                     ]}
                                 >
@@ -128,7 +128,7 @@ export default function CreateBonusSalary({ reload }) {
                                         style={{
                                             width: "100%",
                                         }}
-                                        placeholder="select one country"
+                                        placeholder="choose name"
                                         options={employeeOptions}
                                     />
                                 </Form.Item>
@@ -140,7 +140,7 @@ export default function CreateBonusSalary({ reload }) {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Please enter user name",
+                                            message: "Please choose date",
                                         },
                                     ]}
                                 >
@@ -161,12 +161,12 @@ export default function CreateBonusSalary({ reload }) {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Please enter url",
+                                            message: "Please enter total bonus",
                                         },
                                     ]}
                                 >
                                     <Input
-                                        placeholder="Nhập số tiền"
+                                        placeholder="Number total bonus"
                                         type="number"
                                     />
                                 </Form.Item>
@@ -178,7 +178,7 @@ export default function CreateBonusSalary({ reload }) {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Please enter url",
+                                            message: "Please enter reason",
                                         },
                                     ]}
                                 >

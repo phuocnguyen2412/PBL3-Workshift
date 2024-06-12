@@ -20,7 +20,7 @@ const WorkInDay = ({ date }) => {
                         label: (
                             <h3>{`${e.shiftName}: ${e.startTime} - ${
                                 e.endTime
-                            } ( ${e.checked ? "Looked" : "Openning"} ) `}</h3>
+                            } ( ${e.checked ? "Locked" : "Openning"} ) `}</h3>
                         ),
                         children: (
                             <TableEmployeePerShift

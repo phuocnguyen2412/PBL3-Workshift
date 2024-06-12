@@ -92,7 +92,12 @@ export default function TableSalaryHistory({ data, setData }) {
 
     return (
         <Spin spinning={loading}>
-            <Table dataSource={data} columns={columns} rowKey="id" />
+            <Table
+                dataSource={data}
+                columns={columns}
+                rowKey="id"
+                pagination={6}
+            />
         </Spin>
     );
 }

@@ -123,11 +123,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
         {
             key: "totalSalary",
             label: "totalSalary",
-            children: (
-                <Tag color="#e0fefe" style={{ color: "#000" }}>
-                    {Math.floor(record.totalSalary).toLocaleString("de-DE")}
-                </Tag>
-            ),
+            children: Math.floor(record.totalSalary).toLocaleString("de-DE"),
         },
         {
             key: "Paid date",
@@ -139,7 +135,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
                             {dayjs(record.paidDate).format("DD-MM-YYYY")}
                         </Tag>
                     ) : (
-                        <Tag color="#cf6679">Have not been paid</Tag>
+                        <Tag color="red">Have not been paid</Tag>
                     )}
                 </>
             ),
