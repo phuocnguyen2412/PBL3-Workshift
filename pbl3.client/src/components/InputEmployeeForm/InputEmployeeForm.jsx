@@ -32,6 +32,7 @@ export default function InputEmployeeForm({ setEmployee }) {
                 ...e,
                 status: true,
                 typeOfEmployee: e.typeOfEmployee === "true",
+                email: e.email.trim().toLowerCase(),
             };
 
             await employeeApi.add(data);

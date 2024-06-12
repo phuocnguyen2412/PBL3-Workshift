@@ -22,6 +22,7 @@ const BonusSalary = () => {
     };
     useEffect(() => {
         try {
+            setloading(true);
             fetchData();
         } catch (error) {
             console.log(error);
@@ -35,8 +36,7 @@ const BonusSalary = () => {
             const res = await bonusSalary.getAllByDate(
                 dayjs(e).format("YYYY-MM-DD")
             );
-            if (res.length === 0)
-                throw "There is no bonus which matches the date";
+
             setData(res);
         } catch (error) {
             apiNotification.error({

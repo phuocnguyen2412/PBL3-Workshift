@@ -11,7 +11,6 @@ export default function ChangePassword() {
         notification.useNotification();
 
     const handleSubmitForm = async (e) => {
-        setloading(false);
         if (e.newPassword.length < 8) {
             apiNotification.error({
                 message: "Error!",
@@ -30,6 +29,7 @@ export default function ChangePassword() {
         }
 
         try {
+            setloading(true);
             const data = {
                 id: account.account.employeeId,
                 password: e.oldPassword,
@@ -56,75 +56,72 @@ export default function ChangePassword() {
     return (
         <div>
             {contextHolderNotification}
-            <Spin spinning={loading}>
-                <Form autoFocus layout="vertical" onFinish={handleSubmitForm}>
-                    <Row gutter={12}>
-                        <Col span={13}>
-                            <Form.Item
-                                name="oldPassword"
-                                label="Current Password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message:
-                                            "Please enter Current Password",
-                                    },
-                                ]}
-                            >
-                                <Input.Password
-                                    size="large"
-                                    type="password"
-                                    autoFocus
-                                    placeholder="Please enter Current Password"
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={13}>
-                            <Form.Item
-                                name="newPassword"
-                                label="New Password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: "Please enter New Password",
-                                    },
-                                ]}
-                            >
-                                <Input.Password
-                                    size="large"
-                                    type="password"
-                                    placeholder="Please enter New Password"
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={16}>
-                        <Col span={13}>
-                            <Form.Item
-                                name="confirmPassword"
-                                label="Comfirm your password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message:
-                                            "Please enter your new password",
-                                    },
-                                ]}
-                            >
-                                <Input.Password
-                                    size="large"
-                                    type="password"
-                                    placeholder="Please enter your new password"
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
 
-                    <Button htmlType="submit" type="primary">
-                        Change Password
-                    </Button>
-                </Form>
-            </Spin>
+            <Form autoFocus layout="vertical" onFinish={handleSubmitForm}>
+                <Row gutter={12}>
+                    <Col span={13}>
+                        <Form.Item
+                            name="oldPassword"
+                            label="Current Password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter Current Password",
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                size="large"
+                                type="password"
+                                autoFocus
+                                placeholder="Please enter Current Password"
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={13}>
+                        <Form.Item
+                            name="newPassword"
+                            label="New Password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter New Password",
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                size="large"
+                                type="password"
+                                placeholder="Please enter New Password"
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row gutter={16}>
+                    <Col span={13}>
+                        <Form.Item
+                            name="confirmPassword"
+                            label="Comfirm your password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please enter your new password",
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                size="large"
+                                type="password"
+                                placeholder="Please enter your new password"
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
+                <Button htmlType="submit" type="primary" loading={loading}>
+                    Change Password
+                </Button>
+            </Form>
         </div>
     );
 }

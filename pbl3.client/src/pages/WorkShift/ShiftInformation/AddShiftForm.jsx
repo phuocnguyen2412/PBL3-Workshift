@@ -40,6 +40,7 @@ const AddShiftForm = ({ setData }) => {
             form.resetFields();
             setData(await shiftInfo.getAll());
         } catch (e) {
+            console.log(e);
             apiNotification.error({
                 message: "Error!",
                 description: `${e}`,
@@ -135,7 +136,12 @@ const AddShiftForm = ({ setData }) => {
 
                     <Row gutter={16}>
                         <Col span={24}>
-                            <Button block htmlType="submit" type="primary">
+                            <Button
+                                block
+                                htmlType="submit"
+                                type="primary"
+                                loading={loading}
+                            >
                                 Add a work shift
                             </Button>
                         </Col>

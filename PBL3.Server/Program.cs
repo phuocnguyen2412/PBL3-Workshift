@@ -10,15 +10,12 @@ using System.Text.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddCors(option =>
-    option.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
-);
+
 builder.Services.AddDbContext<MyDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("PBL3"))
 );
@@ -30,7 +27,12 @@ builder.Services.AddScoped<IAccount, AccountRepo>();
 builder.Services.AddScoped<IBonusSalary, BonusSalaryRepo>();
 builder.Services.AddScoped<IViolate, ViolateRepo>();
 builder.Services.AddScoped<IShift, ShiftRepo>();
-builder.Services.AddScoped<ISalaryHistory,SalaryHistoryRepo>();
+builder.Services.AddScoped<ISalaryHistory, SalaryHistoryRepo>();
+
+// Configure CORS
+
+
+
 
 var app = builder.Build();
 
@@ -40,13 +42,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors();
 
+
+
+// Apply the CORS policy globally
+
+
+app.UseCors(builder =>
+{
+    builder.WithOrigins("https://dnqz0ms3-5173.asse.devtunnels.ms") 
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+
+});
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseCors();
 
 app.Run();

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { Badge, Spin, Table, Tag } from "antd";
 
-
 import SearchEmployee from "./SearchEmployee";
 import EditEmployee from "./EditEmployee";
 import { Link } from "react-router-dom";
@@ -162,10 +161,12 @@ const TableEmployee = ({ data, setEmployee }) => {
         const fetchData = async () => {
             setloading(true);
             const data = await employeeApi.getAll();
+            console.log(data);
             setEmployee(data);
             setloading(false);
         };
         try {
+            setloading(true);
             fetchData();
         } catch (error) {
             console.log(error);
@@ -187,6 +188,7 @@ const TableEmployee = ({ data, setEmployee }) => {
                         pageSize: 10,
                     }}
                     scroll={{
+                        x: 482,
                         y: "600px",
                     }}
                 />

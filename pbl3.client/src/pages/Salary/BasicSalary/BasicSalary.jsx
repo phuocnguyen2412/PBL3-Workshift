@@ -46,6 +46,11 @@ const BasicSalary = () => {
             title: "Basic salary",
             dataIndex: "basicSalary",
             key: "basicSalary",
+            render: (_, record) => (
+                <span>
+                    {Math.floor(record.basicSalary).toLocaleString("de-DE")}
+                </span>
+            ),
         },
         {
             title: "Change",

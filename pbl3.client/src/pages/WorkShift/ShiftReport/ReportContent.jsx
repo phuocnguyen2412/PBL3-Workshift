@@ -151,6 +151,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                                     <Button
                                         type="primary"
                                         onClick={handleUpdateHandleValue}
+                                        loading={loading}
                                     >
                                         Update
                                     </Button>
@@ -158,6 +159,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                                     <Button
                                         key="edit"
                                         onClick={() => setisEdit(true)}
+                                        
                                     >
                                         Edit
                                     </Button>
@@ -172,6 +174,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                                         onClick={() => {
                                             handleUpdateCheck();
                                         }}
+                                        
                                     >
                                         Check
                                     </Button>

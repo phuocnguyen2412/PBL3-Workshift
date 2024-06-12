@@ -6,9 +6,8 @@ import DetailSalaryHistory from "./DetailSalaryHistory";
 import { Link } from "react-router-dom";
 import salaryHistory from "../../../Services/SalaryHistoryApi";
 
-export default function TableSalaryHistory() {
+export default function TableSalaryHistory({ data, setData }) {
     const [loading, setloading] = useState(false);
-    const [data, setData] = useState([]);
 
     const fetchData = async () => {
         try {
@@ -68,7 +67,9 @@ export default function TableSalaryHistory() {
             title: "Total salary",
             dataIndex: "totalSalary",
             render: (_, record) => (
-                <span>{Math.floor(record.totalSalary).toLocaleString()}</span>
+                <span>
+                    {Math.floor(record.totalSalary).toLocaleString("de-DE")}
+                </span>
             ),
         },
         {

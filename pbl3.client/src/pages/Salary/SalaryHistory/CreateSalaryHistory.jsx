@@ -15,7 +15,7 @@ import {
 import employeeApi from "../../../Services/employeeApi";
 import salaryHistory from "../../../Services/SalaryHistoryApi";
 
-export default function CreateSalaryHistory() {
+export default function CreateSalaryHistory({ setData }) {
     const [loading, setloading] = useState(false);
     const [form] = Form.useForm();
     const [apiNotification, contextHolderNotification] =
@@ -60,9 +60,10 @@ export default function CreateSalaryHistory() {
 
     const handleSubmit = async (e) => {
         try {
+            setloading(true);
             e.startDate = e.startDate.format("YYYY-MM-DD");
             e.endDate = e.endDate.format("YYYY-MM-DD");
-            console.log(e);
+
             const res = await salaryHistory.add(e);
             console.log(res);
             apiNotification.success({
@@ -70,12 +71,15 @@ export default function CreateSalaryHistory() {
                 description: `Successfully!`,
                 placement: "bottomRight",
             });
+            setData(await salaryHistory.getAll());
         } catch (error) {
             apiNotification.error({
                 message: "Error!",
                 description: `${error}`,
                 placement: "bottomRight",
             });
+        } finally {
+            setloading(false);
         }
     };
 
@@ -158,7 +162,12 @@ export default function CreateSalaryHistory() {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Button block htmlType="submit" type="primary">
+                        <Button
+                            block
+                            htmlType="submit"
+                            type="primary"
+                            loading={loading}
+                        >
                             Submit
                         </Button>
                     </Form>

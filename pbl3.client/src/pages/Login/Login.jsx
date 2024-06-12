@@ -24,7 +24,12 @@ function Login() {
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
     const onFinish = async (values) => {
+        console.log(values);
         try {
+            values = {
+                ...values,
+                userName: values.userName.trim().toLowerCase(),
+            };
             setloading(true);
 
             const res = await authApi.loginByAccount(values);
@@ -57,7 +62,7 @@ function Login() {
             align="middle"
         >
             {contextHolderNotification}
-            <Col span={12}>
+            <Col span={12} xs={0}>
                 <Row justify="center" align="middle">
                     <img
                         src="https://demo.1office.vn/packages/4x/style/packages/login/images/logo.svg"
@@ -68,7 +73,7 @@ function Login() {
                     <img src="./src/assets/bg1.svg" alt="" />
                 </Row>
             </Col>
-            <Col span={12}>
+            <Col span={12} xs={24}>
                 <Form
                     name="normal_login"
                     className="login-form LoginForm"

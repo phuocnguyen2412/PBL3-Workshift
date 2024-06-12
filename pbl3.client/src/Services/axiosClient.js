@@ -5,6 +5,7 @@ const axiosClient = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
+    withCredentials: true, // Ensure credentials are included if needed
 });
 
 axiosClient.interceptors.request.use(
@@ -24,7 +25,7 @@ axiosClient.interceptors.response.use(
         if (response && response.data) {
             return response.data;
         }
-        return response;
+        return response.data.message;
     },
     (error) => {
         // Handle response errors

@@ -45,7 +45,9 @@ export default function TableBonus({ data, fetchData }) {
             align: "center",
             render: (_, record) => (
                 <>
-                    <span>{record.totalBonus.toLocaleString()}</span>
+                    <span>
+                        {Math.floor(record.totalBonus).toLocaleString("de-DE")}
+                    </span>
                 </>
             ),
         },

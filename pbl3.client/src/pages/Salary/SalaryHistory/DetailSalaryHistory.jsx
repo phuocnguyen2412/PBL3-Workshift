@@ -30,7 +30,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
 
             apiNotification.success({
                 message: "Success!",
-                description: `${response.messsage}`,
+                description: `${response.message}`,
                 placement: "topRight",
             });
             fetchData();
@@ -89,7 +89,9 @@ export default function DetailSalaryHistory({ record, fetchData }) {
         {
             key: "4",
             label: "Basic Salary",
-            children: record.basicSalary,
+            children: Math.floor(record.basicSalaryStorage).toLocaleString(
+                "de-DE"
+            ),
         },
 
         {
@@ -103,27 +105,27 @@ export default function DetailSalaryHistory({ record, fetchData }) {
             children: dayjs(record.endDate).format("DD-MM-YYYY"),
         },
         {
-            key: "totalHours3",
+            key: "totalHours",
             label: "totalHours",
-            children: record.totalHours.toLocaleString(),
+            children: Math.floor(record.totalHours).toLocaleString("de-DE"),
         },
         {
             key: "totalBonus",
             label: "totalBonus",
-            children: Math.floor(record.totalBonus).toLocaleString(),
+            children: Math.floor(record.totalBonus).toLocaleString("de-DE"),
         },
 
         {
             key: "totalViolate",
             label: "totalViolate",
-            children: Math.floor(record.totalViolate).toLocaleString(),
+            children: Math.floor(record.totalViolate).toLocaleString("de-DE"),
         },
         {
             key: "totalSalary",
             label: "totalSalary",
             children: (
                 <Tag color="#e0fefe" style={{ color: "#000" }}>
-                    {Math.floor(record.totalSalary).toLocaleString()}
+                    {Math.floor(record.totalSalary).toLocaleString("de-DE")}
                 </Tag>
             ),
         },

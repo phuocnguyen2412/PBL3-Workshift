@@ -18,7 +18,7 @@ namespace PBL3.Server.Controllers
         public AccountController(IAccount accountRepo, MyDbContext context)
         {
             _accountRepo = accountRepo;
-            _context = context; 
+            _context = context;
         }
 
         [HttpPost("Login")]
