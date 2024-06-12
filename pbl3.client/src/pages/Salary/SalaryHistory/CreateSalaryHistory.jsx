@@ -10,17 +10,20 @@ import {
     Select,
     DatePicker,
     Flex,
+    App,
 } from "antd";
 
 import employeeApi from "../../../Services/employeeApi";
 import salaryHistory from "../../../Services/SalaryHistoryApi";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import dayjs from "dayjs";
 
 export default function CreateSalaryHistory({ setData }) {
     const [loading, setloading] = useState(false);
     const [form] = Form.useForm();
     const [apiNotification, contextHolderNotification] =
         notification.useNotification();
-
+    const { modal } = App.useApp();
     const [open, setOpen] = useState(false);
     const [listEmployee, setListEmployee] = useState([]);
 
@@ -31,6 +34,7 @@ export default function CreateSalaryHistory({ setData }) {
         form.resetFields();
         setOpen(false);
     };
+
     useEffect(() => {
         const fetchData = async () => {
             const response = await employeeApi.findByStatus(true);
@@ -61,11 +65,13 @@ export default function CreateSalaryHistory({ setData }) {
     const handleSubmit = async (e) => {
         try {
             setloading(true);
-            e.startDate = e.startDate.format("YYYY-MM-DD");
-            e.endDate = e.endDate.format("YYYY-MM-DD");
 
-            const res = await salaryHistory.add(e);
-            console.log(res);
+            e.startDate = dayjs(e.startDate).format("YYYY-MM-DD");
+            e.endDate = dayjs(e.endDate).format("YYYY-MM-DD");
+            console.log(e);
+
+            await salaryHistory.add(e);
+
             apiNotification.success({
                 message: "Success!",
                 description: `Successfully!`,
@@ -82,7 +88,23 @@ export default function CreateSalaryHistory({ setData }) {
             setloading(false);
         }
     };
+    const showConfirm = (e) => {
+        modal.confirm({
+            title: "CONFIRM YOUR DECISION?",
+            icon: <ExclamationCircleFilled />,
+            content: `Do you want to create salary from ${dayjs(
+                e.startDate
+            ).format("DD-MM-YYYY")} to ${dayjs(e.endDate).format(
+                "DD-MM-YYYY"
+            )}`,
+            okText: "Yes",
+            okType: "danger",
 
+            onOk() {
+                handleSubmit(e);
+            },
+        });
+    };
     return (
         <>
             {contextHolderNotification}
@@ -103,7 +125,7 @@ export default function CreateSalaryHistory({ setData }) {
                 open={open}
             >
                 <Spin spinning={loading}>
-                    <Form form={form} onFinish={handleSubmit}>
+                    <Form form={form} onFinish={showConfirm}>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
@@ -134,13 +156,14 @@ export default function CreateSalaryHistory({ setData }) {
                                     rules={[
                                         {
                                             required: true,
-                                            message: "Please enter user name",
+                                            message:
+                                                "Please choose a start date",
                                         },
                                     ]}
                                 >
                                     <DatePicker
                                         style={{ width: "100%" }}
-                                        placeholder="Please enter user name"
+                                        placeholder="Please choose a end date"
                                     />
                                 </Form.Item>
                             </Col>

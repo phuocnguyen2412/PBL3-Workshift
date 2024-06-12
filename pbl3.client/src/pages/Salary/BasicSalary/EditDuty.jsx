@@ -22,7 +22,7 @@ export default function EditDuty({ record, setDutyList }) {
         <>
             <Modal
                 centered
-                title="Edit Employee"
+                title="Edit duty"
                 open={openEdit}
                 footer={null}
                 onCancel={cancelEdit}

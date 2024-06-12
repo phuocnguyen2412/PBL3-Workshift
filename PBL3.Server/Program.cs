@@ -50,7 +50,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(builder =>
 {
-    builder.WithOrigins("https://dnqz0ms3-5173.asse.devtunnels.ms") 
+    builder.WithOrigins("https://dnqz0ms3-5173.asse.devtunnels.ms", "https://kt329vqk-5173.asse.devtunnels.ms")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();

@@ -70,6 +70,11 @@ const EmployeeSalaryHistory = () => {
         {
             title: "Total salary",
             dataIndex: "totalSalary",
+            render: (_, record) => (
+                <span>
+                    {Math.floor(record.totalSalary).toLocaleString("de-DE")}
+                </span>
+            ),
         },
         {
             title: "Paid date",

@@ -101,7 +101,7 @@ export default function ChangePassword() {
                     <Col span={13}>
                         <Form.Item
                             name="confirmPassword"
-                            label="Comfirm your password"
+                            label="Confirm your password"
                             rules={[
                                 {
                                     required: true,
