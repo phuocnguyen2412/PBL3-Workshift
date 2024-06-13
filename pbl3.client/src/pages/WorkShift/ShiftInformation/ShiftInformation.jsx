@@ -127,7 +127,7 @@ const ShiftInformation = () => {
                 <AddShiftForm setData={setData} />
             </Drawer>
             <Modal
-                title={`Lịch làm việc ngày ${value?.format("DD-MM-YYYY")}`}
+                title={`Workshift canlender ${value?.format("DD-MM-YYYY")}`}
                 centered
                 open={openModal}
                 onOk={() => setOpenModal(false)}

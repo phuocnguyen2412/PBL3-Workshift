@@ -16,12 +16,12 @@ export default function BonusContent({ data, setOpen, open }) {
         {
             key: "2",
             label: "Date",
-            children: dayjs(data.dateTime).format("DD-MM-YYYY HH:mm:ss"),
+            children: dayjs(data.dateTime).format("DD-MM-YYYY"),
         },
         {
             key: "3",
             label: "Total",
-            children: data.totalBonus.toLocaleString(),
+            children: data.totalBonus.toLocaleString("de-DE"),
         },
         {
             key: "4",

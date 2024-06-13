@@ -25,7 +25,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
     const handleOk = async () => {
         setConfirmLoading(true);
         try {
-            if (account.account.dutyName !== "Admin") return;
+            if (account.account.dutyName !== "Admin") throw "khong phai admin";
             const response = await salaryHistory.updatePaidDate(record.id);
 
             apiNotification.success({
@@ -40,6 +40,8 @@ export default function DetailSalaryHistory({ record, fetchData }) {
                 description: `${error}`,
                 placement: "topRight",
             });
+        } finally {
+            setConfirmLoading(false);
         }
         setOpen(false);
         setConfirmLoading(false);
@@ -148,10 +150,27 @@ export default function DetailSalaryHistory({ record, fetchData }) {
             <Modal
                 title="Basic salary"
                 open={open}
-                onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
-                okText={account.account.dutyName === "Admin" ? "Pay" : "ok"}
+                footer={
+                    <>
+                        {account.account.dutyName === "Admin" && (
+                            <Button key="back" onClick={handleCancel}>
+                                Return
+                            </Button>
+                        )}
+                        {account.account.dutyName === "Admin" && (
+                            <Button
+                                key="submit"
+                                type="primary"
+                                loading={confirmLoading}
+                                onClick={handleOk}
+                            >
+                                Pay
+                            </Button>
+                        )}
+                    </>
+                }
             >
                 <Descriptions layout="vertical" bordered items={items} />
             </Modal>

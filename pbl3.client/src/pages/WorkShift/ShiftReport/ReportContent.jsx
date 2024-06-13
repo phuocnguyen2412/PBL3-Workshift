@@ -80,6 +80,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
             key: "2",
             label: "Date",
             children: dayjs(data.date).format("DD-MM-YYYY"),
+            span: 2,
         },
         {
             key: "3",
@@ -107,6 +108,7 @@ export default function ReportContent({ data, setOpen, open, fetchData }) {
                     onChange={(e) => setHandleValue(e.target.value)}
                 />
             ),
+            span: 3,
         },
         {
             key: "7",
