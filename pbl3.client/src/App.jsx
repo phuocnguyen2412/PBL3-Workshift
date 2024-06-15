@@ -1,14 +1,31 @@
 import { useRoutes } from "react-router-dom";
+import { routes } from "./routes";
 
-import { publicRoutes, privateRoutes } from "./routes";
-import { useContext } from "react";
-import { AccountContext } from "./Context/AccountContext";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
-    const account = useContext(AccountContext);
-
     const routeList = useRoutes(
-        Object.keys(account.account) === 0 ? publicRoutes : privateRoutes
+        routes.map((route) => ({
+            ...route,
+            element: route.roles ? (
+                <ProtectedRoute element={route.element} roles={route.roles} />
+            ) : (
+                route.element
+            ),
+            children:
+                route.children &&
+                route.children.map((child) => ({
+                    ...child,
+                    element: child.roles ? (
+                        <ProtectedRoute
+                            element={child.element}
+                            roles={child.roles}
+                        />
+                    ) : (
+                        child.element
+                    ),
+                })),
+        }))
     );
 
     return <>{routeList}</>;

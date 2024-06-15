@@ -32,4 +32,6 @@ bin
 appsettings.json
 .fake
 .vs
-appsettings.json
+
+PBL3.Server/appsettings.json
+pbl3.client/.env
