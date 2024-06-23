@@ -20,7 +20,9 @@ export default function TableBonus({ data, fetchData }) {
             dataIndex: "fullName",
             key: "name",
             render: (_, record) => (
-                <Link to={`/Employee/${record.id}`}>{record.fullName}</Link>
+                <Link to={`/Employee/${record.employeeId}`}>
+                    {record.fullName}
+                </Link>
             ),
         },
 
@@ -31,9 +33,7 @@ export default function TableBonus({ data, fetchData }) {
 
             render: (_, record) => (
                 <>
-                    <span>
-                        {dayjs(record.dateTime).format("DD-MM-YYYY HH:mm:ss")}
-                    </span>
+                    <span>{dayjs(record.dateTime).format("DD-MM-YYYY")}</span>
                 </>
             ),
         },

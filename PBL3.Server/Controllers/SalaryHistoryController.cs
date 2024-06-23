@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PBL3.Server.Interface;
 using PBL3.Server.Models;
-
+using PBL3.Server.Helpers;
 namespace PBL3.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -16,6 +16,7 @@ namespace PBL3.Server.Controllers
             _salaryHistoryRepo = salaryHistoryRepo;
         }
 
+        [RolesAuthorize("Admin")]
         [HttpGet]
         public async Task<object> GetAll()
         {
@@ -23,13 +24,14 @@ namespace PBL3.Server.Controllers
             return Ok(salaryHistories);
         }
 
-        [HttpGet("Id")]
-        public async Task<object> GetAllById(int Id)
-        {
-            var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
-            return Ok(salaryHistories);
-        }
+        // [HttpGet("Id")]
+        // public async Task<object> GetAllById(int Id)
+        // {
+        //     var salaryHistories = await _salaryHistoryRepo.GetAllSalaryHistoryById(Id);
+        //     return Ok(salaryHistories);
+        // }
 
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         [HttpGet("EmployeeId")]
         public async Task<object> GetAllSalaryHistoryByEmployeeId(int EmployeeId)
         {
@@ -39,6 +41,7 @@ namespace PBL3.Server.Controllers
             return Ok(salaryHistories);
         }
 
+        [RolesAuthorize("Admin")]
         [HttpPost]
         public async Task<object> Add(SalaryHistoryModel model)
         {
@@ -54,10 +57,11 @@ namespace PBL3.Server.Controllers
             {
                 return BadRequest(ex);
             }
-        }   
+        }
 
-        [HttpPut("{id}")]   
-        public async Task<ActionResult> UpdateById(int id)
+        [RolesAuthorize("Admin")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdatePaidDateById(int id)
         {
             try
             {

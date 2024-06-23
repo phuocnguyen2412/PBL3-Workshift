@@ -85,6 +85,7 @@ namespace PBL3.Server.Repositories
                 where e.Id == employeeid
                 select new
                 {
+                    employeeId = e.Id,
                     v.Id,
                     EmployeeName = e.FullName,
                     v.Handle,
@@ -112,6 +113,7 @@ namespace PBL3.Server.Repositories
                 where s.ManagerId == managerid
                 select new
                 {
+                    employeeId = e.Id,
                     v.Id,
                     EmployeeName = e.FullName,
                     v.Handle,
@@ -139,6 +141,7 @@ namespace PBL3.Server.Repositories
                 where s.Date == date
                 select new
                 {
+                    employeeId = e.Id,
                     s.ManagerId,
                     v.Id,
                     EmployeeName = e.FullName,

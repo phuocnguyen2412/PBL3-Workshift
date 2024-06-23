@@ -42,7 +42,8 @@ namespace PBL3.Server.Controllers
             }
             return Ok(account);
         }
-
+        
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         [HttpPost("LoginByToken")]
         public async Task<ActionResult<object>> LoginByToken(TokenModel token)
         {
@@ -61,7 +62,7 @@ namespace PBL3.Server.Controllers
             return Ok(account);
         }
 
-
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         [HttpPost("ChangePassword")]
         public async Task<ActionResult<bool>> ChangePassword(ChangePasswordModel model)
         {

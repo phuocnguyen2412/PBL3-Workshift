@@ -25,6 +25,7 @@ namespace PBL3.Server.Repositories
         public async Task<ShiftModel> AddShiftAsync(ShiftModel shiftModel)
         {
             var shiftInfo = await _context.ShiftInfos.FindAsync(shiftModel.ShiftInfoId);
+            
             if (shiftInfo == null)
             {
                 throw new Exception("ShiftInfo not found.");
@@ -102,11 +103,17 @@ namespace PBL3.Server.Repositories
                 where s.Id == shiftId
                 select new
                 {
+                    si.Checked,
                     s.ShiftInfoId,
                     d.DutyName,
                     si.ManagerId
                 }
             ).FirstOrDefaultAsync();
+
+            if (shiftDetails.Checked)
+            {
+                throw new Exception("Cannot register for the shift as the form is closed.");
+            }
 
             if (shiftDetails == null)
             {
@@ -183,9 +190,12 @@ namespace PBL3.Server.Repositories
             DateTime date = DateTime.Now;
             TimeSpan checkInTime = date.TimeOfDay;
 
-            if (checkInTime < shiftInfo.StartTime || checkInTime > shiftInfo.StartTime.Add(TimeSpan.FromMinutes(5)))
+            if (checkInTime < shiftInfo.StartTime)
             {
-                throw new Exception("Check-in time must be within 5 minutes after the shift start time.");
+                throw new Exception("Can't check-in before the shift start time.");
+            }
+            if(checkInTime > shiftInfo.EndTime){
+                throw new Exception("Can't check-in after the shift end time");
             }
 
             shift.CheckInTime = date;

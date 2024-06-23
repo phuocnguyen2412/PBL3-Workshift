@@ -9,6 +9,8 @@ using PBL3.Server.Repositories;
 
 namespace PBL3.Server.Controllers
 {
+    [RolesAuthorize("Admin")]
+
     [Route("api/[controller]")]
     [ApiController]
     public class DutyController : ControllerBase
@@ -20,14 +22,13 @@ namespace PBL3.Server.Controllers
             _dutyRepository = dutyRepo;
         }
 
-     
         [HttpGet]
         public async Task<ActionResult<List<DutyModel>>> GetAll()
         {
             return await _dutyRepository.GetAllDutiesAsync();
         }
 
-       
+
         [HttpPost]
         public async Task<ActionResult<DutyModel>> Add(DutyModel dutyModel)
         {
@@ -40,7 +41,7 @@ namespace PBL3.Server.Controllers
             return Ok(id);
         }
 
-     
+
         [HttpPut]
         public async Task<ActionResult> Update(DutyModel dutyModel)
         {
@@ -48,7 +49,7 @@ namespace PBL3.Server.Controllers
             return NoContent();
         }
 
-        
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

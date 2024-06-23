@@ -25,7 +25,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
     const handleOk = async () => {
         setConfirmLoading(true);
         try {
-            if (account.account.dutyName !== "Admin") return;
+            if (account.account.dutyName !== "Admin") throw "khong phai admin";
             const response = await salaryHistory.updatePaidDate(record.id);
 
             apiNotification.success({
@@ -40,6 +40,8 @@ export default function DetailSalaryHistory({ record, fetchData }) {
                 description: `${error}`,
                 placement: "topRight",
             });
+        } finally {
+            setConfirmLoading(false);
         }
         setOpen(false);
         setConfirmLoading(false);
@@ -123,11 +125,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
         {
             key: "totalSalary",
             label: "totalSalary",
-            children: (
-                <Tag color="#e0fefe" style={{ color: "#000" }}>
-                    {Math.floor(record.totalSalary).toLocaleString("de-DE")}
-                </Tag>
-            ),
+            children: Math.floor(record.totalSalary).toLocaleString("de-DE"),
         },
         {
             key: "Paid date",
@@ -139,7 +137,7 @@ export default function DetailSalaryHistory({ record, fetchData }) {
                             {dayjs(record.paidDate).format("DD-MM-YYYY")}
                         </Tag>
                     ) : (
-                        <Tag color="#cf6679">Have not been paid</Tag>
+                        <Tag color="red">Have not been paid</Tag>
                     )}
                 </>
             ),
@@ -152,10 +150,27 @@ export default function DetailSalaryHistory({ record, fetchData }) {
             <Modal
                 title="Basic salary"
                 open={open}
-                onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
-                okText={account.account.dutyName === "Admin" ? "Pay" : "ok"}
+                footer={
+                    <>
+                        {account.account.dutyName === "Admin" && (
+                            <Button key="back" onClick={handleCancel}>
+                                Return
+                            </Button>
+                        )}
+                        {account.account.dutyName === "Admin" && (
+                            <Button
+                                key="submit"
+                                type="primary"
+                                loading={confirmLoading}
+                                onClick={handleOk}
+                            >
+                                Pay
+                            </Button>
+                        )}
+                    </>
+                }
             >
                 <Descriptions layout="vertical" bordered items={items} />
             </Modal>

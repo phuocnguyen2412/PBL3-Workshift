@@ -43,6 +43,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("{id}")]
+        [RolesAuthorize("Admin", "Employee", "Manager")]
         public async Task<ActionResult> GetById(int id)
         {
             try
@@ -61,6 +62,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpGet("status/{status}")]
+        [RolesAuthorize("Admin", "Manager")]
         public async Task<ActionResult> GetByStatus(bool status)
         {
             try
@@ -79,6 +81,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPost]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult<EmployeeModel>> Add(EmployeeModel employee)
         {
             if (employee == null)
@@ -107,6 +110,7 @@ namespace PBL3.Server.Controllers
         }
 
         [HttpPut]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult<EmployeeModel>> Update(EmployeeModel employee)
         {
             if (employee == null)
@@ -129,25 +133,26 @@ namespace PBL3.Server.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<EmployeeModel>> Delete(int id)
-        {
-            try
-            {
-                var employee = await _employeeRepository.DeleteEmployeeAsync(id);
-                if (employee == null)
-                {
-                    return NotFound($"Employee with ID {id} not found.");
-                }
-                return Ok(employee);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new { Message = e.Message });
-            }
-        }
+        // [HttpDelete("{id}")]
+        // public async Task<ActionResult<EmployeeModel>> Delete(int id)
+        // {
+        //     try
+        //     {
+        //         var employee = await _employeeRepository.DeleteEmployeeAsync(id);
+        //         if (employee == null)
+        //         {
+        //             return NotFound($"Employee with ID {id} not found.");
+        //         }
+        //         return Ok(employee);
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         return StatusCode(500, new { Message = e.Message });
+        //     }
+        // }
 
         [HttpGet("search/{searchString}")]
+        [RolesAuthorize("Admin")]
         public async Task<ActionResult<object>> SearchByString(string searchString)
         {
             try

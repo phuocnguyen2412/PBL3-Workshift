@@ -218,7 +218,12 @@ namespace PBL3.Server.Repositories
             int totalViolate
         )
         {
-            return (coefficientsSalary * basicSalary * totalHours) + totalBonus - totalViolate;
+            double tempSalary = coefficientsSalary * basicSalary * totalHours + totalBonus - totalViolate;
+            if (totalHours < 240)
+            {
+                return tempSalary - ((240 - totalHours) * coefficientsSalary * basicSalary);
+            }
+            return tempSalary;
         }
 
         public async Task UpdateSalaryById(int id)
