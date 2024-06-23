@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V95ViNwNJJUQ4CvJglEbaKYhZ/Pf+6XFpjkAwzn+Y1A1Pa71BxYNDlzONKgxP705qjSjqnfvM/TRjwdkeyUm2A==",
+  "dgSpecHash": "ceZL1nD5yfecZyxZ0qXE5WuniiDBPxr4vsuuS0N4Oszv7kMZiwEL3s6D1luxsbTqf0XddTV+qgoltTX9yiv+bg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Hi\\Desktop\\PBL3\\pbl3.server\\PBL3.Server.csproj",
+  "projectFilePath": "C:\\Users\\Hi\\Desktop\\PBL3\\PBL3.Server\\PBL3.Server.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hi\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Hi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
