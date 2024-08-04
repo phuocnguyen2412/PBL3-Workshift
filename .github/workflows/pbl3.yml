@@ -14,7 +14,7 @@ jobs:
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCEKRHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build
         run: docker build -t pbl3-image .
       - name: Push image to docker hub
