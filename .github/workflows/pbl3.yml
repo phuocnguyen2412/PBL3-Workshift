@@ -27,6 +27,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: log private key
+        uses: echo ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to the server
         uses: appleboy/ssh-action@v0.1.3
         with:
