@@ -4,6 +4,7 @@ on:
   push: 
     branches:
       - main
+
 jobs:
   build: 
     runs-on: ubuntu-latest
@@ -16,13 +17,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build
-        run: docker build -t pbl3-image .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/pbl3-image:${{ github.sha }} .
       - name: Push image to docker hub
         uses: docker/build-push-action@v2
         with: 
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pbl3-image:${{ github.sha }}
+
   deploy: 
     needs: build
     runs-on: ubuntu-latest
@@ -38,8 +40,7 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/pbl3-image:${{ github.sha }}
 
-            docker stop pbl3-image
-            docker rm pbl3-image
+            docker stop pbl3-container
+            docker rm pbl3-container
 
-            docker run -d -p 80:3000 --name pbl3-container ${{ secrets.DOCKERHUB_USERNAME }}/pbl3-image:${{ github.sha }} 
-          
+            docker run -d -p 80:3000 --name pbl3-container ${{ secrets.DOCKERHUB_USERNAME }}/pbl3-image:${{ github.sha }}
